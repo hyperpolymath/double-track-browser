@@ -1,0 +1,36 @@
+= double-track-browser - Citation Guide
+:toc:
+
+== BibTeX
+
+[source,bibtex]
+----
+@software{double-track-browser_2025,
+  author = {Polymath, Hyper},
+  title = {double-track-browser},
+  year = {2025},
+  url = {https://github.com/hyperpolymath/double-track-browser},
+  license = {AGPL-3.0-or-later}
+}
+----
+
+== Harvard Style
+
+Polymath, H. (2025) _double-track-browser_ [Computer software]. Available at: https://github.com/hyperpolymath/double-track-browser
+
+== OSCOLA
+
+Hyper Polymath, 'double-track-browser' (2025) <https://github.com/hyperpolymath/double-track-browser>
+
+== MLA
+
+Polymath, Hyper. "double-track-browser." 2025, github.com/hyperpolymath/double-track-browser.
+
+== APA 7
+
+Polymath, H. (2025). _double-track-browser_ [Computer software]. GitHub. https://github.com/hyperpolymath/double-track-browser
+
+== See Also
+
+* link:../CITATION.cff[CITATION.cff]
+* link:../codemeta.json[codemeta.json]
