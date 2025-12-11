@@ -1,135 +1,76 @@
 = double-track-browser
-The pendulum has swung way too far on the privacy front. 
-DoubleTrack Browser puts a hard stop to attempts to limit the reckless sharing of even your most intimate data.
+Jonathan D.A. Jewell <jonathan.jewell@gmail.com>
+:toc: macro
+:icons: font
+:source-highlighter: rouge
+:experimental:
+:url-github: https://github.com/hyperpolymath/double-track-browser
+:url-gitlab: https://gitlab.com/hyperpolymath/double-track-browser
+:url-bitbucket: https://bitbucket.org/hyperpolymath/double-track-browser
+:url-codeberg: https://codeberg.org/hyperpolymath/double-track-browser
 
+Dual-browser testing and comparison framework
 
-= DoubleTrack Browser
+image:https://img.shields.io/badge/RSR-Certified-gold[RSR Certified]
+image:https://img.shields.io/badge/License-AGPL%20v3-blue[License]
 
-![License](https://img.shields.io/badge/license-MIT%20OR%20Palimpsest--0.8-blue.svg)
-![Status](https://img.shields.io/badge/status-experimental-red.svg)
-![Privacy](https://img.shields.io/badge/privacy-enhanced-green.svg)
-![RSR Compliance](https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg)
-![TPCF](https://img.shields.io/badge/TPCF-Perimeter%203-green.svg)
-![Build](https://img.shields.io/github/workflow/status/yourusername/double-track-browser/CI?label=build)
-![Tests](https://img.shields.io/badge/tests-27%20passing-brightgreen.svg)
+toc::[]
 
-== The Pendulum Swings Back
+== Overview
 
-*DoubleTrack Browser* is a radical experiment in digital identity management. While most privacy tools focus on hiding your data, DoubleTrack takes the opposite approach—it deliberately creates a rich, consistent, but entirely fictional digital presence alongside your real one.
+double-track-browser is part of the link:https://rhodium.sh[Rhodium Standard] (RSR) ecosystem.
 
-> *"The best place to hide a leaf is in a forest."*
+Domain: *software-development*
 
-== Core Architecture
+== Installation
 
-This project is built on a hybrid architecture that prioritizes both performance and memory safety:
+[source,bash]
+----
+# Clone from GitHub (primary)
+git clone {url-github}
 
-- *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
-- *TypeScript Shell*: Handles browser API integration and UI components
-- *WebExtensions API*: Provides the hooks needed for background operation
+# Or from mirrors
+git clone {url-gitlab}
+git clone {url-codeberg}
+----
 
-== Key Features
+== RSR Stack
 
-- *Parallel Identity Generation*: Creates believable, consistent alternative browsing patterns
-- *Background Activity Engine*: Simulates browsing behavior even when you're not actively using your computer
-- *Memory-Safe Design*: Uses Rust's ownership model to ensure your real data remains protected
-- *Configurable Noise Levels*: Adjust how active your alternative identity should be
+This project follows RSR conventions:
 
-== Why DoubleTrack Exists
+* ✅ ReScript for frontend/logic
+* ✅ Deno for JS runtime
+* ✅ WASM for performance-critical code
+* ✅ Rust/OCaml/Haskell for systems/proofs
+* ✅ Guile/Scheme for configuration
+* ❌ No TypeScript
+* ❌ No Go
+* ❌ No npm
 
-In a world where your data is constantly harvested, the traditional approach of trying to hide becomes increasingly futile. Data brokers have become too sophisticated, tracking technologies too pervasive.
+== Mirrors
 
-DoubleTrack explores a different hypothesis: What if, instead of trying to be invisible, you become deliberately, strategically visible—but in ways that obscure rather than reveal?
+[cols="1,2"]
+|===
+| Platform | URL
 
-== Getting Started
-
-```bash
-= Clone the repository
-git clone https://github.com/yourusername/double-track-browser.git
-
-= Install dependencies
-cd double-track-browser
-npm install
-
-= Build the Rust core
-cd rust_core
-wasm-pack build
-
-= Build the extension
-cd ..
-npm run build
-```
-
-Then load the extension from the `dist/` directory into your browser of choice.
-
-== Warning
-
-This is experimental software. While designed with security in mind, it may have unintended consequences for your online experience. Use at your own risk and only on personal devices.
-
-== RSR Framework Compliance
-
-This project adheres to the *Rhodium Standard Repository (RSR) Framework* and achieves *Gold Level* compliance (91%):
-
-✅ *Documentation*: README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, MAINTAINERS, CHANGELOG
-✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
-✅ *Type Safety*: Rust compile-time guarantees + TypeScript strict mode
-✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
-✅ *Build System*: npm, webpack, wasm-pack, justfile, flake.nix (Nix reproducible builds)
-✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
-✅ *Test Coverage*: 27 comprehensive tests (15 Rust + 12 TypeScript)
-✅ *Offline-First*: Zero network dependencies, works air-gapped
-
-See [RSR_COMPLIANCE_AUDIT.md](RSR_COMPLIANCE_AUDIT.md) for detailed audit.
-
-== Tri-Perimeter Contribution Framework (TPCF)
-
-This project uses the *TPCF* to manage trust and contributions:
-
-=== *Perimeter 3: Community Sandbox* (Current)
-- *Access*: Open to all
-- *Scope*: All public contributions
-- *Requirements*: Follow Code of Conduct, sign commits (optional)
-- *Review*: All PRs reviewed before merge
-
-=== Perimeter 2: Trusted Contributors (Future)
-- Access granted after sustained contributions (3+ months, 10+ merged PRs)
-- Code review privileges, issue triage, mentoring
-
-=== Perimeter 1: Core Stewards (Future)
-- Invitation-only for long-term maintainers
-- Strategic decisions, governance, security response
-
-*Current Status*: Only Perimeter 3 is active. See [MAINTAINERS.md](MAINTAINERS.md) for details.
-
-== Contributing
-
-Contributions are welcome! This project values:
-- *Reversibility*: Experiments should be safe to try and easy to undo
-- *Emotional Safety*: No blame culture, mistakes are learning opportunities
-- *Diverse Expertise*: All skill levels welcome
-- *Sustainable Pace*: No crunch time, life comes first
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
-
-== Security
-
-See [SECURITY.md](SECURITY.md) for vulnerability reporting procedures and our security model. We follow responsible disclosure with a 90-day coordinated release window.
-
-*Quick contacts*:
-- *Security issues*: security@example.com (see .well-known/security.txt)
-- *Code of Conduct*: conduct@example.com
+| GitHub (primary) | {url-github}
+| GitLab | {url-gitlab}
+| Bitbucket | {url-bitbucket}
+| Codeberg | {url-codeberg}
+|===
 
 == License
 
-This project is dual-licensed:
-- *MIT License* (primary) - see [LICENSE-MIT](LICENSE-MIT)
-- *Palimpsest License v0.8* (alternative) - see [LICENSE-PALIMPSEST](LICENSE-PALIMPSEST)
+Licensed under AGPL-3.0-or-later OR LicenseRef-Palimpsest-0.5.
 
-You may choose either license. See [LICENSING.md](LICENSING.md) for details.
+See link:LICENSE[LICENSE] for details.
 
-The original GPL-3.0 license is retained in [LICENSE](LICENSE) for historical reference.
+== Contributing
 
----
+See link:CONTRIBUTING.adoc[CONTRIBUTING.adoc].
 
-*"In the age of surveillance capitalism, visibility can be a form of camouflage."*
+== Metadata
 
----
+* Domain: software-development
+* Framework: RSR (Rhodium Standard Repository)
+* Dublin Core: link:.well-known/dc.xml[.well-known/dc.xml]
