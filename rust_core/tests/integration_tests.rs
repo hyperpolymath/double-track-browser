@@ -120,7 +120,7 @@ fn test_activity_urls_valid() {
     for activity in activities {
         // URLs should start with http
         assert!(
-            activity.url.starts_with("http://") || activity.url.starts_with("https://")
+            activity.url.starts_with("https://") || activity.url.starts_with("https://")
         );
 
         // Titles should not be empty
