@@ -177,8 +177,8 @@ jobs:
       - name: Check Documentation
         run: |
           echo "Checking required files..."
-          test -f README.md || (echo "❌ README.md missing" && exit 1)
-          test -f LICENSE || (echo "❌ LICENSE missing" && exit 1)
+          test -f README.adoc || test -f README.md || (echo "❌ README missing" && exit 1)
+          test -f LICENSE.txt || test -f LICENSE || (echo "❌ LICENSE missing" && exit 1)
           test -f SECURITY.md || (echo "❌ SECURITY.md missing" && exit 1)
           test -f CODE_OF_CONDUCT.md || (echo "❌ CODE_OF_CONDUCT.md missing" && exit 1)
           test -f CONTRIBUTING.md || (echo "❌ CONTRIBUTING.md missing" && exit 1)
