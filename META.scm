@@ -97,3 +97,11 @@
       Each language is chosen for its strengths in its domain.")))
 
 ;;; End of META.scm
+
+;; CROSS-PLATFORM STATUS (2025-12-17)
+(cross-platform-status
+  (sync-status "needs-review")
+  (gitlab-url "https://gitlab.com/hyperpolymath/double-track-browser")
+  (instructions
+    ";; git remote add gitlab <gitlab-url>"
+    ";; git fetch gitlab && git diff main gitlab/main"))
