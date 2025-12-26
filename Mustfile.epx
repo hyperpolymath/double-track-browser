@@ -1,0 +1,174 @@
+# SPDX-License-Identifier: MIT OR Palimpsest-0.8
+# Mustfile.epx - Ephapax Linear Logic deployment manifest
+# DoubleTrack Browser
+#
+# This file defines the deployment orchestration for the project
+# following the hyperpolymath/mustfile pattern.
+#
+# Usage: must deploy
+
+# === PROJECT METADATA ===
+project:
+  name: double-track-browser
+  version: 0.1.0
+  description: Privacy through deliberate visibility - create fictional browsing patterns
+
+# === DEPENDENCIES ===
+# Define required tools and their sources
+dependencies:
+  # Rust toolchain
+  rust:
+    source: rustup
+    version: stable
+    components:
+      - clippy
+      - rustfmt
+    targets:
+      - wasm32-unknown-unknown
+
+  # WASM tools
+  wasm-pack:
+    source: cargo
+    version: latest
+
+  # Deno runtime
+  deno:
+    source: deno
+    version: ">=2.0.0"
+
+  # Just task runner
+  just:
+    source: cargo
+    version: latest
+
+  # ReScript compiler (via npx, no npm install required)
+  rescript:
+    source: npx
+    version: ">=11.0.0"
+
+# === BUILD PHASES ===
+# Each phase consumes inputs and produces validated outputs
+phases:
+  # Phase 1: Compile Rust to WASM
+  rust-wasm:
+    inputs:
+      - rust_core/src/**/*.rs
+      - rust_core/Cargo.toml
+    outputs:
+      - rust_core/pkg/doubletrack_core.js
+      - rust_core/pkg/doubletrack_core_bg.wasm
+    command: |
+      cd rust_core
+      wasm-pack build --target web --release
+
+  # Phase 2: Compile ReScript
+  rescript:
+    inputs:
+      - src/**/*.res
+      - rescript.json
+    outputs:
+      - src/**/*.res.js
+    command: |
+      npx rescript build
+
+  # Phase 3: Bundle extension
+  extension:
+    depends:
+      - rust-wasm
+      - rescript
+    inputs:
+      - src/manifest.json
+      - src/**/*.html
+      - src/**/*.css
+      - src/**/*.res.js
+      - rust_core/pkg/**
+      - icons/**
+    outputs:
+      - dist/**
+    command: |
+      deno run --allow-read --allow-write scripts/build.ts
+
+# === VALIDATION RULES ===
+# Enforce Hyperpolymath language policy
+validation:
+  # Block TypeScript
+  no-typescript:
+    pattern: "**/*.ts"
+    exclude:
+      - "**/*.d.ts"    # Allow type declaration files
+      - "scripts/*.ts" # Allow Deno scripts (these are Deno TypeScript, not Node)
+    action: block
+    message: "TypeScript files are not allowed. Use ReScript instead."
+
+  # Block npm/bun artifacts
+  no-npm:
+    pattern:
+      - package.json
+      - package-lock.json
+      - bun.lockb
+      - .npmrc
+      - node_modules/**
+    action: block
+    message: "npm/bun artifacts are not allowed. Use Deno instead."
+
+  # Block Makefiles
+  no-makefile:
+    pattern:
+      - Makefile
+      - makefile
+      - GNUmakefile
+    action: block
+    message: "Makefiles are not allowed. Use justfile instead."
+
+  # Require SPDX headers
+  spdx-required:
+    pattern:
+      - "**/*.res"
+      - "**/*.rs"
+    action: warn
+    check: contains "SPDX-License-Identifier"
+    message: "Source files should include SPDX license headers."
+
+# === PLATFORM-SPECIFIC DEPLOYMENT ===
+# Following mustfile's platform abstraction
+platforms:
+  # Linux (Fedora/Silverblue)
+  fedora:
+    layering: rpm-ostree
+    packages:
+      - rust
+      - cargo
+
+  # Linux (Debian/Ubuntu)
+  debian:
+    extension: nala
+    packages:
+      - rustc
+      - cargo
+
+  # macOS
+  darwin:
+    extension: brew
+    packages:
+      - rust
+      - deno
+      - just
+
+  # Cross-platform (fallback)
+  any:
+    cargo:
+      - wasm-pack
+      - just
+      - cargo-audit
+
+# === HOOKS ===
+hooks:
+  pre-build:
+    - just lint
+
+  post-build:
+    - just validate-rsr
+
+  pre-deploy:
+    - just test
+    - just audit

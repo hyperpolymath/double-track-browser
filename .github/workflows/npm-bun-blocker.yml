@@ -7,8 +7,18 @@ jobs:
       - uses: actions/checkout@v4
       - name: Block npm/bun
         run: |
-          if [ -f "package-lock.json" ] || [ -f "bun.lockb" ] || [ -f ".npmrc" ]; then
-            echo "❌ npm/bun artifacts detected. Use Deno instead."
+          VIOLATIONS=""
+          [ -f "package.json" ] && VIOLATIONS="$VIOLATIONS package.json"
+          [ -f "package-lock.json" ] && VIOLATIONS="$VIOLATIONS package-lock.json"
+          [ -f "bun.lockb" ] && VIOLATIONS="$VIOLATIONS bun.lockb"
+          [ -f ".npmrc" ] && VIOLATIONS="$VIOLATIONS .npmrc"
+          [ -f "yarn.lock" ] && VIOLATIONS="$VIOLATIONS yarn.lock"
+          [ -f "pnpm-lock.yaml" ] && VIOLATIONS="$VIOLATIONS pnpm-lock.yaml"
+          [ -d "node_modules" ] && VIOLATIONS="$VIOLATIONS node_modules/"
+
+          if [ -n "$VIOLATIONS" ]; then
+            echo "❌ npm/bun/pnpm/yarn artifacts detected. Use Deno instead."
+            echo "Violations:$VIOLATIONS"
             exit 1
           fi
-          echo "✅ No npm/bun violations"
+          echo "✅ No npm/bun violations - Deno policy enforced"

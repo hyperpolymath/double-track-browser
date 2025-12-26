@@ -17,11 +17,17 @@ DoubleTrack Browser is an experimental browser extension that creates a fictiona
   - Provides memory-safe handling of sensitive data
   - Implements the core logic for identity generation and behavior simulation
 
-- **TypeScript Shell**: Browser API integration and UI
+- **ReScript** (`src/`): Browser API integration and UI
+  - Type-safe functional language that compiles to JavaScript
   - Handles WebExtensions API interactions
   - Manages background processes and user interface
 
-- **WebAssembly**: Bridge between Rust and TypeScript
+- **Deno**: Runtime and build tooling
+  - Modern JavaScript/TypeScript runtime
+  - Used for build scripts and development tooling
+  - No npm/node_modules required
+
+- **WebAssembly**: Bridge between Rust and ReScript
   - Compiled using `wasm-pack`
   - Enables high-performance Rust code to run in the browser
 
@@ -38,9 +44,21 @@ DoubleTrack Browser is an experimental browser extension that creates a fictiona
 double-track-browser/
 ├── rust_core/           # Rust/WASM core logic
 │   └── (build with wasm-pack)
-├── src/                 # TypeScript source (expected)
+├── src/                 # ReScript source
+│   ├── background/      # Background service worker
+│   ├── bindings/        # Chrome/DOM bindings
+│   ├── content/         # Content script
+│   ├── dashboard/       # Analytics dashboard
+│   ├── options/         # Options page
+│   ├── popup/           # Extension popup
+│   ├── types/           # Type definitions
+│   └── utils/           # Storage and WASM utilities
+├── scripts/             # Deno build scripts
 ├── dist/                # Built extension (gitignored)
-├── README.md            # User-facing documentation
+├── rescript.json        # ReScript configuration
+├── deno.json            # Deno configuration
+├── justfile             # Task runner recipes
+├── Mustfile.epx         # Deployment manifest
 └── CLAUDE.md            # This file
 ```
 
@@ -48,23 +66,22 @@ double-track-browser/
 
 ### Prerequisites
 
-- Node.js and npm
+- Deno (v2.0+)
 - Rust toolchain
 - `wasm-pack` for building Rust to WebAssembly
+- `just` task runner (optional but recommended)
 
 ### Initial Setup
 
 ```bash
-# Install dependencies
-npm install
+# Check dependencies
+just install
 
-# Build Rust core
-cd rust_core
-wasm-pack build
-cd ..
+# Build everything
+just build
 
-# Build extension
-npm run build
+# Or without just:
+deno task build
 ```
 
 ### Loading the Extension
@@ -72,6 +89,16 @@ npm run build
 Load from the `dist/` directory into your browser's extension developer mode.
 
 ## Key Considerations
+
+### Language Policy (Hyperpolymath Standard)
+
+This project follows the Hyperpolymath language policy. See `.claude/CLAUDE.md` for the complete policy.
+
+**Key rules:**
+- Use **ReScript** instead of TypeScript
+- Use **Deno** instead of npm/node
+- Use **Rust** for performance-critical code
+- Use **justfile** instead of Makefile
 
 ### Privacy and Security
 
@@ -98,29 +125,45 @@ Load from the `dist/` directory into your browser's extension developer mode.
 
 ```bash
 # Full build
-npm run build
+just build
 
-# Development build (if configured)
-npm run dev
+# Development mode (watch)
+just dev
 
-# Rust core only
-cd rust_core && wasm-pack build
+# Build components individually
+just build-rust
+just build-rescript
+just build-extension
 ```
 
 ### Testing
 
-When implementing tests:
-- Unit tests for Rust core (`cargo test`)
-- Integration tests for TypeScript components
-- Manual testing with the loaded extension
-- Profile consistency validation
-- Resource usage monitoring
+```bash
+# All tests
+just test
+
+# Rust tests only
+just test-rust
+
+# Deno tests only
+just test-deno
+```
+
+### Linting and Formatting
+
+```bash
+# Run all linters
+just lint
+
+# Auto-fix formatting
+just fix
+```
 
 ### Adding Features
 
 1. **Profile Generation**: Modify Rust core in `rust_core/`
-2. **UI Components**: Update TypeScript in `src/`
-3. **Browser Integration**: Work with WebExtensions API bindings
+2. **UI Components**: Update ReScript in `src/`
+3. **Browser Integration**: Work with Chrome bindings in `src/bindings/`
 4. **Configuration**: Update both UI and core logic for new parameters
 
 ## Code Quality
@@ -131,10 +174,10 @@ When implementing tests:
 - Document public APIs
 - Write tests for core logic
 
-### TypeScript Code
-- Use strict TypeScript settings
-- Type all browser API interactions
-- Handle async operations properly
+### ReScript Code
+- Use proper type annotations
+- Leverage pattern matching
+- Handle async operations with proper error handling
 - Document complex interactions
 
 ## Important Notes
@@ -164,22 +207,31 @@ This is experimental software exploring unconventional privacy approaches. Code 
 ## Useful Commands
 
 ```bash
-# Check Rust code
-cd rust_core && cargo check
+# Check dependencies
+just install
 
-# Run Rust tests
-cd rust_core && cargo test
+# Build everything
+just build
 
-# Build for production
-npm run build
+# Run tests
+just test
+
+# Lint code
+just lint
 
 # Clean build artifacts
-npm run clean  # (if configured)
+just clean
+
+# Package for distribution
+just package
+
+# View all available commands
+just --list
 ```
 
 ## Contributing Guidelines
 
-See `CONTRIBUTING.md` for detailed contribution guidelines (if it exists).
+See `CONTRIBUTING.md` for detailed contribution guidelines.
 
 When making changes:
 1. Test thoroughly with the extension loaded
@@ -190,14 +242,14 @@ When making changes:
 
 ## License
 
-MIT License - See LICENSE file
+MIT License OR Palimpsest-0.8 - See LICENSE files
 
 ## Getting Help
 
-- Review README.md for user-facing documentation
+- Review README.adoc for user-facing documentation
 - Check inline code comments for implementation details
 - Refer to Rust and WebExtensions documentation for platform-specific questions
 
 ---
 
-*Last updated: 2025-11-21*
+*Last updated: 2025-12-26*
