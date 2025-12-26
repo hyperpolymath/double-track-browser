@@ -1,30 +1,33 @@
-= double-track-browser
-The pendulum has swung way too far on the privacy front. 
+= DoubleTrack Browser
+:toc: macro
+:toclevels: 2
+
+The pendulum has swung way too far on the privacy front.
 DoubleTrack Browser puts a hard stop to attempts to limit the reckless sharing of even your most intimate data.
 
-
-= DoubleTrack Browser
-
-![License](https://img.shields.io/badge/license-MIT%20OR%20Palimpsest--0.8-blue.svg)
-![Status](https://img.shields.io/badge/status-experimental-red.svg)
-![Privacy](https://img.shields.io/badge/privacy-enhanced-green.svg)
-![RSR Compliance](https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg)
-![TPCF](https://img.shields.io/badge/TPCF-Perimeter%203-green.svg)
-![Build](https://img.shields.io/github/workflow/status/yourusername/double-track-browser/CI?label=build)
-![Tests](https://img.shields.io/badge/tests-27%20passing-brightgreen.svg)
+image:https://img.shields.io/badge/license-MIT%20OR%20Palimpsest--0.8-blue.svg[License]
+image:https://img.shields.io/badge/status-experimental-red.svg[Status]
+image:https://img.shields.io/badge/privacy-enhanced-green.svg[Privacy]
+image:https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg[RSR Compliance]
+image:https://img.shields.io/badge/TPCF-Perimeter%203-green.svg[TPCF]
+image:https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-orange.svg[Tech Stack]
 
 == The Pendulum Swings Back
 
 *DoubleTrack Browser* is a radical experiment in digital identity management. While most privacy tools focus on hiding your data, DoubleTrack takes the opposite approach—it deliberately creates a rich, consistent, but entirely fictional digital presence alongside your real one.
 
-> *"The best place to hide a leaf is in a forest."*
+[quote]
+____
+"The best place to hide a leaf is in a forest."
+____
 
 == Core Architecture
 
 This project is built on a hybrid architecture that prioritizes both performance and memory safety:
 
 - *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
-- *TypeScript Shell*: Handles browser API integration and UI components
+- *ReScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
+- *Deno*: Modern runtime for build scripts and development tooling
 - *WebExtensions API*: Provides the hooks needed for background operation
 
 == Key Features
@@ -42,24 +45,32 @@ DoubleTrack explores a different hypothesis: What if, instead of trying to be in
 
 == Getting Started
 
-```bash
-= Clone the repository
-git clone https://github.com/yourusername/double-track-browser.git
+=== Prerequisites
 
-= Install dependencies
+- https://deno.land/[Deno] (v2.0+)
+- https://rustup.rs/[Rust] toolchain
+- https://rustwasm.github.io/wasm-pack/[wasm-pack]
+- https://github.com/casey/just[just] task runner (optional)
+
+=== Installation
+
+[source,bash]
+----
+# Clone the repository
+git clone https://github.com/hyperpolymath/double-track-browser.git
 cd double-track-browser
-npm install
 
-= Build the Rust core
-cd rust_core
-wasm-pack build
+# Check dependencies
+just install
 
-= Build the extension
-cd ..
-npm run build
-```
+# Build everything (Rust + ReScript + Extension)
+just build
 
-Then load the extension from the `dist/` directory into your browser of choice.
+# Or without just:
+deno task build
+----
+
+Then load the extension from the `dist/` directory into your browser's developer mode.
 
 == Warning
 
@@ -69,22 +80,33 @@ This is experimental software. While designed with security in mind, it may have
 
 This project adheres to the *Rhodium Standard Repository (RSR) Framework* and achieves *Gold Level* compliance (91%):
 
-✅ *Documentation*: README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, MAINTAINERS, CHANGELOG
-✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
-✅ *Type Safety*: Rust compile-time guarantees + TypeScript strict mode
-✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
-✅ *Build System*: npm, webpack, wasm-pack, justfile, flake.nix (Nix reproducible builds)
-✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
-✅ *Test Coverage*: 27 comprehensive tests (15 Rust + 12 TypeScript)
-✅ *Offline-First*: Zero network dependencies, works air-gapped
+* ✅ *Documentation*: README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, MAINTAINERS, CHANGELOG
+* ✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
+* ✅ *Type Safety*: Rust compile-time guarantees + ReScript type system
+* ✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
+* ✅ *Build System*: Deno, wasm-pack, justfile, Mustfile.epx
+* ✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
+* ✅ *Test Coverage*: Comprehensive tests (Rust + Deno)
+* ✅ *Offline-First*: Zero network dependencies, works air-gapped
 
-See [RSR_COMPLIANCE_AUDIT.md](RSR_COMPLIANCE_AUDIT.md) for detailed audit.
+See link:RSR_COMPLIANCE_AUDIT.md[RSR_COMPLIANCE_AUDIT.md] for detailed audit.
+
+== Language Policy
+
+This project follows the *Hyperpolymath Standard* language policy:
+
+- *ReScript* instead of TypeScript
+- *Deno* instead of npm/Node.js
+- *Rust* for performance-critical code
+- *justfile* instead of Makefile
+
+See link:.claude/CLAUDE.md[.claude/CLAUDE.md] for the complete policy.
 
 == Tri-Perimeter Contribution Framework (TPCF)
 
 This project uses the *TPCF* to manage trust and contributions:
 
-=== *Perimeter 3: Community Sandbox* (Current)
+=== Perimeter 3: Community Sandbox (Current)
 - *Access*: Open to all
 - *Scope*: All public contributions
 - *Requirements*: Follow Code of Conduct, sign commits (optional)
@@ -98,38 +120,40 @@ This project uses the *TPCF* to manage trust and contributions:
 - Invitation-only for long-term maintainers
 - Strategic decisions, governance, security response
 
-*Current Status*: Only Perimeter 3 is active. See [MAINTAINERS.md](MAINTAINERS.md) for details.
+*Current Status*: Only Perimeter 3 is active. See link:MAINTAINERS.md[MAINTAINERS.md] for details.
 
 == Contributing
 
 Contributions are welcome! This project values:
+
 - *Reversibility*: Experiments should be safe to try and easy to undo
 - *Emotional Safety*: No blame culture, mistakes are learning opportunities
 - *Diverse Expertise*: All skill levels welcome
 - *Sustainable Pace*: No crunch time, life comes first
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
+See link:CONTRIBUTING.md[CONTRIBUTING.md] for guidelines and link:CODE_OF_CONDUCT.md[CODE_OF_CONDUCT.md] for community standards.
 
 == Security
 
-See [SECURITY.md](SECURITY.md) for vulnerability reporting procedures and our security model. We follow responsible disclosure with a 90-day coordinated release window.
+See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our security model. We follow responsible disclosure with a 90-day coordinated release window.
 
 *Quick contacts*:
+
 - *Security issues*: security@example.com (see .well-known/security.txt)
 - *Code of Conduct*: conduct@example.com
 
 == License
 
 This project is dual-licensed:
-- *MIT License* (primary) - see [LICENSE-MIT](LICENSE-MIT)
-- *Palimpsest License v0.8* (alternative) - see [LICENSE-PALIMPSEST](LICENSE-PALIMPSEST)
 
-You may choose either license. See [LICENSING.md](LICENSING.md) for details.
+- *MIT License* (primary) - see link:LICENSE-MIT[LICENSE-MIT]
+- *Palimpsest License v0.8* (alternative) - see link:LICENSE-PALIMPSEST[LICENSE-PALIMPSEST]
 
-The original GPL-3.0 license is retained in [LICENSE](LICENSE) for historical reference.
-
----
-
-*"In the age of surveillance capitalism, visibility can be a form of camouflage."*
+You may choose either license. See link:LICENSING.md[LICENSING.md] for details.
 
 ---
+
+[quote]
+____
+"In the age of surveillance capitalism, visibility can be a form of camouflage."
+____

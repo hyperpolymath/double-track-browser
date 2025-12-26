@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT OR Palimpsest-0.8
 # justfile - Modern task runner for DoubleTrack Browser
 # https://github.com/casey/just
 #
@@ -11,8 +12,8 @@ default:
 
 # === BUILD RECIPES ===
 
-# Build everything (Rust + TypeScript)
-build: build-rust build-extension
+# Build everything (Rust + ReScript + Extension)
+build: build-rust build-rescript build-extension
     @echo "✅ Build complete! Load dist/ folder in chrome://extensions/"
 
 # Build only Rust/WASM core
@@ -24,12 +25,20 @@ build-rust:
     wasm-pack build --target web --release
     echo "✅ Rust core built"
 
-# Build only TypeScript extension
+# Build ReScript code
+build-rescript:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "📦 Building ReScript..."
+    npx rescript build
+    echo "✅ ReScript built"
+
+# Build the extension bundle
 build-extension:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Building TypeScript extension..."
-    npm run build:extension
+    echo "📦 Building extension..."
+    deno run --allow-read --allow-write scripts/build.ts
     echo "✅ Extension built"
 
 # Clean build artifacts
@@ -40,30 +49,26 @@ clean:
     rm -rf dist/
     rm -rf rust_core/pkg/
     rm -rf rust_core/target/
-    rm -rf node_modules/.cache/
+    rm -rf lib/
+    rm -rf .cache/
     echo "✅ Clean complete"
-
-# Clean everything including node_modules
-clean-all: clean
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo "🧹 Deep cleaning..."
-    rm -rf node_modules/
-    echo "✅ Deep clean complete - run 'just install' to rebuild"
 
 # === INSTALL RECIPES ===
 
 # Install all dependencies
-install: install-node check-rust
-    @echo "✅ Dependencies installed"
+install: check-deno check-rust
+    @echo "✅ Dependencies checked"
 
-# Install Node.js dependencies
-install-node:
+# Check Deno is installed
+check-deno:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Installing npm dependencies..."
-    npm install
-    echo "✅ npm dependencies installed"
+    echo "🦕 Checking Deno..."
+    if ! command -v deno &> /dev/null; then
+        echo "❌ Deno not found. Install from https://deno.land/"
+        exit 1
+    fi
+    echo "✅ Deno ready ($(deno --version | head -1))"
 
 # Check Rust toolchain
 check-rust:
@@ -83,7 +88,7 @@ check-rust:
 # === TEST RECIPES ===
 
 # Run all tests
-test: test-rust test-ts
+test: test-rust test-deno
     @echo "✅ All tests passed!"
 
 # Run Rust tests
@@ -95,27 +100,18 @@ test-rust:
     cargo test --release
     echo "✅ Rust tests passed"
 
-# Run TypeScript tests
-test-ts:
+# Run Deno tests
+test-deno:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Running TypeScript tests..."
-    npm test
-    echo "✅ TypeScript tests passed"
-
-# Run tests with coverage
-test-coverage:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo "📊 Running tests with coverage..."
-    cd rust_core && cargo tarpaulin --out Html
-    npm run test -- --coverage
-    echo "✅ Coverage reports generated"
+    echo "🦕 Running Deno tests..."
+    deno test
+    echo "✅ Deno tests passed"
 
 # === LINT & FORMAT RECIPES ===
 
 # Run all linters
-lint: lint-rust lint-ts
+lint: lint-rust lint-deno lint-rescript
     @echo "✅ Linting complete"
 
 # Lint Rust code
@@ -128,17 +124,24 @@ lint-rust:
     cargo fmt -- --check
     echo "✅ Rust linting passed"
 
-# Lint TypeScript code
-lint-ts:
+# Lint with Deno
+lint-deno:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Linting TypeScript..."
-    npm run lint
-    npm run type-check
-    echo "✅ TypeScript linting passed"
+    echo "🦕 Linting with Deno..."
+    deno lint
+    echo "✅ Deno linting passed"
 
-# Auto-fix linting issues
-fix: fix-rust fix-ts
+# Check ReScript
+lint-rescript:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "📦 Checking ReScript..."
+    npx rescript build 2>&1 | head -50
+    echo "✅ ReScript check passed"
+
+# Auto-fix formatting
+fix: fix-rust fix-deno
     @echo "✅ Auto-fixes applied"
 
 # Fix Rust formatting
@@ -148,16 +151,15 @@ fix-rust:
     echo "🦀 Formatting Rust..."
     cd rust_core
     cargo fmt
-    cargo fix --allow-dirty --allow-staged
     echo "✅ Rust formatted"
 
-# Fix TypeScript formatting
-fix-ts:
+# Fix Deno formatting
+fix-deno:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Formatting TypeScript..."
-    npm run lint -- --fix
-    echo "✅ TypeScript formatted"
+    echo "🦕 Formatting with Deno..."
+    deno fmt
+    echo "✅ Deno formatted"
 
 # === DEVELOPMENT RECIPES ===
 
@@ -167,7 +169,7 @@ dev:
     set -euo pipefail
     echo "🔄 Starting development mode..."
     echo "Press Ctrl+C to stop"
-    npm run dev
+    npx rescript build -w
 
 # Rebuild and reload (for quick iteration)
 reload: build
@@ -182,22 +184,23 @@ validate-rsr:
     echo "📋 Checking RSR compliance..."
     echo ""
     echo "Documentation:"
-    [[ -f README.md ]] && echo "  ✅ README.md" || echo "  ❌ README.md"
-    [[ -f LICENSE ]] && echo "  ✅ LICENSE" || echo "  ❌ LICENSE"
+    [[ -f README.adoc ]] && echo "  ✅ README.adoc" || echo "  ❌ README.adoc"
+    [[ -f LICENSE.txt ]] && echo "  ✅ LICENSE.txt" || echo "  ❌ LICENSE.txt"
     [[ -f SECURITY.md ]] && echo "  ✅ SECURITY.md" || echo "  ❌ SECURITY.md"
     [[ -f CODE_OF_CONDUCT.md ]] && echo "  ✅ CODE_OF_CONDUCT.md" || echo "  ❌ CODE_OF_CONDUCT.md"
     [[ -f CONTRIBUTING.md ]] && echo "  ✅ CONTRIBUTING.md" || echo "  ❌ CONTRIBUTING.md"
     [[ -f MAINTAINERS.md ]] && echo "  ✅ MAINTAINERS.md" || echo "  ❌ MAINTAINERS.md"
     [[ -f CHANGELOG.md ]] && echo "  ✅ CHANGELOG.md" || echo "  ❌ CHANGELOG.md"
     echo ""
-    echo ".well-known:"
-    [[ -f .well-known/security.txt ]] && echo "  ✅ security.txt" || echo "  ❌ security.txt"
-    [[ -f .well-known/ai.txt ]] && echo "  ✅ ai.txt" || echo "  ❌ ai.txt"
-    [[ -f .well-known/humans.txt ]] && echo "  ✅ humans.txt" || echo "  ❌ humans.txt"
-    echo ""
     echo "Build System:"
-    [[ -f package.json ]] && echo "  ✅ package.json" || echo "  ❌ package.json"
+    [[ -f deno.json ]] && echo "  ✅ deno.json" || echo "  ❌ deno.json"
+    [[ -f rescript.json ]] && echo "  ✅ rescript.json" || echo "  ❌ rescript.json"
     [[ -f justfile ]] && echo "  ✅ justfile" || echo "  ❌ justfile"
+    [[ -f Mustfile.epx ]] && echo "  ✅ Mustfile.epx" || echo "  ❌ Mustfile.epx"
+    echo ""
+    echo "Policy Enforcement:"
+    [[ ! -f package.json ]] && echo "  ✅ No package.json (Deno enforced)" || echo "  ❌ package.json exists"
+    [[ ! -f tsconfig.json ]] && echo "  ✅ No tsconfig.json (ReScript enforced)" || echo "  ❌ tsconfig.json exists"
     echo ""
     echo "See RSR_COMPLIANCE_AUDIT.md for full audit"
 
@@ -207,7 +210,6 @@ audit:
     set -euo pipefail
     echo "🔒 Auditing dependencies..."
     cd rust_core && cargo audit || true
-    npm audit
     echo "✅ Audit complete"
 
 # === RELEASE RECIPES ===
@@ -223,7 +225,8 @@ build-release:
     echo "🚀 Building production release..."
     just clean
     just build-rust
-    NODE_ENV=production npm run build
+    just build-rescript
+    just build-extension
     echo "✅ Production build complete"
 
 # Package extension for distribution
@@ -246,13 +249,6 @@ docs:
     cd rust_core && cargo doc --no-deps --open
     echo "✅ Rust docs generated"
 
-# Serve documentation locally
-docs-serve:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    echo "📚 Serving documentation..."
-    cd rust_core/target/doc && python3 -m http.server 8000
-
 # === UTILITY RECIPES ===
 
 # Show project statistics
@@ -262,26 +258,17 @@ stats:
     echo "📊 Project Statistics"
     echo ""
     echo "Lines of Code:"
-    echo "  Rust:       $(find rust_core/src -name '*.rs' | xargs wc -l | tail -1 | awk '{print $1}')"
-    echo "  TypeScript: $(find src -name '*.ts' | xargs wc -l | tail -1 | awk '{print $1}')"
-    echo "  Tests:      $(find rust_core/tests src -name '*.test.ts' -o -name '*.rs' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo '0')"
+    echo "  Rust:      $(find rust_core/src -name '*.rs' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo '0')"
+    echo "  ReScript:  $(find src -name '*.res' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo '0')"
     echo ""
     echo "Files:"
-    echo "  Total:      $(find . -type f ! -path './node_modules/*' ! -path './target/*' ! -path './dist/*' | wc -l)"
-    echo "  Rust:       $(find rust_core/src -name '*.rs' | wc -l)"
-    echo "  TypeScript: $(find src -name '*.ts' | wc -l)"
+    echo "  Total:     $(find . -type f ! -path './.git/*' ! -path './node_modules/*' ! -path './target/*' ! -path './dist/*' | wc -l)"
+    echo "  Rust:      $(find rust_core/src -name '*.rs' 2>/dev/null | wc -l || echo '0')"
+    echo "  ReScript:  $(find src -name '*.res' 2>/dev/null | wc -l || echo '0')"
     echo ""
     echo "Git:"
-    echo "  Commits:    $(git rev-list --count HEAD 2>/dev/null || echo 'N/A')"
-    echo "  Branch:     $(git branch --show-current 2>/dev/null || echo 'N/A')"
-
-# Open repository in browser
-open:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    URL=$(git remote get-url origin | sed 's/\.git$//' | sed 's/^git@github.com:/https:\/\/github.com\//')
-    echo "🌐 Opening ${URL}"
-    open "${URL}" 2>/dev/null || xdg-open "${URL}" 2>/dev/null || echo "Could not open browser"
+    echo "  Commits:   $(git rev-list --count HEAD 2>/dev/null || echo 'N/A')"
+    echo "  Branch:    $(git branch --show-current 2>/dev/null || echo 'N/A')"
 
 # === CI/CD RECIPES ===
 
@@ -300,7 +287,7 @@ help:
     @echo "DoubleTrack Browser - Just Task Runner"
     @echo ""
     @echo "Common workflows:"
-    @echo "  just install          # Install dependencies"
+    @echo "  just install          # Check dependencies"
     @echo "  just build            # Build everything"
     @echo "  just test             # Run all tests"
     @echo "  just dev              # Start development mode"
@@ -312,7 +299,7 @@ help:
 # Print version information
 version:
     @echo "DoubleTrack Browser v0.1.0"
-    @echo "Node:       $(node --version)"
-    @echo "Rust:       $(rustc --version)"
-    @echo "wasm-pack:  $(wasm-pack --version)"
-    @echo "Just:       $(just --version)"
+    @echo "Deno:      $(deno --version | head -1)"
+    @echo "Rust:      $(rustc --version)"
+    @echo "wasm-pack: $(wasm-pack --version)"
+    @echo "Just:      $(just --version)"

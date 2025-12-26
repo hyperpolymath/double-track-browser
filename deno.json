@@ -1,9 +1,38 @@
 {
+  "name": "double-track-browser",
+  "version": "0.1.0",
   "tasks": {
-    "dev": "deno run --watch mod.ts",
-    "test": "deno test",
-    "lint": "deno lint",
-    "fmt": "deno fmt"
+    "build": "deno task build:rust && deno task build:rescript && deno task build:extension",
+    "build:rust": "cd rust_core && wasm-pack build --target web --release",
+    "build:rescript": "npx rescript build",
+    "build:extension": "deno run --allow-read --allow-write scripts/build.ts",
+    "dev": "deno task build:rescript -- -w",
+    "test": "deno task test:rust && deno task test:rescript",
+    "test:rust": "cd rust_core && cargo test --release",
+    "test:rescript": "deno test",
+    "lint": "deno lint && deno task lint:rust",
+    "lint:rust": "cd rust_core && cargo clippy -- -D warnings && cargo fmt -- --check",
+    "fmt": "deno fmt",
+    "clean": "rm -rf dist/ rust_core/pkg/ rust_core/target/"
   },
-  "compilerOptions": { "strict": true }
+  "imports": {
+    "@anthropic-ai/sdk": "npm:@anthropic-ai/sdk@^0.39.0"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
+    "lib": ["deno.window", "dom"]
+  },
+  "lint": {
+    "include": ["scripts/"],
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "include": ["scripts/"],
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "singleQuote": false
+  }
 }

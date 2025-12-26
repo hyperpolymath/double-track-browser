@@ -7,27 +7,26 @@ Get up and running with DoubleTrack Browser in 5 minutes.
 ### Step 1: Install Prerequisites
 
 You need:
-- **Node.js** (v18+): [Download here](https://nodejs.org/)
+- **Deno** (v2.0+): [Download here](https://deno.land/)
 - **Rust**: Run `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-- **wasm-pack**: Run `curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh`
+- **wasm-pack**: Run `cargo install wasm-pack`
+- **just** (optional): Run `cargo install just`
 
 ### Step 2: Build the Extension
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/double-track-browser.git
+git clone https://github.com/hyperpolymath/double-track-browser.git
 cd double-track-browser
 
-# Install dependencies
-npm install
+# Check dependencies
+just install
 
-# Build Rust core
-cd rust_core
-wasm-pack build --target web
-cd ..
+# Build everything (Rust + ReScript + Extension)
+just build
 
-# Build extension
-npm run build
+# Or without just:
+deno task build
 ```
 
 ### Step 3: Load in Browser
@@ -140,17 +139,17 @@ A: Minimal impact at default settings. Reduce noise level if you notice slowdown
 
 ## Next Steps
 
-- Review the [full README](README.md) for detailed information
+- Review the [full README](README.adoc) for detailed information
 - Check [DEVELOPMENT.md](DEVELOPMENT.md) if you want to contribute
 - Read [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines
-- Explore the [Analytics Dashboard](#) to understand your profile's patterns
+- Explore the Analytics Dashboard to understand your profile's patterns
 
 ## Troubleshooting
 
 **Extension not loading?**
 - Ensure all build steps completed without errors
 - Check that `dist/` folder exists and contains files
-- Try rebuilding: `npm run clean && npm run build`
+- Try rebuilding: `just clean && just build`
 
 **No activities generating?**
 - Ensure extension is enabled (check popup)
@@ -164,9 +163,9 @@ A: Minimal impact at default settings. Reduce noise level if you notice slowdown
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/double-track-browser/issues)
+- **Issues**: [GitHub Issues](https://github.com/hyperpolymath/double-track-browser/issues)
 - **Documentation**: See docs/ folder
-- **Community**: [Discussions](https://github.com/yourusername/double-track-browser/discussions)
+- **Community**: [Discussions](https://github.com/hyperpolymath/double-track-browser/discussions)
 
 ---
 
