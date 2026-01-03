@@ -1,11 +1,14 @@
 = DoubleTrack Browser
+
+image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0,link="https://opensource.org/licenses/MPL-2.0"]
+image:https://img.shields.io/badge/Philosophy-Palimpsest-purple.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-licence"]
+
 :toc: macro
 :toclevels: 2
 
 The pendulum has swung way too far on the privacy front.
 DoubleTrack Browser puts a hard stop to attempts to limit the reckless sharing of even your most intimate data.
 
-image:https://img.shields.io/badge/license-MIT%20OR%20Palimpsest--0.8-blue.svg[License]
 image:https://img.shields.io/badge/status-experimental-red.svg[Status]
 image:https://img.shields.io/badge/privacy-enhanced-green.svg[Privacy]
 image:https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg[RSR Compliance]
