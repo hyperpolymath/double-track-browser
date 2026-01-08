@@ -1,0 +1,90 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+= Changelog
+
+All notable changes to DoubleTrack Browser will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+== [Unreleased]
+
+=== Added
+- Initial project structure with Rust/WASM core and TypeScript shell
+- Profile generation system with demographics, interests, and browsing styles
+- Activity simulation engine with realistic URL and timing generation
+- Browser extension with popup UI and options page
+- Background service worker for automated activity simulation
+- Storage management for profiles, activities, and statistics
+- Configurable noise levels and privacy modes
+- Schedule-aware activity generation based on profile occupation
+- Activity history tracking and viewing
+- Statistics dashboard showing activity metrics
+- Content script for future page-level integration
+- Comprehensive documentation (README, CLAUDE, DEVELOPMENT, CONTRIBUTING)
+- Full test infrastructure for Rust and TypeScript
+- Build pipeline with webpack and wasm-pack
+
+=== Features
+- **Profile Generation**: Creates consistent, believable fictional personas
+  - Demographics: age, gender, location, occupation, education
+  - 20+ interest categories from technology to hobbies
+  - 4 browsing styles: Focused, Explorer, Researcher, Casual
+  - 4 activity levels: Low, Medium, High, VeryHigh
+
+- **Activity Simulation**: Generates realistic browsing patterns
+  - 7 activity types: Search, PageVisit, VideoWatch, Shopping, SocialMedia, News, Research
+  - Interest-correlated URL generation for major sites
+  - Realistic duration distributions based on activity type
+  - Schedule-based timing aligned with profile occupation
+
+- **Privacy Controls**:
+  - 4 privacy modes: Full, Moderate, Minimal, Disabled
+  - Adjustable noise level (0-100%)
+  - Optional schedule adherence
+  - Separate storage for real vs. simulated data
+
+- **User Interface**:
+  - Modern, gradient-based design
+  - Popup for quick status and controls
+  - Full options page for detailed configuration
+  - Activity history viewer with filtering
+  - Real-time statistics display
+  - Profile export functionality
+
+=== Technical
+- Rust core compiled to WebAssembly for performance
+- TypeScript with strict mode for type safety
+- Manifest V3 for modern browser compatibility
+- Alarm-based scheduling for efficient background operation
+- IndexedDB via chrome.storage for data persistence
+- Modular architecture for easy extension
+
+== [0.1.0] - 2025-11-22
+
+=== Initial Release
+- First working version of DoubleTrack Browser
+- Experimental software for privacy exploration
+- Full documentation and contribution guidelines
+
+---
+
+== Version History
+
+- **0.1.0** - Initial release with core functionality
+- **Unreleased** - Active development
+
+== Migration Guide
+
+No migrations needed yet. This is the initial release.
+
+== Deprecation Warnings
+
+None yet.
+
+== Security
+
+If you discover a security vulnerability, please email [security@example.com] rather than using the issue tracker.
+
+---
+
+*For detailed changes, see the [commit history](https://github.com/yourusername/double-track-browser/commits).*
