@@ -1,6 +1,9 @@
 = DoubleTrack Browser
+image:https://img.shields.io/badge/license-PMPL--1.0-blue.svg[License,link="https://github.com/hyperpolymath/palimpsest-license"]
 
-image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0,link="https://opensource.org/licenses/MPL-2.0"]
+
+
+
 image:https://img.shields.io/badge/Philosophy-Palimpsest-purple.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-licence"]
 
 :toc: macro
@@ -149,7 +152,7 @@ See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our
 
 This project is dual-licensed:
 
-- *MIT License* (primary) - see link:LICENSE-MIT[LICENSE-MIT]
+- *Palimpsest-MPL License v1.0 (PMPL-1.0)* (primary) - see link:LICENSE-PMPL-1.0[LICENSE-PMPL-1.0]
 - *Palimpsest License v0.8* (alternative) - see link:LICENSE-PALIMPSEST[LICENSE-PALIMPSEST]
 
 You may choose either license. See link:LICENSING.md[LICENSING.md] for details.
