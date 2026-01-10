@@ -149,7 +149,7 @@ See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our
 
 This project is dual-licensed:
 
-- *MIT License* (primary) - see link:LICENSE-MIT[LICENSE-MIT]
+- *Palimpsest-MPL-1.0 License* (primary) - see link:LICENSE-MIT[LICENSE-MIT]
 - *Palimpsest License v0.8* (alternative) - see link:LICENSE-PALIMPSEST[LICENSE-PALIMPSEST]
 
 You may choose either license. See link:LICENSING.md[LICENSING.md] for details.
