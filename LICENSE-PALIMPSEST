@@ -1,132 +1,153 @@
-Palimpsest License v0.8
+SPDX-License-Identifier: PMPL-1.0-or-later
+SPDX-FileCopyrightText: 2024-2025 Palimpsest Stewardship Council
 
-Copyright (c) 2025 DoubleTrack Browser Contributors
+================================================================================
+PALIMPSEST-MPL LICENSE VERSION 1.0
+================================================================================
 
-## Preamble
+File-level copyleft with ethical use and quantum-safe provenance
 
-The Palimpsest License recognizes that software development is a human activity
-involving emotional labor, cognitive load, and the need for psychological safety.
-This license balances open collaboration with the well-being of contributors.
+Based on Mozilla Public License 2.0
 
-## Philosophy
+--------------------------------------------------------------------------------
+PREAMBLE
+--------------------------------------------------------------------------------
 
-Software, like a palimpsest, carries layers of meaning - technical, social, and
-emotional. This license acknowledges all three dimensions.
+This License extends the Mozilla Public License 2.0 (MPL-2.0) with provisions
+for ethical use, post-quantum cryptographic provenance, and emotional lineage
+protection. The base MPL-2.0 terms apply except where explicitly modified by
+the Exhibits below.
 
-## Terms and Conditions
+Like a palimpsest manuscript where each layer builds upon what came before,
+this license recognizes that creative works carry history, context, and meaning
+that transcend mere code or text.
 
-### 1. Permissions
+--------------------------------------------------------------------------------
+SECTION 1: BASE LICENSE
+--------------------------------------------------------------------------------
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to:
+This License incorporates the full text of Mozilla Public License 2.0 by
+reference. The complete MPL-2.0 text is available at:
+https://www.mozilla.org/en-US/MPL/2.0/
 
-a) Use the Software for any purpose
-b) Study and modify the Software
-c) Distribute copies of the Software
-d) Distribute modified versions of the Software
+All terms, conditions, and definitions from MPL-2.0 apply except where
+explicitly modified by the Exhibits in this License.
 
-### 2. Conditions
+--------------------------------------------------------------------------------
+SECTION 2: ADDITIONAL DEFINITIONS
+--------------------------------------------------------------------------------
 
-The above permissions are granted subject to the following conditions:
+2.1. "Emotional Lineage"
+    means the narrative, cultural, symbolic, and contextual meaning embedded
+    in Covered Software, including but not limited to: protest traditions,
+    cultural heritage, trauma narratives, and community stories.
 
-a) **Attribution**: You must preserve copyright notices and attribution.
+2.2. "Provenance Metadata"
+    means cryptographically signed attribution information attached to or
+    associated with Covered Software, including author identities, timestamps,
+    modification history, and lineage references.
 
-b) **Source Availability**: If you distribute the Software, you must make the
-   source code available under this same license or a compatible one.
+2.3. "Non-Interpretive System"
+    means any automated system that processes Covered Software without
+    preserving or considering its Emotional Lineage, including but not
+    limited to: AI training pipelines, content aggregators, and automated
+    summarization tools.
 
-c) **Reversibility**: You must maintain the ability for users to revert changes.
-   This includes:
-   - Version control or change tracking
-   - Clear documentation of modifications
-   - Reasonable mechanisms for users to return to previous states
+2.4. "Quantum-Safe Signature"
+    means a cryptographic signature using algorithms resistant to attacks
+    by quantum computers, as specified in Exhibit B.
 
-d) **Emotional Safety**: Contributors and users have the right to:
-   - Step away from the project without guilt or pressure
-   - Say "no" to requests or features
-   - Make mistakes and learn from them
-   - Have their emotional well-being respected
+--------------------------------------------------------------------------------
+SECTION 3: ETHICAL USE REQUIREMENTS
+--------------------------------------------------------------------------------
 
-e) **No Harassment**: You may not use this Software to harass, abuse, or cause
-   emotional harm to others.
+In addition to the rights and obligations under MPL-2.0:
 
-f) **Acknowledgment of Labor**: Recognize that maintainers and contributors:
-   - Are not obligated to provide support
-   - May have limited time and energy
-   - Deserve respect and kindness
-   - Can set boundaries
+3.1. Emotional Lineage Preservation
+    You must make reasonable efforts to preserve and communicate the
+    Emotional Lineage of Covered Software when distributing or creating
+    derivative works. This includes maintaining narrative context, cultural
+    attributions, and symbolic meaning where documented.
 
-### 3. Derivatives
+3.2. Non-Interpretive System Notice
+    If You use Covered Software as input to a Non-Interpretive System, You
+    must:
+    (a) document such use in a publicly accessible manner; and
+    (b) not claim that outputs of such systems carry the Emotional Lineage
+        of the original work without explicit permission from Contributors.
 
-Modified versions must:
-- Be marked as changed from the original
-- Retain this license or use a compatible license
-- Not imply endorsement by the original authors
-- Respect the reversibility principle
+3.3. Ethical Use Declaration
+    Commercial use of Covered Software requires acknowledgment that You have
+    read and understood Exhibit A (Ethical Use Guidelines) and agree to act
+    in good faith accordance with its principles.
 
-### 4. Warranty Disclaimer
+See Exhibit A for complete Ethical Use Guidelines.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT, EMOTIONAL WELL-BEING,
-OR SUITABILITY FOR ANY PARTICULAR USE.
+--------------------------------------------------------------------------------
+SECTION 4: PROVENANCE REQUIREMENTS
+--------------------------------------------------------------------------------
 
-### 5. Limitation of Liability
+4.1. Metadata Preservation
+    You must not strip, alter, or obscure Provenance Metadata from Covered
+    Software except where technically necessary and with clear documentation
+    of any changes.
 
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-USE OR OTHER DEALINGS IN THE SOFTWARE.
+4.2. Quantum-Safe Provenance (Optional)
+    Contributors may sign their Contributions using Quantum-Safe Signatures.
+    If Quantum-Safe Signatures are present, You must preserve them in all
+    distributions.
 
-This includes, but is not limited to, emotional or psychological harm,
-stress, burnout, or any other non-material damages.
+4.3. Lineage Chain
+    When creating derivative works, You should extend the provenance chain
+    to include Your own contributions, maintaining cryptographic linkage to
+    prior Contributors where feasible.
 
-### 6. Interpretation
+See Exhibit B for Quantum-Safe Provenance specifications.
 
-a) **Reversibility** means the ability to undo changes or return to previous
-   states. It does not require time-travel or perfect restoration, but rather
-   reasonable mechanisms for users to control their experience.
+--------------------------------------------------------------------------------
+SECTION 5: GOVERNANCE
+--------------------------------------------------------------------------------
 
-b) **Emotional Safety** recognizes that software development involves humans
-   with feelings, not just code. It prioritizes kindness and respect.
+5.1. Stewardship Council
+    This License is maintained by the Palimpsest Stewardship Council, which
+    may issue clarifications, interpretive guidance, and future versions.
 
-c) **Compatible Licenses** include: MIT, Apache 2.0, BSD variants, and other
-   open source licenses that respect these principles.
+5.2. Version Selection
+    You may use Covered Software under this version of the License or any
+    later version published by the Palimpsest Stewardship Council.
 
-### 7. Termination
+5.3. Dispute Resolution
+    Disputes regarding interpretation of Ethical Use Requirements (Section 3)
+    should first be submitted to the Palimpsest Stewardship Council for
+    non-binding guidance before pursuing legal remedies.
 
-Your rights under this license terminate if you:
-- Violate the emotional safety provisions
-- Use the Software to cause harm
-- Fail to respect contributor boundaries
+--------------------------------------------------------------------------------
+SECTION 6: COMPATIBILITY
+--------------------------------------------------------------------------------
 
-### 8. Governance
+6.1. MPL-2.0 Compatibility
+    Covered Software under this License may be combined with software under
+    MPL-2.0. The combined work must comply with both licenses.
 
-This license is maintained as part of the Rhodium Standard Repository (RSR)
-Framework and may be updated from time to time. You may choose to follow the
-terms of this version (v0.8) or any later version.
+6.2. Secondary Licenses
+    The Secondary License provisions of MPL-2.0 Section 3.3 apply to this
+    License.
 
-## Human-Friendly Summary
+--------------------------------------------------------------------------------
+EXHIBITS
+--------------------------------------------------------------------------------
 
-You can use this software for anything, modify it, and share it. Just:
-- Give credit where it's due
-- Share your changes
-- Let people undo their mistakes
-- Be kind to contributors
-- Respect boundaries
+Exhibit A - Ethical Use Guidelines
+Exhibit B - Quantum-Safe Provenance Specification
 
-## Additional Resources
+See separate files:
+- EXHIBIT-A-ETHICAL-USE.txt
+- EXHIBIT-B-QUANTUM-SAFE.txt
 
-- Full RSR Framework: [URL]
-- Palimpsest License Explained: [URL]
-- FAQ: [URL]
+--------------------------------------------------------------------------------
+END OF PALIMPSEST-MPL LICENSE VERSION 1.0
+--------------------------------------------------------------------------------
 
-## Version History
-
-- v0.8 (2025): Current version
-  - Added reversibility principle
-  - Enhanced emotional safety provisions
-  - Clarified derivative works terms
-
----
-
-SPDX-License-Identifier: Palimpsest-0.8
+For questions about this License:
+- Repository: https://github.com/hyperpolymath/palimpsest-license
+- Council: contact via repository Issues
