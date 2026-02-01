@@ -1,7 +1,7 @@
 = DoubleTrack Browser
 
-image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0,link="https://opensource.org/licenses/MPL-2.0"]
-image:https://img.shields.io/badge/Philosophy-Palimpsest-purple.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-licence"]
+image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0-or-later,link="https://opensource.org/licenses/MPL-2.0"]
+image:https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-license"]
 
 :toc: macro
 :toclevels: 2
@@ -14,6 +14,12 @@ image:https://img.shields.io/badge/privacy-enhanced-green.svg[Privacy]
 image:https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg[RSR Compliance]
 image:https://img.shields.io/badge/TPCF-Perimeter%203-green.svg[TPCF]
 image:https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-orange.svg[Tech Stack]
+
+== License & Philosophy
+
+This project must declare **MPL-2.0-or-later** for platform/tooling compatibility.
+
+Philosophy: **Palimpsest**. The Palimpsest-MPL (PMPL) text is provided in `license/PMPL-1.0.txt`, and the canonical source is the palimpsest-license repository.
 
 == The Pendulum Swings Back
 

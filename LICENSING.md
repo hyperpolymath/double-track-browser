@@ -63,13 +63,13 @@ A: That was the original license. As of v0.1.1, the project has transitioned to 
 When adding headers to source files, use:
 
 ```
-// SPDX-License-Identifier: MIT OR Palimpsest-0.8
+// SPDX-License-Identifier: MPL-2.0-or-later
 ```
 
 Or for individual file choice:
 
 ```
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: MPL-2.0-or-later
 ```
 
 ## Questions?
