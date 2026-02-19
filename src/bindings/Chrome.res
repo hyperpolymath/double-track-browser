@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT OR Palimpsest-0.8
+// SPDX-License-Identifier: PMPL-1.0-or-later
 // Chrome WebExtension API bindings for ReScript
 
 module Storage = {
@@ -57,11 +57,22 @@ module Alarms = {
 }
 
 module Tabs = {
-  type tab = {id: option<int>}
+  type tab = {id: option<int>, url: option<string>}
 
   @scope(("chrome", "tabs")) @val
   external create: {..} => Js.Promise.t<tab> = "create"
 
   @scope(("chrome", "tabs")) @val
   external remove: int => Js.Promise.t<unit> = "remove"
+
+  @scope(("chrome", "tabs")) @val
+  external query: {..} => Js.Promise.t<array<tab>> = "query"
+
+  @scope(("chrome", "tabs")) @val
+  external sendMessage: (int, Js.Json.t) => Js.Promise.t<Js.Json.t> = "sendMessage"
+
+  module OnRemoved = {
+    @scope(("chrome", "tabs", "onRemoved")) @val
+    external addListener: (int => unit) => unit = "addListener"
+  }
 }

@@ -2,9 +2,9 @@
 name = "doubletrack-core"
 version = "0.1.0"
 edition = "2021"
-authors = ["DoubleTrack Contributors"]
+authors = ["Jonathan D.A. Jewell <jonathan.jewell@open.ac.uk>"]
 description = "Core profile generation and activity simulation engine for DoubleTrack Browser"
-license = "MIT"
+license = "PMPL-1.0-or-later"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

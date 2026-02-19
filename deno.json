@@ -15,9 +15,7 @@
     "fmt": "deno fmt",
     "clean": "rm -rf dist/ rust_core/pkg/ rust_core/target/"
   },
-  "imports": {
-    "@anthropic-ai/sdk": "npm:@anthropic-ai/sdk@^0.39.0"
-  },
+  "imports": {},
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,

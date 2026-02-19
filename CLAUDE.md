@@ -204,6 +204,26 @@ This is experimental software exploring unconventional privacy approaches. Code 
 - Features should respect website terms of service
 - Document any potentially concerning capabilities
 
+### Ecosystem Integration
+
+DoubleTrack integrates with three sibling hyperpolymath projects:
+
+**Defensive Multiplicity** (`misinformation-defence-platform/defensive-multiplicity/`):
+- Provides the ethical framework: purpose-bound identities, 180-day max lifespan, cryptographic accountability
+- All persona generation must follow the ETHICS_CHARTER.md rules
+- Non-interference principle: fake browsing must not suppress authentic voices
+
+**Consent-Aware HTTP** (`standards/consent-aware-http/`):
+- Background engine MUST check `/.well-known/aibdp.json` before opening fake tabs
+- Honor HTTP 430 (Consent Required) responses from servers
+- Respect `training: refused` policies — do not visit sites that refuse
+- Cache AIBDP results (30-90 day TTL per spec)
+
+**MAA Framework** (`maa-framework/`):
+- Use Idris2 ABI proofs to formally verify identity isolation
+- Prove that real browsing data cannot flow into fake persona storage
+- Follow the Idris2 ABI + Zig FFI standard for cross-platform identity primitives
+
 ## Useful Commands
 
 ```bash
@@ -242,7 +262,7 @@ When making changes:
 
 ## License
 
-MIT License OR Palimpsest-0.8 - See LICENSE files
+PMPL-1.0-or-later (Palimpsest License) - See LICENSE files
 
 ## Getting Help
 

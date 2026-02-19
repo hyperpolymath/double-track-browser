@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT OR Palimpsest-0.8
+// SPDX-License-Identifier: PMPL-1.0-or-later
 // Storage utility for managing extension data
 
 open Types

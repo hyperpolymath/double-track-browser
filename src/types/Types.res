@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT OR Palimpsest-0.8
+// SPDX-License-Identifier: PMPL-1.0-or-later
 // Type definitions for DoubleTrack Browser
 
 type gender =
@@ -162,6 +162,27 @@ type message = {
   @as("type") messageType: string,
   payload: option<Js.Json.t>,
 }
+
+// Simulation parameters sent to content script for behavior simulation
+type simulationParams = {
+  scrollDepth: float,
+  clickLinks: bool,
+  dwellSeconds: int,
+  fillForms: bool,
+}
+
+// Tracking info for fake tabs opened by the background script
+type fakeTabInfo = {
+  tabId: int,
+  activity: browsingActivity,
+  openedAt: float,
+}
+
+// Extended message types for tab orchestration
+type bgMessage =
+  | SimulateOnPage(simulationParams)
+  | ActivityComplete({tabId: int})
+  | CloseFakeTab({tabId: int})
 
 module StorageKey = {
   let config = "doubletrack_config"

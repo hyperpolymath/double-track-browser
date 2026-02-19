@@ -153,12 +153,9 @@ See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our
 
 == License
 
-This project is dual-licensed:
+*PMPL-1.0-or-later* (Palimpsest License) — see `license/PMPL-1.0.txt`
 
-- *Palimpsest-MPL-1.0 License* (primary) - see link:LICENSE-MIT[LICENSE-MIT]
-- *Palimpsest License v0.8* (alternative) - see link:LICENSE-PALIMPSEST[LICENSE-PALIMPSEST]
-
-You may choose either license. See link:LICENSING.md[LICENSING.md] for details.
+MPL-2.0 declared for platform compatibility where PMPL is not recognized.
 
 ---
 
@@ -166,3 +163,71 @@ You may choose either license. See link:LICENSING.md[LICENSING.md] for details.
 ____
 "In the age of surveillance capitalism, visibility can be a form of camouflage."
 ____
+
+
+== Ecosystem Integration Roadmap
+
+DoubleTrack Browser is designed to integrate with three sibling hyperpolymath projects:
+
+=== Defensive Multiplicity
+
+*Location:* `misinformation-defence-platform/defensive-multiplicity/`
+
+The theoretical foundation for DoubleTrack's approach. Rather than hiding data, Defensive Multiplicity achieves privacy through controlled identity proliferation.
+
+*What DoubleTrack takes from it:*
+
+- **Persona lifecycle rules**: Max 180-day lifespan per persona without renewal
+- **Cryptographic accountability**: All synthetic identities contain proof of human authorship
+- **Non-interference principle**: Fake browsing must not suppress authentic voices
+- **Ethical guardrails**: Automatic persona deactivation upon boundary breach
+- **Purpose-bound identities**: No persona operates beyond its declared purpose
+
+*Implementation targets:*
+
+- [ ] Multi-persona rotation (generate and cycle between 2-5 personas)
+- [ ] Cryptographic identity chaining (link personas to human controller)
+- [ ] Behavioral anomaly detection (ensure personas remain believable)
+- [ ] Persona expiry and renewal workflow
+
+=== Consent-Aware HTTP (AIBDP)
+
+*Location:* `standards/consent-aware-http/`
+
+Internet-Draft protocols for declaring and enforcing AI usage boundaries on the web.
+
+*What DoubleTrack takes from it:*
+
+- **AIBDP manifests**: Check `/.well-known/aibdp.json` before visiting sites
+- **HTTP 430 respect**: Honor "Consent Required" responses from servers
+- **Intent declaration**: Signal browsing purpose via `X-AI-Intent` headers
+- **Consent as refusal**: Without explicit permission, default to not visiting
+
+*Implementation targets:*
+
+- [ ] Background engine checks AIBDP manifest before opening fake tabs
+- [ ] Respect `training: refused` policy (skip sites that refuse)
+- [ ] Cache AIBDP results (30-90 day TTL per spec)
+- [ ] Log consent decisions in activity history
+
+=== MAA Framework
+
+*Location:* `maa-framework/`
+
+Full-stack paradigm for building verifiably-compliant, secure systems.
+
+*What DoubleTrack takes from it:*
+
+- **Idris2 ABI proofs**: Formally verify that real identity never leaks into fake sessions
+- **Zig FFI bridge**: Cross-platform ABI for identity isolation layer
+- **Microkernel philosophy**: Minimal trusted computing base for persona management
+
+*Implementation targets:*
+
+- [ ] Idris2 ABI definitions for identity boundary types
+- [ ] Formal proof that real browsing data cannot flow into fake persona storage
+- [ ] Zig FFI implementation of identity isolation primitives
+
+== Architecture
+
+See link:TOPOLOGY.md[TOPOLOGY.md] for a visual architecture map and completion dashboard.

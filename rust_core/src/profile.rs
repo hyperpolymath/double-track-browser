@@ -72,7 +72,7 @@ pub enum EducationLevel {
     Doctorate,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum InterestCategory {
     Technology,
     Gaming,

@@ -1,10 +1,17 @@
-// SPDX-License-Identifier: MIT OR Palimpsest-0.8
+// SPDX-License-Identifier: PMPL-1.0-or-later
 // Background service worker for DoubleTrack Browser
 
 open Types
 
 // State
 let isRunningRef: ref<bool> = ref(false)
+
+// Track fake tabs: tabId -> fakeTabInfo
+let fakeTabsRef: ref<Js.Dict.t<fakeTabInfo>> = ref(Js.Dict.empty())
+
+let maxConcurrentFakeTabs = 3
+
+@val external setTimeout: (unit => unit, int) => int = "setTimeout"
 
 let getNextMidnight = (): float => {
   let now = Js.Date.make()
@@ -28,12 +35,70 @@ let setupAlarms = () => {
   Chrome.Alarms.create("update-profile-age", {"periodInMinutes": 60.0 *. 24.0})
 }
 
+let activeFakeTabCount = (): int => {
+  Js.Array2.length(Js.Dict.keys(fakeTabsRef.contents))
+}
+
+// Close a fake tab and clean up tracking
+let closeFakeTab = async (tabId: int): unit => {
+  Js.Dict.unsafeDeleteKey(. fakeTabsRef.contents, Belt.Int.toString(tabId))
+  switch await Chrome.Tabs.remove(tabId) {
+  | () => Js.Console.log2("DoubleTrack: Closed fake tab", tabId)
+  | exception _exn => () // Tab may already be closed
+  }
+}
+
+// Clean up stale fake tabs (open > 5 minutes)
+let cleanupStaleFakeTabs = async (): unit => {
+  let now = Js.Date.now()
+  let staleThreshold = 5.0 *. 60.0 *. 1000.0 // 5 minutes in ms
+  let keys = Js.Dict.keys(fakeTabsRef.contents)
+
+  let _: unit = await Js.Array2.reduce(keys, async (accPromise, key) => {
+    await accPromise
+    switch Js.Dict.get(fakeTabsRef.contents, key) {
+    | Some(info) if now -. info.openedAt > staleThreshold =>
+      await closeFakeTab(info.tabId)
+    | _ => ()
+    }
+  }, Js.Promise.resolve())
+}
+
+// Generate simulation parameters based on activity type and profile
+let getSimulationParams = (activity: browsingActivity): simulationParams => {
+  let baseScroll = switch activity.activityType {
+  | Research => 0.8
+  | News => 0.6
+  | Shopping => 0.5
+  | PageVisit => 0.7
+  | Search => 0.3
+  | VideoWatch => 0.2
+  | SocialMedia => 0.4
+  }
+
+  let scrollJitter = Js.Math.random() *. 0.3 -. 0.15
+  let scrollDepth = Js.Math.min_float(1.0, Js.Math.max_float(0.1, baseScroll +. scrollJitter))
+
+  {
+    scrollDepth,
+    clickLinks: activity.activityType != Search && Js.Math.random() > 0.4,
+    dwellSeconds: Js.Math.max_int(5, activity.durationSeconds / 3),
+    fillForms: false,
+  }
+}
+
 let rec simulateActivity = async (): unit => {
   let config = await Storage.getConfig()
   let profile = await Storage.getProfile()
 
   switch (config.enabled, profile) {
   | (true, Some(p)) =>
+    // Don't open more tabs if at capacity
+    if activeFakeTabCount() >= maxConcurrentFakeTabs {
+      Js.Console.log("DoubleTrack: At max fake tab capacity, skipping")
+      return
+    }
+
     // Check schedule if enabled
     if config.respectSchedule {
       let _schedule = await Wasm.getActivitySchedule(p)
@@ -46,8 +111,53 @@ let rec simulateActivity = async (): unit => {
     if Js.Array2.length(activities) > 0 {
       switch activities[0] {
       | Some(activity) =>
+        // Record the activity in storage
         await Storage.addActivity(activity)
-        Js.Console.log2("Simulated activity:", activity)
+
+        // Open a real tab with the generated URL
+        let tab = await Chrome.Tabs.create({"url": activity.url, "active": false})
+
+        switch tab.id {
+        | Some(tabId) =>
+          // Track this fake tab
+          let info: fakeTabInfo = {
+            tabId,
+            activity,
+            openedAt: Js.Date.now(),
+          }
+          Js.Dict.set(fakeTabsRef.contents, Belt.Int.toString(tabId), info)
+
+          Js.Console.log2("DoubleTrack: Opened fake tab", activity.url)
+
+          // After a short delay for the page to load, send simulation command
+          let params = getSimulationParams(activity)
+          let _ = setTimeout(() => {
+            let _ =
+              Chrome.Tabs.sendMessage(
+                tabId,
+                Obj.magic({
+                  "type": "SIMULATE_ACTIVITY",
+                  "payload": Obj.magic(params),
+                }),
+              )
+              ->Js.Promise.then_(_response => {
+                // Schedule tab close after simulation duration
+                let closeDelay = (params.dwellSeconds + 5) * 1000
+                let _ = setTimeout(async () => {
+                  await closeFakeTab(tabId)
+                }, closeDelay)
+                Js.Promise.resolve()
+              }, _)
+              ->Js.Promise.catch(_err => {
+                // Content script may not be ready — close tab after dwell time anyway
+                let _ = setTimeout(async () => {
+                  await closeFakeTab(tabId)
+                }, activity.durationSeconds * 1000)
+                Js.Promise.resolve()
+              }, _)
+          }, 3000) // 3s page load grace period
+        | None => Js.Console.error("DoubleTrack: Tab created but no ID returned")
+        }
       | None => ()
       }
     }
@@ -61,6 +171,7 @@ let handleAlarm = async (alarm: Chrome.Alarms.alarm): unit => {
   | "update-profile-age" => await Storage.updateProfileAge()
   | "simulate-activity" =>
     if isRunningRef.contents {
+      await cleanupStaleFakeTabs()
       await simulateActivity()
     }
   | _ => ()
@@ -84,7 +195,10 @@ let startSimulation = async (): unit => {
       let baseInterval = 15.0
       let interval = baseInterval /. config.noiseLevel
 
-      Chrome.Alarms.create("simulate-activity", {"periodInMinutes": Js.Math.max_float(5.0, interval)})
+      Chrome.Alarms.create(
+        "simulate-activity",
+        {"periodInMinutes": Js.Math.max_float(5.0, interval)},
+      )
 
       // Run initial simulation
       await simulateActivity()
@@ -96,6 +210,16 @@ let stopSimulation = async (): unit => {
   Js.Console.log("Stopping activity simulation")
   isRunningRef.contents = false
   Chrome.Alarms.clear("simulate-activity")
+
+  // Close all fake tabs
+  let keys = Js.Dict.keys(fakeTabsRef.contents)
+  let _: unit = await Js.Array2.reduce(keys, async (accPromise, key) => {
+    await accPromise
+    switch Js.Dict.get(fakeTabsRef.contents, key) {
+    | Some(info) => await closeFakeTab(info.tabId)
+    | None => ()
+    }
+  }, Js.Promise.resolve())
 }
 
 let handleMessage = async (messageJson: Js.Json.t): Js.Json.t => {
@@ -134,6 +258,11 @@ let handleMessage = async (messageJson: Js.Json.t): Js.Json.t => {
   | "SIMULATE_ACTIVITY" =>
     await simulateActivity()
     Obj.magic({"success": true})
+
+  | "ACTIVITY_COMPLETE" =>
+    // Content script finished simulation on a page
+    Js.Console.log("DoubleTrack: Content script reported activity complete")
+    Obj.magic({"acknowledged": true})
 
   | "CLEAR_HISTORY" =>
     await Storage.clearActivityHistory()
@@ -176,6 +305,11 @@ let initialize = async (): unit => {
   setupAlarms()
   Chrome.Alarms.onAlarmAddListener(alarm => {
     let _ = handleAlarm(alarm)
+  })
+
+  // Listen for tab removal to clean up tracking
+  Chrome.Tabs.OnRemoved.addListener(tabId => {
+    Js.Dict.unsafeDeleteKey(. fakeTabsRef.contents, Belt.Int.toString(tabId))
   })
 
   // Load configuration and start if enabled
