@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: PMPL-1.0-or-later
+# Clade declaration — part of the gv-clade-index registry
+# See: https://github.com/hyperpolymath/gv-clade-index
+
+[identity]
+uuid = "6978520c-1dc8-55b7-bf6c-11a071a2449a"
+primary-forge = "github"
+primary-owner = "hyperpolymath"
+canonical-name = "double-track-browser"
+prefixed-name = "ap-double-track-browser"
+
+[clade]
+primary = "ap"
+secondary = []
+assigned = "2026-03-16"
+rationale = ""
+
+[forges]
+github = "hyperpolymath/double-track-browser"
+gitlab = "hyperpolymath/double-track-browser"
+bitbucket = "hyperpolymath/double-track-browser"
+
+[lineage]
+type = "standalone"
+parent = "Dual-pane browser"
+born = "2026-03-16"
