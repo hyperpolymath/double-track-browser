@@ -1,3 +1,4 @@
+#![forbid(unsafe_code)]
 use wasm_bindgen::prelude::*;
 use rand::SeedableRng;
 
