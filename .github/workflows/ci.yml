@@ -92,7 +92,7 @@ jobs:
 
       - name: Upload Coverage
         if: matrix.os == 'ubuntu-latest' && matrix.node == 20
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457 # v3
         with:
           files: ./coverage/lcov.info
           flags: typescript
@@ -267,7 +267,7 @@ jobs:
           cd ..
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
           files: |
             doubletrack-browser-${{ github.ref_name }}.zip
@@ -309,7 +309,7 @@ jobs:
         run: npm test -- --coverage
 
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457 # v3
         with:
           files: ./coverage/cobertura-coverage.xml,./coverage/lcov.info
           flags: unittests
