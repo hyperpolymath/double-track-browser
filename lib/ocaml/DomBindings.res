@@ -5,8 +5,8 @@
 @val external window: Dom.window = "window"
 
 module Document = {
-  @send external getElementById: (Dom.document, string) => Js.Nullable.t<Dom.element> = "getElementById"
-  @send external querySelector: (Dom.document, string) => Js.Nullable.t<Dom.element> = "querySelector"
+  @send external getElementById: (Dom.document, string) => Nullable.t<Dom.element> = "getElementById"
+  @send external querySelector: (Dom.document, string) => Nullable.t<Dom.element> = "querySelector"
   @get external title: Dom.document => string = "title"
   @send external addEventListener: (Dom.document, string, unit => unit) => unit = "addEventListener"
 }

@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
-use rand::Rng;
+use crate::profile::{InterestCategory, Profile};
 use rand::seq::SliceRandom;
-use crate::profile::{Profile, InterestCategory};
+use rand::Rng;
+use serde::{Deserialize, Serialize};
 
 /// Plausible form fill data tied to a profile's persona
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -42,9 +42,14 @@ impl FormDataGenerator {
         let first_lower = first.to_lowercase();
         let last_lower = last.to_lowercase();
 
-        let domains = vec![
-            "gmail.com", "outlook.com", "yahoo.com", "protonmail.com",
-            "fastmail.com", "icloud.com", "hotmail.com",
+        let domains = [
+            "gmail.com",
+            "outlook.com",
+            "yahoo.com",
+            "protonmail.com",
+            "fastmail.com",
+            "icloud.com",
+            "hotmail.com",
         ];
         let domain = domains.choose(rng).unwrap();
 
@@ -56,9 +61,20 @@ impl FormDataGenerator {
         };
 
         let local = match rng.gen_range(0..4) {
-            0 => format!("{}{}{}{}", first_lower, separator, last_lower, number_suffix),
-            1 => format!("{}{}{}", first_lower.chars().next().unwrap(), last_lower, number_suffix),
-            2 => format!("{}{}{}{}", last_lower, separator, first_lower, number_suffix),
+            0 => format!(
+                "{}{}{}{}",
+                first_lower, separator, last_lower, number_suffix
+            ),
+            1 => format!(
+                "{}{}{}",
+                first_lower.chars().next().unwrap(),
+                last_lower,
+                number_suffix
+            ),
+            2 => format!(
+                "{}{}{}{}",
+                last_lower, separator, first_lower, number_suffix
+            ),
             _ => format!("{}{}", first_lower, number_suffix),
         };
 
@@ -68,12 +84,16 @@ impl FormDataGenerator {
     fn generate_display_name<R: Rng>(name: &str, rng: &mut R) -> String {
         let parts: Vec<&str> = name.split_whitespace().collect();
         match rng.gen_range(0..4) {
-            0 => name.to_string(), // Full name
+            0 => name.to_string(),                                         // Full name
             1 => parts.first().map(|s| s.to_string()).unwrap_or_default(), // First name only
             2 => {
                 // First initial + last name
                 if parts.len() >= 2 {
-                    format!("{}. {}", parts[0].chars().next().unwrap(), parts.last().unwrap())
+                    format!(
+                        "{}. {}",
+                        parts[0].chars().next().unwrap(),
+                        parts.last().unwrap()
+                    )
                 } else {
                     name.to_string()
                 }
@@ -90,16 +110,32 @@ impl FormDataGenerator {
         let mut prefs = Vec::new();
         for interest in interests.iter().take(3) {
             let pref = match interest {
-                InterestCategory::Technology => vec!["tech updates", "gadget reviews", "software tips"],
+                InterestCategory::Technology => {
+                    vec!["tech updates", "gadget reviews", "software tips"]
+                }
                 InterestCategory::Gaming => vec!["game releases", "esports news", "gaming deals"],
                 InterestCategory::Sports => vec!["match results", "team updates", "player stats"],
-                InterestCategory::Cooking => vec!["new recipes", "cooking tips", "ingredient guides"],
-                InterestCategory::Travel => vec!["flight deals", "destination guides", "travel tips"],
-                InterestCategory::Music => vec!["new releases", "concert alerts", "artist profiles"],
-                InterestCategory::Books => vec!["book recommendations", "author interviews", "reading lists"],
-                InterestCategory::Finance => vec!["market updates", "investment tips", "financial news"],
-                InterestCategory::Fitness => vec!["workout plans", "nutrition advice", "fitness challenges"],
-                InterestCategory::Photography => vec!["photo tips", "gear reviews", "editing tutorials"],
+                InterestCategory::Cooking => {
+                    vec!["new recipes", "cooking tips", "ingredient guides"]
+                }
+                InterestCategory::Travel => {
+                    vec!["flight deals", "destination guides", "travel tips"]
+                }
+                InterestCategory::Music => {
+                    vec!["new releases", "concert alerts", "artist profiles"]
+                }
+                InterestCategory::Books => {
+                    vec!["book recommendations", "author interviews", "reading lists"]
+                }
+                InterestCategory::Finance => {
+                    vec!["market updates", "investment tips", "financial news"]
+                }
+                InterestCategory::Fitness => {
+                    vec!["workout plans", "nutrition advice", "fitness challenges"]
+                }
+                InterestCategory::Photography => {
+                    vec!["photo tips", "gear reviews", "editing tutorials"]
+                }
                 _ => vec!["general updates", "weekly digest", "featured content"],
             };
             if let Some(p) = pref.choose(rng) {
@@ -146,8 +182,8 @@ impl FormDataGenerator {
 mod tests {
     use super::*;
     use crate::profile::ProfileGenerator;
-    use rand::SeedableRng;
     use rand::rngs::SmallRng;
+    use rand::SeedableRng;
 
     #[test]
     fn test_form_data_generation() {

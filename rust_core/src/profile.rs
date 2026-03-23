@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
-use rand::{Rng, SeedableRng};
 use rand::rngs::SmallRng;
 use rand::seq::SliceRandom;
+use rand::{Rng, SeedableRng};
+use serde::{Deserialize, Serialize};
 
 /// A fictional browsing profile
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -98,18 +98,18 @@ pub enum InterestCategory {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum BrowsingStyle {
-    Focused,      // Few tabs, deep reading
-    Explorer,     // Many tabs, broad browsing
-    Researcher,   // Lots of searches, academic
-    Casual,       // Mix of everything
+    Focused,    // Few tabs, deep reading
+    Explorer,   // Many tabs, broad browsing
+    Researcher, // Lots of searches, academic
+    Casual,     // Mix of everything
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ActivityLevel {
-    Low,       // 10-30 activities per day
-    Medium,    // 30-70 activities per day
-    High,      // 70-150 activities per day
-    VeryHigh,  // 150+ activities per day
+    Low,      // 10-30 activities per day
+    Medium,   // 30-70 activities per day
+    High,     // 70-150 activities per day
+    VeryHigh, // 150+ activities per day
 }
 
 pub struct ProfileGenerator {
@@ -150,24 +150,63 @@ impl ProfileGenerator {
 
     fn generate_name(&mut self, demographics: &Demographics) -> String {
         let first_names_male = vec![
-            "James", "John", "Robert", "Michael", "William", "David", "Richard",
-            "Joseph", "Thomas", "Christopher", "Daniel", "Matthew", "Anthony",
+            "James",
+            "John",
+            "Robert",
+            "Michael",
+            "William",
+            "David",
+            "Richard",
+            "Joseph",
+            "Thomas",
+            "Christopher",
+            "Daniel",
+            "Matthew",
+            "Anthony",
         ];
 
         let first_names_female = vec![
-            "Mary", "Patricia", "Jennifer", "Linda", "Elizabeth", "Barbara",
-            "Susan", "Jessica", "Sarah", "Karen", "Nancy", "Lisa", "Margaret",
+            "Mary",
+            "Patricia",
+            "Jennifer",
+            "Linda",
+            "Elizabeth",
+            "Barbara",
+            "Susan",
+            "Jessica",
+            "Sarah",
+            "Karen",
+            "Nancy",
+            "Lisa",
+            "Margaret",
         ];
 
         let first_names_neutral = vec![
-            "Alex", "Jordan", "Taylor", "Casey", "Riley", "Morgan", "Avery",
-            "Quinn", "Sam", "Charlie", "Jamie", "Drew",
+            "Alex", "Jordan", "Taylor", "Casey", "Riley", "Morgan", "Avery", "Quinn", "Sam",
+            "Charlie", "Jamie", "Drew",
         ];
 
         let last_names = vec![
-            "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller",
-            "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez",
-            "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+            "Smith",
+            "Johnson",
+            "Williams",
+            "Brown",
+            "Jones",
+            "Garcia",
+            "Miller",
+            "Davis",
+            "Rodriguez",
+            "Martinez",
+            "Hernandez",
+            "Lopez",
+            "Gonzalez",
+            "Wilson",
+            "Anderson",
+            "Thomas",
+            "Taylor",
+            "Moore",
+            "Jackson",
+            "Martin",
         ];
 
         let first_name = match demographics.gender {
@@ -218,22 +257,18 @@ impl ProfileGenerator {
                     EducationLevel::SomeCollege
                 }
             }
-            22..=24 => {
-                match self.rng.gen_range(0..=100) {
-                    0..=30 => EducationLevel::SomeCollege,
-                    31..=80 => EducationLevel::Bachelor,
-                    _ => EducationLevel::Master,
-                }
-            }
-            _ => {
-                match self.rng.gen_range(0..=100) {
-                    0..=20 => EducationLevel::HighSchool,
-                    21..=40 => EducationLevel::SomeCollege,
-                    41..=75 => EducationLevel::Bachelor,
-                    76..=95 => EducationLevel::Master,
-                    _ => EducationLevel::Doctorate,
-                }
-            }
+            22..=24 => match self.rng.gen_range(0..=100) {
+                0..=30 => EducationLevel::SomeCollege,
+                31..=80 => EducationLevel::Bachelor,
+                _ => EducationLevel::Master,
+            },
+            _ => match self.rng.gen_range(0..=100) {
+                0..=20 => EducationLevel::HighSchool,
+                21..=40 => EducationLevel::SomeCollege,
+                41..=75 => EducationLevel::Bachelor,
+                76..=95 => EducationLevel::Master,
+                _ => EducationLevel::Doctorate,
+            },
         };
 
         Demographics {
@@ -246,7 +281,7 @@ impl ProfileGenerator {
     }
 
     fn random_occupation(&mut self) -> OccupationCategory {
-        let occupations = vec![
+        let occupations = [
             OccupationCategory::Technology,
             OccupationCategory::Healthcare,
             OccupationCategory::Education,
@@ -264,7 +299,11 @@ impl ProfileGenerator {
         // Base interests on occupation
         let occupation_interests = match demographics.occupation_category {
             OccupationCategory::Technology => {
-                vec![InterestCategory::Technology, InterestCategory::Programming, InterestCategory::DataScience]
+                vec![
+                    InterestCategory::Technology,
+                    InterestCategory::Programming,
+                    InterestCategory::DataScience,
+                ]
             }
             OccupationCategory::Healthcare => {
                 vec![InterestCategory::Fitness, InterestCategory::Science]
@@ -276,13 +315,25 @@ impl ProfileGenerator {
                 vec![InterestCategory::Finance, InterestCategory::News]
             }
             OccupationCategory::Creative => {
-                vec![InterestCategory::Art, InterestCategory::Music, InterestCategory::Photography]
+                vec![
+                    InterestCategory::Art,
+                    InterestCategory::Music,
+                    InterestCategory::Photography,
+                ]
             }
             OccupationCategory::Student => {
-                vec![InterestCategory::Gaming, InterestCategory::Movies, InterestCategory::Music]
+                vec![
+                    InterestCategory::Gaming,
+                    InterestCategory::Movies,
+                    InterestCategory::Music,
+                ]
             }
             OccupationCategory::Retired => {
-                vec![InterestCategory::Gardening, InterestCategory::Travel, InterestCategory::Cooking]
+                vec![
+                    InterestCategory::Gardening,
+                    InterestCategory::Travel,
+                    InterestCategory::Cooking,
+                ]
             }
             _ => vec![InterestCategory::News],
         };
@@ -292,18 +343,30 @@ impl ProfileGenerator {
         interests.extend(
             occupation_interests
                 .choose_multiple(&mut self.rng, num_occupation_interests)
-                .cloned()
+                .cloned(),
         );
 
         // Add random interests
         let all_interests = vec![
-            InterestCategory::Technology, InterestCategory::Gaming, InterestCategory::Sports,
-            InterestCategory::Fitness, InterestCategory::Cooking, InterestCategory::Travel,
-            InterestCategory::Fashion, InterestCategory::Music, InterestCategory::Movies,
-            InterestCategory::Books, InterestCategory::Art, InterestCategory::Science,
-            InterestCategory::Politics, InterestCategory::News, InterestCategory::Finance,
-            InterestCategory::HomeImprovement, InterestCategory::Gardening,
-            InterestCategory::Photography, InterestCategory::Programming,
+            InterestCategory::Technology,
+            InterestCategory::Gaming,
+            InterestCategory::Sports,
+            InterestCategory::Fitness,
+            InterestCategory::Cooking,
+            InterestCategory::Travel,
+            InterestCategory::Fashion,
+            InterestCategory::Music,
+            InterestCategory::Movies,
+            InterestCategory::Books,
+            InterestCategory::Art,
+            InterestCategory::Science,
+            InterestCategory::Politics,
+            InterestCategory::News,
+            InterestCategory::Finance,
+            InterestCategory::HomeImprovement,
+            InterestCategory::Gardening,
+            InterestCategory::Photography,
+            InterestCategory::Programming,
             InterestCategory::DataScience,
         ];
 
@@ -320,7 +383,8 @@ impl ProfileGenerator {
     fn generate_browsing_style(&mut self, interests: &[InterestCategory]) -> BrowsingStyle {
         // Tech-savvy profiles tend to be explorers or researchers
         if interests.contains(&InterestCategory::Technology)
-            || interests.contains(&InterestCategory::Programming) {
+            || interests.contains(&InterestCategory::Programming)
+        {
             if self.rng.gen_bool(0.6) {
                 return BrowsingStyle::Explorer;
             } else {
@@ -330,7 +394,8 @@ impl ProfileGenerator {
 
         // Science/academic interests lean towards researcher or focused
         if interests.contains(&InterestCategory::Science)
-            || interests.contains(&InterestCategory::DataScience) {
+            || interests.contains(&InterestCategory::DataScience)
+        {
             if self.rng.gen_bool(0.5) {
                 return BrowsingStyle::Researcher;
             } else {

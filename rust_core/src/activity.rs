@@ -1,10 +1,9 @@
-use serde::{Deserialize, Serialize};
-use rand::{Rng, SeedableRng};
+use crate::interests::InterestUrlGenerator;
+use crate::profile::{ActivityLevel, BrowsingStyle, InterestCategory, Profile};
 use rand::rngs::SmallRng;
 use rand::seq::SliceRandom;
-use rand_distr::{Distribution, Poisson};
-use crate::profile::{Profile, ActivityLevel, BrowsingStyle, InterestCategory};
-use crate::interests::InterestUrlGenerator;
+use rand::{Rng, SeedableRng};
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct BrowsingActivity {
@@ -85,7 +84,9 @@ impl ActivitySimulator {
         let activity_type = self.choose_activity_type(&interest);
 
         // Generate URL and title
-        let (url, title) = self.url_generator.generate_url(&activity_type, &interest, &mut self.rng);
+        let (url, title) =
+            self.url_generator
+                .generate_url(&activity_type, &interest, &mut self.rng);
 
         // Generate realistic duration
         let duration_seconds = self.generate_duration(&activity_type);
@@ -100,7 +101,7 @@ impl ActivitySimulator {
         }
     }
 
-    fn choose_activity_type(&mut self, interest: &Option<InterestCategory>) -> ActivityType {
+    fn choose_activity_type(&mut self, _interest: &Option<InterestCategory>) -> ActivityType {
         match &self.profile.browsing_style {
             BrowsingStyle::Researcher => {
                 // Researchers do more searches and research

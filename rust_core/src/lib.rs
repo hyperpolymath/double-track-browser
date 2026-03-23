@@ -1,17 +1,18 @@
 #![forbid(unsafe_code)]
-use wasm_bindgen::prelude::*;
+#![allow(dead_code, unexpected_cfgs)]
 use rand::SeedableRng;
+use wasm_bindgen::prelude::*;
 
-mod profile;
 mod activity;
-mod interests;
-mod schedule;
 mod form_data;
+mod interests;
+mod profile;
+mod schedule;
 
-pub use profile::{Profile, ProfileGenerator, Demographics, InterestCategory};
-pub use activity::{ActivitySimulator, BrowsingActivity, ActivityType};
-pub use schedule::{Schedule, TimePattern};
+pub use activity::{ActivitySimulator, ActivityType, BrowsingActivity};
 pub use form_data::{FormData, FormDataGenerator};
+pub use profile::{Demographics, InterestCategory, Profile, ProfileGenerator};
+pub use schedule::{Schedule, TimePattern};
 
 /// Initialize the WASM module
 #[wasm_bindgen(start)]
@@ -30,10 +31,7 @@ pub fn generate_profile(seed: Option<u64>) -> JsValue {
 
 /// Generate browsing activities for a profile
 #[wasm_bindgen]
-pub fn generate_activities(
-    profile_json: JsValue,
-    duration_hours: u32,
-) -> JsValue {
+pub fn generate_activities(profile_json: JsValue, duration_hours: u32) -> JsValue {
     let profile: Profile = serde_wasm_bindgen::from_value(profile_json).unwrap();
     let mut simulator = ActivitySimulator::new(profile);
     let activities = simulator.generate_activities(duration_hours);
