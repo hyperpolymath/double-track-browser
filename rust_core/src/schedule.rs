@@ -1,5 +1,5 @@
+use crate::profile::{ActivityLevel, OccupationCategory, Profile};
 use serde::{Deserialize, Serialize};
-use crate::profile::{Profile, ActivityLevel, OccupationCategory};
 
 /// Represents a schedule for when activities should occur
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -70,48 +70,99 @@ impl Schedule {
             OccupationCategory::Student => {
                 if is_weekend {
                     vec![
-                        HourRange { start_hour: 10, end_hour: 14 },
-                        HourRange { start_hour: 18, end_hour: 2 },
+                        HourRange {
+                            start_hour: 10,
+                            end_hour: 14,
+                        },
+                        HourRange {
+                            start_hour: 18,
+                            end_hour: 2,
+                        },
                     ]
                 } else {
                     vec![
-                        HourRange { start_hour: 8, end_hour: 10 },
-                        HourRange { start_hour: 15, end_hour: 23 },
+                        HourRange {
+                            start_hour: 8,
+                            end_hour: 10,
+                        },
+                        HourRange {
+                            start_hour: 15,
+                            end_hour: 23,
+                        },
                     ]
                 }
             }
             OccupationCategory::Technology => {
                 if is_weekend {
                     vec![
-                        HourRange { start_hour: 9, end_hour: 12 },
-                        HourRange { start_hour: 14, end_hour: 22 },
+                        HourRange {
+                            start_hour: 9,
+                            end_hour: 12,
+                        },
+                        HourRange {
+                            start_hour: 14,
+                            end_hour: 22,
+                        },
                     ]
                 } else {
                     vec![
-                        HourRange { start_hour: 7, end_hour: 9 },
-                        HourRange { start_hour: 12, end_hour: 13 },
-                        HourRange { start_hour: 17, end_hour: 23 },
+                        HourRange {
+                            start_hour: 7,
+                            end_hour: 9,
+                        },
+                        HourRange {
+                            start_hour: 12,
+                            end_hour: 13,
+                        },
+                        HourRange {
+                            start_hour: 17,
+                            end_hour: 23,
+                        },
                     ]
                 }
             }
             OccupationCategory::Retired => {
                 vec![
-                    HourRange { start_hour: 7, end_hour: 11 },
-                    HourRange { start_hour: 14, end_hour: 17 },
-                    HourRange { start_hour: 19, end_hour: 21 },
+                    HourRange {
+                        start_hour: 7,
+                        end_hour: 11,
+                    },
+                    HourRange {
+                        start_hour: 14,
+                        end_hour: 17,
+                    },
+                    HourRange {
+                        start_hour: 19,
+                        end_hour: 21,
+                    },
                 ]
             }
             _ => {
                 if is_weekend {
                     vec![
-                        HourRange { start_hour: 9, end_hour: 13 },
-                        HourRange { start_hour: 16, end_hour: 22 },
+                        HourRange {
+                            start_hour: 9,
+                            end_hour: 13,
+                        },
+                        HourRange {
+                            start_hour: 16,
+                            end_hour: 22,
+                        },
                     ]
                 } else {
                     vec![
-                        HourRange { start_hour: 7, end_hour: 9 },
-                        HourRange { start_hour: 12, end_hour: 13 },
-                        HourRange { start_hour: 18, end_hour: 22 },
+                        HourRange {
+                            start_hour: 7,
+                            end_hour: 9,
+                        },
+                        HourRange {
+                            start_hour: 12,
+                            end_hour: 13,
+                        },
+                        HourRange {
+                            start_hour: 18,
+                            end_hour: 22,
+                        },
                     ]
                 }
             }
@@ -184,12 +235,18 @@ mod tests {
 
     #[test]
     fn test_hour_in_range() {
-        let range = HourRange { start_hour: 9, end_hour: 17 };
+        let range = HourRange {
+            start_hour: 9,
+            end_hour: 17,
+        };
         assert!(Schedule::hour_in_range(10, &range));
         assert!(!Schedule::hour_in_range(18, &range));
 
         // Test wrap-around
-        let night_range = HourRange { start_hour: 22, end_hour: 2 };
+        let night_range = HourRange {
+            start_hour: 22,
+            end_hour: 2,
+        };
         assert!(Schedule::hour_in_range(23, &night_range));
         assert!(Schedule::hour_in_range(1, &night_range));
         assert!(!Schedule::hour_in_range(12, &night_range));
