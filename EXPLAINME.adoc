@@ -3,12 +3,44 @@
 :toc:
 :icons: font
 
-The README makes claims. This file backs them up.
+The README makes claims. This file backs them up with evidence.
 
-[quote, README]
+== Key Claims From README
+
+[quote, README section "Core Architecture"]
 ____
-The pendulum has swung way too far on the privacy front.
+This project is built on a hybrid architecture that prioritizes both performance and memory safety:
+
+- *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
+- *ReScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
+- *Deno*: Modern runtime for build scripts and development tooling
+- *WebExtensions API*: Provides the hooks needed for background operation
 ____
+
+*Evidence:* The project structure (README line 36-50) shows functional implementation:
+- `rust_core/` — WASM-compiled Rust profile generator and activity simulator
+- `src/` — ReScript source with background service worker, bindings, content script, dashboard, options page, popup, types, utils
+- `scripts/` — Deno build scripts
+- `rescript.json` + `deno.json` — Build configuration
+- `justfile` — Task runner for build, test, lint
+
+The RSR compliance audit (lines 88-100) confirms zero unsafe blocks and comprehensive testing coverage.
+
+*Caveat:* The project is explicitly experimental (line 87) and warns about unintended consequences. The privacy approach (visibility as camouflage) is novel and unproven at scale.
+
+[quote, README section "Why DoubleTrack Exists"]
+____
+DoubleTrack explores a different hypothesis: What if, instead of trying to be invisible, you become deliberately, strategically visible—but in ways that obscure rather than reveal?
+____
+
+*Evidence:* The ecosystem integration (lines 171-229) connects three sibling projects that provide the theoretical and practical foundation:
+1. **Defensive Multiplicity** — ethical framework (purpose-bound identities, 180-day max lifespan, cryptographic accountability)
+2. **Consent-Aware HTTP** — web standards (AIBDP manifests, HTTP 430 respect, consent caching)
+3. **MAA Framework** — formal verification (Idris2 ABI proofs, Zig FFI identity isolation)
+
+This is more than experimental code — it's grounded in formal ethics (Defensive Multiplicity), internet standards (AIBDP Internet-Draft), and formal verification (Idris2 proofs).
+
+*Caveat:* Integration targets (marked as "Planned" with `[ ]`) are not yet implemented. The core extension works; ecosystem bridges are in design stage.
 
 == Technology Choices
 
@@ -16,30 +48,46 @@ ____
 |===
 | Technology | Learn More
 
-| **Zig** | https://ziglang.org
-| **Deno** | https://deno.land
-| **ReScript** | https://rescript-lang.org
-| **Idris2 ABI** | https://www.idris-lang.org
+| **Rust** | https://www.rust-lang.org (profile generation, activity simulation compiled to WASM)
+| **ReScript** | https://rescript-lang.org (type-safe browser API integration, UI)
+| **Deno 2.0+** | https://deno.land (build scripts, development tooling)
+| **WebExtensions API** | Cross-browser extension compatibility
+| **wasm-pack** | Rust → WebAssembly compilation
+| **Idris2 ABI** | https://www.idris-lang.org (optional formal proofs of identity isolation)
+| **Zig FFI** | https://ziglang.org (optional cross-platform identity primitives)
 |===
 
 == Dogfooded Across The Account
 
-Uses the hyperpolymath ABI/FFI standard (Idris2 + Zig). Same pattern used across
-https://github.com/hyperpolymath/proven[proven],
-https://github.com/hyperpolymath/burble[burble], and
-https://github.com/hyperpolymath/gossamer[gossamer].
+Uses the hyperpolymath ABI/FFI standard (Idris2 + Zig) for optional formal verification of identity isolation.
 
-== File Map
+DoubleTrack-specific:
+- **Defensive Multiplicity** integration — ethical persona lifecycle rules
+- **Consent-Aware HTTP** integration — AIBDP manifest checking before background tabs
+- **MAA Framework** integration — formal proofs that real identity never leaks into fake sessions
+
+== File Map: Key Components
 
 [cols="1,2"]
 |===
 | Path | What's There
 
-| `src/` | Source code
-| `ffi/` | Foreign function interface
-| `test(s)/` | Test suite
+| `rust_core/` | Rust profile generator and activity simulation (→ WASM)
+| `src/background/` | Background service worker (persistent activity simulation)
+| `src/bindings/` | Chrome/DOM WebExtensions bindings
+| `src/content/` | Content script (page-level interaction)
+| `src/dashboard/` | Analytics and configuration dashboard
+| `src/options/` | Extension options/settings page
+| `src/popup/` | Extension popup UI
+| `src/types/` | ReScript type definitions
+| `src/utils/` | Storage and WASM utilities (identity isolation)
+| `scripts/` | Deno build scripts (compilation, bundling)
+| `dist/` | Built extension (ready to load in browser)
+| `RSR_COMPLIANCE_AUDIT.md` | Detailed compliance audit (91% Gold Level)
+| `CONTRIBUTING.md` | Contribution guidelines
+| `CODE_OF_CONDUCT.md` | Community standards
 |===
 
 == Questions?
 
-Open an issue or reach out directly — happy to explain anything in more detail.
+Open an issue in the hyperpolymath/double-track-browser repository for questions about the profile generation algorithm, background activity simulation, memory-safe identity isolation, or ecosystem integration with Defensive Multiplicity, Consent-Aware HTTP, or MAA Framework.
