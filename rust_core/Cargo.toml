@@ -21,6 +21,8 @@ chrono = { version = "0.4", features = ["wasmbind"] }
 
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
+proptest = "1.4"
+criterion = "0.5"
 
 [profile.release]
 opt-level = "z"     # Optimize for size
@@ -28,3 +30,7 @@ lto = true          # Enable Link Time Optimization
 codegen-units = 1   # Reduce number of codegen units for better optimization
 panic = "abort"     # Abort on panic
 strip = true        # Strip symbols from binary
+
+[[bench]]
+name = "core_bench"
+harness = false
