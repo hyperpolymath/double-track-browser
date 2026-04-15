@@ -7,6 +7,8 @@
 # Run a recipe: just <recipe-name>
 
 # Default recipe (runs when you type `just`)
+import? "contractile.just"
+
 default:
     @just --list
 

@@ -1,26 +1,26 @@
-# SPDX-License-Identifier: MPL-2.0-or-later
+# SPDX-License-Identifier: PMPL-1.0-or-later
+name: TypeScript/JavaScript Blocker
+on: [push, pull_request]
+
 permissions:
   contents: read
 
-name: TypeScript/JavaScript Blocker
-on: [push, pull_request]
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Block new TypeScript/JavaScript
         run: |
-          # Allow Deno scripts in scripts/ directory, block all other TypeScript
-          NEW_TS=$(git diff --name-only --diff-filter=A HEAD~1 2>/dev/null | grep -E '\.(ts|tsx)$' | grep -v '\.gen\.' | grep -v '^scripts/' || true)
-          # Allow .res.js (ReScript output), block other JS
+          NEW_TS=$(git diff --name-only --diff-filter=A HEAD~1 2>/dev/null | grep -E '\.(ts|tsx)$' | grep -v '\.gen\.' || true)
           NEW_JS=$(git diff --name-only --diff-filter=A HEAD~1 2>/dev/null | grep -E '\.(js|jsx)$' | grep -v '\.res\.js$' | grep -v '\.gen\.' | grep -v 'node_modules' || true)
-
+          
           if [ -n "$NEW_TS" ] || [ -n "$NEW_JS" ]; then
             echo "❌ New TS/JS files detected. Use ReScript instead."
-            echo "Note: Deno scripts in scripts/*.ts are allowed."
-            [ -n "$NEW_TS" ] && echo "Blocked TypeScript:" && echo "$NEW_TS"
-            [ -n "$NEW_JS" ] && echo "Blocked JavaScript:" && echo "$NEW_JS"
+            [ -n "$NEW_TS" ] && echo "$NEW_TS"
+            [ -n "$NEW_JS" ] && echo "$NEW_JS"
             exit 1
           fi
           echo "✅ ReScript policy enforced"
