@@ -42,7 +42,7 @@ impl InterestUrlGenerator {
 
         let search_engine = ["google.com", "bing.com", "duckduckgo.com"]
             .choose(rng)
-            .unwrap();
+            .expect("TODO: handle error");
 
         let url = format!("https://{}/search?q={}", search_engine, encoded_query);
         let title = format!("{} - Search", query);
@@ -58,7 +58,7 @@ impl InterestUrlGenerator {
         let title = self.get_video_title(interest, rng);
         let video_id = self.generate_video_id(rng);
 
-        let platform = ["youtube.com", "vimeo.com"].choose(rng).unwrap();
+        let platform = ["youtube.com", "vimeo.com"].choose(rng).expect("TODO: handle error");
         let url = if *platform == "youtube.com" {
             format!("https://www.youtube.com/watch?v={}", video_id)
         } else {
@@ -81,7 +81,7 @@ impl InterestUrlGenerator {
             domain,
             product.to_lowercase().replace(" ", "-")
         );
-        let title = format!("{} - {}", product, domain.split('.').next().unwrap());
+        let title = format!("{} - {}", product, domain.split('.').next().expect("TODO: handle error"));
 
         (url, title)
     }
@@ -97,7 +97,7 @@ impl InterestUrlGenerator {
             ("bsky.app", "Bluesky"),
         ];
 
-        let (domain, name) = platforms.choose(rng).unwrap();
+        let (domain, name) = platforms.choose(rng).expect("TODO: handle error");
         let url = format!("https://{}", domain);
         let title = format!("Home - {}", name);
 
@@ -129,7 +129,7 @@ impl InterestUrlGenerator {
             .join("-");
 
         let url = format!("https://{}/article/{}", domain, slug);
-        let title = format!("{} - {}", headline, domain.split('.').next().unwrap());
+        let title = format!("{} - {}", headline, domain.split('.').next().expect("TODO: handle error"));
 
         (url, title)
     }
@@ -152,7 +152,7 @@ impl InterestUrlGenerator {
             )
         };
 
-        let title = format!("{} - {}", topic, domain.split('.').next().unwrap());
+        let title = format!("{} - {}", topic, domain.split('.').next().expect("TODO: handle error"));
 
         (url, title)
     }
@@ -170,7 +170,7 @@ impl InterestUrlGenerator {
             domain,
             page.to_lowercase().replace(" ", "-")
         );
-        let title = format!("{} | {}", page, domain.split('.').next().unwrap());
+        let title = format!("{} | {}", page, domain.split('.').next().expect("TODO: handle error"));
 
         (url, title)
     }
@@ -397,7 +397,7 @@ impl InterestUrlGenerator {
                     "recipe of the day",
                 ],
             };
-            queries.choose(rng).unwrap().to_string()
+            queries.choose(rng).expect("TODO: handle error").to_string()
         } else {
             [
                 "news today",
@@ -410,7 +410,7 @@ impl InterestUrlGenerator {
                 "interesting facts",
             ]
             .choose(rng)
-            .unwrap()
+            .expect("TODO: handle error")
             .to_string()
         }
     }
@@ -480,7 +480,7 @@ impl InterestUrlGenerator {
                     "How-To Guide Step by Step",
                 ],
             };
-            titles.choose(rng).unwrap().to_string()
+            titles.choose(rng).expect("TODO: handle error").to_string()
         } else {
             "Trending Video".to_string()
         }
@@ -564,7 +564,7 @@ impl InterestUrlGenerator {
                     "New Arrival",
                 ],
             };
-            products.choose(rng).unwrap().to_string()
+            products.choose(rng).expect("TODO: handle error").to_string()
         } else {
             "Product".to_string()
         }
@@ -621,7 +621,7 @@ impl InterestUrlGenerator {
                     "Weather Pattern Shift Expected This Week",
                 ],
             };
-            headlines.choose(rng).unwrap().to_string()
+            headlines.choose(rng).expect("TODO: handle error").to_string()
         } else {
             "Breaking News".to_string()
         }
@@ -691,7 +691,7 @@ impl InterestUrlGenerator {
                     "Literature Review Summary",
                 ],
             };
-            topics.choose(rng).unwrap().to_string()
+            topics.choose(rng).expect("TODO: handle error").to_string()
         } else {
             "General Topic".to_string()
         }
@@ -729,7 +729,7 @@ impl InterestUrlGenerator {
                     "Community Recommendations",
                 ],
             };
-            pages.choose(rng).unwrap().to_string()
+            pages.choose(rng).expect("TODO: handle error").to_string()
         } else {
             "General Page".to_string()
         }
@@ -811,15 +811,15 @@ impl DomainDatabase {
     }
 
     fn get_shopping_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.shopping.choose(rng).unwrap()
+        self.shopping.choose(rng).expect("TODO: handle error")
     }
 
     fn get_news_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.news.choose(rng).unwrap()
+        self.news.choose(rng).expect("TODO: handle error")
     }
 
     fn get_research_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.research.choose(rng).unwrap()
+        self.research.choose(rng).expect("TODO: handle error")
     }
 
     fn get_interest_domain<R: Rng>(
@@ -837,7 +837,7 @@ impl DomainDatabase {
                     "wired.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Gaming => [
                     "ign.com",
                     "gamespot.com",
@@ -846,7 +846,7 @@ impl DomainDatabase {
                     "pcgamer.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Sports => [
                     "espn.com",
                     "bleacherreport.com",
@@ -854,7 +854,7 @@ impl DomainDatabase {
                     "theathletic.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Cooking => [
                     "allrecipes.com",
                     "foodnetwork.com",
@@ -863,7 +863,7 @@ impl DomainDatabase {
                     "budgetbytes.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Travel => [
                     "lonelyplanet.com",
                     "tripadvisor.com",
@@ -871,16 +871,16 @@ impl DomainDatabase {
                     "nomadicmatt.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Music => {
                     ["pitchfork.com", "bandcamp.com", "last.fm", "stereogum.com"]
                         .choose(rng)
-                        .unwrap()
+                        .expect("TODO: handle error")
                 }
                 InterestCategory::Photography => {
                     ["500px.com", "dpreview.com", "petapixel.com", "flickr.com"]
                         .choose(rng)
-                        .unwrap()
+                        .expect("TODO: handle error")
                 }
                 InterestCategory::Programming => [
                     "stackoverflow.com",
@@ -890,7 +890,7 @@ impl DomainDatabase {
                     "github.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Fitness => [
                     "bodybuilding.com",
                     "runnersworld.com",
@@ -898,7 +898,7 @@ impl DomainDatabase {
                     "stronglifts.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Books => [
                     "goodreads.com",
                     "bookshop.org",
@@ -906,7 +906,7 @@ impl DomainDatabase {
                     "theparisreview.org",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Art => [
                     "artsy.net",
                     "behance.net",
@@ -914,7 +914,7 @@ impl DomainDatabase {
                     "artstation.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Finance => [
                     "investopedia.com",
                     "marketwatch.com",
@@ -922,16 +922,16 @@ impl DomainDatabase {
                     "morningstar.com",
                 ]
                 .choose(rng)
-                .unwrap(),
+                .expect("TODO: handle error"),
                 InterestCategory::Gardening => {
                     ["gardeningknowhow.com", "almanac.com", "savvygardening.com"]
                         .choose(rng)
-                        .unwrap()
+                        .expect("TODO: handle error")
                 }
                 InterestCategory::HomeImprovement => {
                     ["thisoldhouse.com", "familyhandyman.com", "bobvila.com"]
                         .choose(rng)
-                        .unwrap()
+                        .expect("TODO: handle error")
                 }
                 _ => "example.com",
             }

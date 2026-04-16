@@ -51,9 +51,9 @@ impl FormDataGenerator {
             "icloud.com",
             "hotmail.com",
         ];
-        let domain = domains.choose(rng).unwrap();
+        let domain = domains.choose(rng).expect("TODO: handle error");
 
-        let separator = [".", "_", ""].choose(rng).unwrap();
+        let separator = [".", "_", ""].choose(rng).expect("TODO: handle error");
         let number_suffix = if rng.gen_bool(0.6) {
             format!("{}", rng.gen_range(1..999))
         } else {
@@ -67,7 +67,7 @@ impl FormDataGenerator {
             ),
             1 => format!(
                 "{}{}{}",
-                first_lower.chars().next().unwrap(),
+                first_lower.chars().next().expect("TODO: handle error"),
                 last_lower,
                 number_suffix
             ),
@@ -91,8 +91,8 @@ impl FormDataGenerator {
                 if parts.len() >= 2 {
                     format!(
                         "{}. {}",
-                        parts[0].chars().next().unwrap(),
-                        parts.last().unwrap()
+                        parts[0].chars().next().expect("TODO: handle error"),
+                        parts.last().expect("TODO: handle error")
                     )
                 } else {
                     name.to_string()

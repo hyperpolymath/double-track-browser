@@ -210,14 +210,14 @@ impl ProfileGenerator {
         ];
 
         let first_name = match demographics.gender {
-            Gender::Male => first_names_male.choose(&mut self.rng).unwrap(),
-            Gender::Female => first_names_female.choose(&mut self.rng).unwrap(),
+            Gender::Male => first_names_male.choose(&mut self.rng).expect("TODO: handle error"),
+            Gender::Female => first_names_female.choose(&mut self.rng).expect("TODO: handle error"),
             Gender::NonBinary | Gender::PreferNotToSay => {
-                first_names_neutral.choose(&mut self.rng).unwrap()
+                first_names_neutral.choose(&mut self.rng).expect("TODO: handle error")
             }
         };
 
-        let last_name = last_names.choose(&mut self.rng).unwrap();
+        let last_name = last_names.choose(&mut self.rng).expect("TODO: handle error");
         format!("{} {}", first_name, last_name)
     }
 
@@ -290,7 +290,7 @@ impl ProfileGenerator {
             OccupationCategory::Service,
             OccupationCategory::Trades,
         ];
-        occupations.choose(&mut self.rng).unwrap().clone()
+        occupations.choose(&mut self.rng).expect("TODO: handle error").clone()
     }
 
     fn generate_interests(&mut self, demographics: &Demographics) -> Vec<InterestCategory> {
