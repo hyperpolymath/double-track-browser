@@ -1,0 +1,591 @@
+// SPDX-License-Identifier: PMPL-1.0-or-later
+// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+
+= double-track-browser — CRG Audit (2026-04-18)
+Jonathan D.A. Jewell
+2026-04-18
+:toc:
+:sectnums:
+
+== Scope and Standard
+
+Evaluates the `double-track-browser` repository against *Component
+Readiness Grades v2.0 (STRICT)*, 2026-03-30 revision. The repo's
+self-declared grade is *C* with 60% completion in a "Testing and
+validation" phase. This audit puts that claim against the v2.0 strict
+bar — and against the ambient hyperpolymath language policy which
+bans TypeScript outright.
+
+- Standard: `standards/component-readiness-grades/COMPONENT-READINESS-GRADES.md`
+- Criteria boilerplate: `rsr-template-repo/docs/governance/CRG-CRITERIA.adoc`
+- Audit template: `rsr-template-repo/docs/governance/CRG-AUDIT-TEMPLATE.adoc`
+- Self-declared grade (prior art):
+  * `.machine_readable/6a2/STATE.a2ml` `[metadata] crg-grade = "C"`,
+    declared 2026-04-04 in commit "CRG blitz D→C: comprehensive test
+    coverage".
+  * `[project-context] completion-percentage = 60`.
+  * README badge: `RSR-Gold%20Level%20(91%25)` — unverified self-claim.
+- Audit date: 2026-04-18
+- Auditor: Jonathan D.A. Jewell
+
+The audit grades the repo *as-is today*, not aspirationally.
+
+== v2.0 Strictness Recap
+
+[cols="1,3,4"]
+|===
+| Grade | Release Stage | Hard Requirement (v2.0)
+
+| X | None             | Untested.
+| F | Reject           | Harmful, wasteful, or superseded.
+| E | Pre-alpha        | >=1 test, failures documented.
+| D | Alpha            | Test matrix + scope documented + *RSR compliance mandatory*.
+| C | Alpha-stable     | Dogfooded, CI green, *deep per-file + per-directory annotation*.
+| B | Beta             | 6+ *diverse* external targets, issues fed back.
+| A | Stable           | Real-world external feedback confirms value; no harm.
+|===
+
+Publication requires B+. Long alpha is discipline, not shame. *RSR
+compliance at D requires adherence to the hyperpolymath language
+policy* — the estate-wide `CLAUDE.md` ruleset is part of RSR, not a
+soft guideline.
+
+== Evidence Inventory (verified 2026-04-18)
+
+=== Structural compliance
+
+[cols="2,1,3"]
+|===
+| Item | State | Source
+
+| RSR mandatory workflows (17+)
+| PRESENT (22 YAML files in `.github/workflows/`, including `ts-blocker.yml`, `npm-bun-blocker.yml`, `rescript-deno-ci.yml`)
+| `.github/workflows/`
+
+| `.machine_readable/6a2/` canonical A2ML
+| PRESENT (6a2 directory exists with STATE.a2ml); META/ECOSYSTEM/AGENTIC/NEUROSYM/PLAYBOOK not verified
+| `.machine_readable/6a2/`
+
+| `0-AI-MANIFEST.a2ml`
+| PRESENT (860 bytes, root)
+| Root
+
+| `README.adoc`, `EXPLAINME.adoc`, `CONTRIBUTING.md`, `SECURITY.md`, `MAINTAINERS.{md,adoc}`, `CODE_OF_CONDUCT.md`, `CHANGELOG.adoc`
+| PRESENT
+| Root
+
+| `docs/` orientation subtree
+| *near-empty* — contains only `docs/CITATIONS.adoc`. No `docs/architecture/`, `docs/decisions/`, `docs/governance/` (until this audit), `docs/practice/`, `docs/integration/`.
+| `docs/`
+
+| `LICENSE` + `LICENSES/` directory
+| PRESENT (`LICENSE`, `LICENSES/PMPL-1.0-or-later.txt`, `LICENSES/MPL-2.0.txt`, plus extras: `LICENSE-MIT`, `LICENSE-PALIMPSEST`, legacy `license/PMPL-1.0.txt`)
+| Licence hygiene cluttered (6 licence-ish files at root/subdirs) but Rule-1+Rule-2 pair is present
+
+| `guix.scm` + `flake.nix`
+| PRESENT (both)
+| Root
+
+| `.well-known/` (security.txt, ai.txt, humans.txt)
+| PRESENT (all three, plus `groove/`)
+| `.well-known/`
+
+| SPDX headers on source
+| PRESENT on sampled Rust + ReScript + TS files (SPDX-License-Identifier: PMPL-1.0-or-later on tests and `Justfile` uses `MIT OR Palimpsest-0.8` — the Justfile SPDX *drifts* from Rule 1)
+| Grep confirmed — the Justfile SPDX line `MIT OR Palimpsest-0.8` is out of spec; should be `PMPL-1.0-or-later`.
+
+| `Containerfile` (not `Dockerfile`)
+| N/A at root; no `Dockerfile` at any depth (browser extension, no container target) — policy met by exclusion.
+| Container policy met
+
+| `Justfile` + `Mustfile` (no `Makefile`)
+| PRESENT (`Justfile` 335 lines, `Mustfile` 268 bytes, `Mustfile.epx` 3557 bytes); zero `Makefile`
+| RSR R-020 met
+
+| Contractile trident
+| PRESENT: `.machine_readable/INTENT.contractile`, `TRUST.contractile`, `MUST.contractile`, `ADJUST.contractile` plus `contractiles/{intend,trust,must,lust,dust,k9}/` — *six verbs* directory-wise, close to the full six-verb layout (no visible `bust`/`adjust` runner dir, but `ADJUST.contractile` top-level compensates).
+| Strong contractile layout — the most complete of any audit this session.
+
+| Remote
+| `origin → github.com:hyperpolymath/double-track-browser.git` plus four mirror remotes (bitbucket, codeberg, gitlab, sourcehut)
+| `git remote -v`. Mirrors configured locally; per GitHub-only mirroring rule these should be driven by downstream hub-and-spoke, not pushed to from local.
+|===
+
+*RSR structural verdict*: file-level shell present, but see the
+*catastrophic language-policy finding* below, which invalidates the
+D-floor "RSR compliance mandatory" clause on its own.
+
+=== CATASTROPHIC FINDING: TypeScript used for the entire test suite
+
+The ambient `~/.claude/CLAUDE.md` and the project's own
+`.claude/CLAUDE.md` both state:
+
+[quote, Hyperpolymath Language Policy]
+____
+**BANNED - Do Not Use** … TypeScript → ReScript … Node.js → Deno …
+**No new TypeScript files** - Convert existing TS to ReScript.
+____
+
+Five `.ts` files are committed to this repository:
+
+[cols="2,1,3"]
+|===
+| File | Purpose | Status under policy
+
+| `tests/unit/types_test.ts`        | 4 Deno.test cases (unit)     | *policy violation*
+| `tests/property/extension_properties_test.ts` | 9 Deno.test cases (property) | *policy violation*
+| `tests/e2e/extension_lifecycle_test.ts`       | 9 Deno.test cases (e2e)      | *policy violation*
+| `tests/aspect/security_test.ts`               | 10 Deno.test cases (aspect)  | *policy violation*
+| `scripts/build.ts`                            | Deno build orchestrator       | *policy violation*
+|===
+
+The repo *ships its own `ts-blocker.yml` workflow* (which checks newly
+added `.ts` files in PR diffs) and a `validate-rsr` recipe in the
+Justfile that prints "✅ No tsconfig.json (ReScript enforced)". Both
+are satisfied on technicalities:
+
+- `ts-blocker.yml` fires on `git diff HEAD~1` only, so pre-existing
+  `.ts` files are grandfathered and never flagged.
+- No `tsconfig.json` exists, but `deno.json` carries a
+  `compilerOptions.strict = true` block and `lib: ["deno.window", "dom"]`
+  — Deno is the one permitted TS executor in the estate, but the
+  policy still says "No new TypeScript files", not "Deno-run TS is
+  fine". The `.ts` test suite *is* new TypeScript code written after
+  the ReScript-preferred policy was in force.
+
+The violation is compounded by the Justfile:
+
+[source,bash]
+----
+npx rescript build           # line 35
+npx rescript build 2>&1 …    # line 142
+npx rescript build -w        # line 174
+----
+
+`npx` is part of the npm toolchain, which is banned (Enforcement Rule
+2-3). Invoking `npx` to run `rescript` pulls the npm world back in
+through the side door, and violates the "No package.json for runtime
+deps" / "No node_modules in production" enforcement rules the moment
+anyone actually executes these recipes. (`rescript` is available via
+Deno equivalents and via direct-install; `npx` is not the right
+invocation.)
+
+This single finding blocks *two* CRG levels simultaneously:
+
+. **D-floor "RSR compliance mandatory"** fails: the estate language
+  policy is part of RSR, and the repo contains non-trivial source
+  files in a banned language (TypeScript) plus three invocations of a
+  banned package manager (`npx`).
+. **C "deep per-file annotation"** is moot while D-floor is failing.
+
+It also breaks the "honest D > dishonest B" clause: a self-declared
+C + `completion-percentage = 60` coexisting with 5 policy-violating
+`.ts` files (four of which are *test files*, precisely the artefacts
+C-grade evidence rests on) is the kind of honesty gap v2.0 STRICT was
+designed to surface.
+
+The fix is mechanical — rewrite the four Deno test files as
+`*.test.res` + generated `*.res.js` runnable under `deno test`, and
+drop `scripts/build.ts` in favour of a ReScript or Rust build
+orchestrator; but until that work lands, the audit cannot certify D.
+
+=== Code and proofs
+
+[cols="2,1,3"]
+|===
+| Item | Count | Notes
+
+| Rust source files (`rust_core/src/`)
+| 6 files, 2 213 LOC
+| `interests.rs` 1004 LOC (dominant), `profile.rs` 440, `schedule.rs` 254, `form_data.rs` 229, `activity.rs` 198, `lib.rs` 88
+
+| Rust integration tests (`rust_core/tests/`)
+| 4 files, 923 LOC
+| `aspect_test.rs` 277, `e2e_test.rs` 253, `property_test.rs` 206, `integration_tests.rs` 187
+
+| Rust benches (`rust_core/benches/`)
+| 1 file, ≈200 LOC (6021 bytes)
+| `core_bench.rs` — STATE claims "11 Criterion benchmarks configured"; not individually counted here.
+
+| ReScript source (`src/**/*.res`)
+| 10 files
+| Background / Chrome / DomBindings / Content / Dashboard / Options / Popup / Types / Storage / Wasm
+
+| *Rust* `#[test]` / `#[tokio::test]` annotations
+| *54 total*
+| inline: activity 2, form_data 3, interests 2, lib 2, schedule 2 (= 11 unit-in-src); integration: 12, property 11, e2e 8, aspect 12 (= 43)
+
+| *TypeScript* `Deno.test` annotations
+| *32 total*
+| unit 4, property 9, e2e 9, aspect 10 — but these are *policy-violating* artefacts (see above)
+
+| `believe_me` / `assert_total` / `Admitted` / `sorry` / `unsafeCoerce` / `Obj.magic`
+| 0 in `rust_core/` and `src/`
+| Clean. (ReScript `En(json)` hits in `Storage.res` are `En` the JSON constructor, not a dangerous pattern.)
+
+| `unsafe` blocks in Rust
+| 0 (grepped `^\s*unsafe\s*[{fn]`)
+| Good memory-safety posture
+
+| CI green (last 7 days on HEAD)
+| *not verified* — no CI badge in README, no recent-run SHA in STATE
+| Recent commits (`c40217a`, `f07a218`, `2dd3492`, `1066b55`) concern workflow sync and Dependabot; no green-run evidence cited
+|===
+
+=== Test matrix — declared vs actual
+
+STATE.a2ml `[testing-status]` declares:
+
+[cols="3,1,1,2"]
+|===
+| Suite | Declared | Actual | Notes
+
+| unit-tests          | 15 (11 existing + 4 new) | 11 inline + 4 TS | *4 of 15 are banned-lang*; 11 Rust inline tests exist in `rust_core/src/*.rs`; the "4 new" map 1:1 to `tests/unit/types_test.ts`
+| property-tests      | 20 (11 Rust proptest + 9 TS)  | 11 Rust + 9 TS | matches — *9 of 20 banned-lang*
+| e2e-tests           | 17 (8 Rust + 9 TS)            | 8 Rust + 9 TS  | matches — *9 of 17 banned-lang*
+| aspect-security     | 22 (12 Rust + 10 TS)          | 12 Rust + 10 TS | matches — *10 of 22 banned-lang*
+| total-tests         | 74                            | 86 attrs on-disk (54 Rust + 32 TS) | claim *understates* actual; STATE count 74 drops one block (probably the inline src tests re-counted as something else)
+| benchmarks          | 11 Criterion                  | 1 bench file (`core_bench.rs`) | criterion group count unverified
+|===
+
+The test matrix is *internally self-consistent* and the per-suite
+splits match on-disk files exactly. This is notable honesty in
+*enumeration* — the numbers are real.
+
+What the enumeration does *not* do is flag that *32 of 86 tests (37%)
+are authored in a banned language*. If those 32 are removed (as the
+language policy requires), the test matrix collapses to:
+
+- unit:    11
+- property: 11
+- e2e:      8
+- aspect:   12
+- total:    42 Rust tests + 1 bench file
+
+42 Rust tests is still a credible D-floor test bar, but the C-grade
+claim rested on the *full* matrix with TS tests counted.
+
+CI coverage: `.github/workflows/rescript-deno-ci.yml` and `ci.yml`
+exist. Deno-test suite running against policy-violating `.ts` files
+is self-defeating even if it is currently green — the policy audit
+should fail it.
+
+=== Annotation depth
+
+v2.0 C requires **per-file and per-directory orientation**. Evidence:
+
+- `docs/` contains *only* `docs/CITATIONS.adoc` (1 file). No
+  `architecture/`, `decisions/`, `governance/` (until this audit),
+  `practice/`, `theory/`, `integration/`, `whitepapers/`, `wikis/`.
+  Even thinner than neurophone's 2-file `docs/` tree.
+- Per-crate / per-top-directory README coverage: *0 of 12* key
+  subdirectories carry a README:
+  * `rust_core/`          — no README
+  * `src/`                 — no README
+  * `src/background/`     — no README
+  * `src/bindings/`       — no README
+  * `src/content/`        — no README
+  * `src/dashboard/`      — no README
+  * `src/options/`        — no README
+  * `src/popup/`          — no README
+  * `src/types/`          — no README
+  * `src/utils/`          — no README
+  * `scripts/`             — no README
+  * `tests/`               — no README
++
+0% coverage fails the "deep per-file annotation" clause by the full
+margin.
+- `EXPLAINME.adoc` is *present* (4707 bytes, commit `1b88ce5`-class
+  quality — "Show Me The Receipts" format with quote-evidence table,
+  file-map, integrations). This is the single strongest annotation
+  signal and *does* count for C-readiness *when* it is backed by
+  per-directory READMEs, which it is not.
+- `README.adoc` is substantive (233 lines) and cleanly structured
+  (philosophy, architecture, tech stack, build/load, integrations).
+- `CLAUDE.md` at the repo root (7731 bytes) is developer-facing and
+  substantive.
+- `contractiles/README.adoc` exists — a good sign; contractile runner
+  dirs carry local orientation.
+- `.machine_readable/6a2/STATE.a2ml` is only 44 lines — significantly
+  thinner than neurophone's or boj-server's STATE files. No
+  `[dogfooding-status]`, `[external-targets]`, `[issues-fed-back]`,
+  `[field-signal]`, `[blockers]`, `[route-to-mvp]`, or
+  `[session-history]` sections.
+
+=== Dogfooding / home-stable evidence
+
+STATE.a2ml has *no* `[dogfooding-status]` section. Grep for
+`dogfooding-status|dogfood` under `.machine_readable/` returns zero
+hits.
+
+EXPLAINME.adoc has a "Dogfooded Across The Account" section that
+lists *planned* integrations (Defensive Multiplicity, Consent-Aware
+HTTP, MAA Framework) — all three are explicitly caveated as
+"Integration targets (marked as 'Planned' with `[ ]`) are not yet
+implemented".
+
+Indirect signals:
+
+- `.github/workflows/dogfood-gate.yml` is *not* present here (unlike
+  neurophone). There is no dogfood-log mechanism at all.
+- The extension target is the browser — there is no "Installed on my
+  own browser continuously for N days with zero failures" record in
+  STATE, no session log, no field-bug trail.
+- Completion-percentage = 60 concedes the extension is roughly
+  three-fifths built. The ReScript bindings are in place (10 .res
+  files) but the ecosystem integrations (Defensive Multiplicity /
+  Consent-Aware HTTP / MAA) are all 0%.
+
+v2.0 C requires *continuous* home-context use with no known failures.
+The evidence does not support this for double-track-browser today.
+
+=== External validation
+
+No `[external-targets]`. No `[issues-fed-back]`. No `[field-signal]`.
+
+External-adjacent signals:
+
+- Dependabot PRs (`#8` rand bump) — automated dependency bumps, not
+  external users.
+- Mirror remotes configured (bitbucket/codeberg/gitlab/sourcehut) —
+  mirror presence is not usage.
+- README self-claim badge `RSR-Gold%20Level%20(91%25)` and
+  `RSR_COMPLIANCE_AUDIT.md` referenced in EXPLAINME — *self-audited,
+  not externally validated*.
+
+Per v2.0, reaching B requires *6+ diverse external targets* actually
+using the software with feedback fed back. double-track-browser is at
+*0*.
+
+== Grade x Evidence Matrix
+
+[cols="1,1,3,3"]
+|===
+| Grade | Met? | Evidence supporting | Evidence against / gaps
+
+| X
+| n/a
+| 54 Rust tests + 32 TS tests → not X
+| —
+
+| F
+| n/a
+| Not superseded; no harm signal; ethical framing in README explicitly addresses privacy tradeoffs
+| —
+
+| E
+| ✓
+| 54 `#[test]`/`#[tokio::test]` annotations across 9 Rust files; property-test integration file present; SPDX headers present; 0 dangerous-pattern uses; 0 `unsafe` blocks
+| —
+
+| D
+| *✗ (D-floor failed on language-policy compliance)*
+| Structural shell in place (22 workflow files, 6a2 layout, contractile 6-verb dirs, Justfile, `.well-known/`, LICENSES, SPDX on source, deno.json, rescript.json); 54 Rust tests; scope documented in `.claude/CLAUDE.md` + EXPLAINME.adoc
+| *5 `.ts` files in banned language* (4 test files + 1 build script, 32 Deno.test cases total). *3 `npx` invocations* in Justfile pulling npm toolchain. Justfile SPDX uses `MIT OR Palimpsest-0.8`, out of spec. No `[blockers]` in STATE. README self-claim `RSR-Gold 91%` is unverified.
+
+| C
+| *✗*
+| EXPLAINME.adoc substantive; `README.adoc` substantive; contractile trident present; Rust code clean (0 unsafe, 0 dangerous patterns); integration_tests + aspect_test + e2e_test + property_test split is well-designed
+| Cannot be C while D-floor language policy fails. Zero per-directory READMEs (0/12). `docs/` tree has 1 file. No `[dogfooding-status]`. No CI-green-SHA evidence in STATE. STATE.a2ml is 44 lines (vs ~300+ for true-C repos). Ecosystem integrations (Defensive Multiplicity / Consent-Aware HTTP / MAA) are 0%-implemented but claimed as dogfooding.
+
+| B
+| ✗
+| —
+| Zero external targets. Zero issues-fed-back. Zero field signal. `RSR-Gold 91%` self-badge is not external.
+
+| A
+| ✗
+| —
+| No field confirmation.
+|===
+
+== Verdict
+
+*Current CRG grade: **E (Pre-alpha)**. Demote two grades from
+self-declared C.*
+
+Self-declared: *C*. Audited: *E*. Same two-grade delta as
+neurophone's audit earlier today — but for a structurally cleaner
+reason: the underlying Rust code is genuinely good (2213 LOC across 6
+modules, 54 tests, zero `unsafe`, zero dangerous patterns, proper
+proptest integration, well-split aspect/e2e/property/integration test
+files). What blocks it is *language policy*, not *code quality*.
+
+Reasoning (one sentence): the repo declares itself a
+ReScript+Rust+Deno stack but authors 37% of its tests plus its build
+script in TypeScript — a hyperpolymath-banned language whose
+presence blocks the "RSR compliance mandatory" D-floor clause
+outright, regardless of how clean the remaining 63% of tests are.
+
+A D grade would require removing the 5 `.ts` files (rewrite as
+`*.res`) and replacing `npx rescript` with a non-npm-backed
+invocation. A C grade would require those *plus* per-directory
+READMEs, a populated `[dogfooding-status]`, and a `docs/` annotation
+surface comparable to boj-server or gossamer.
+
+The E grade is earned, not conservative-by-default, on four positive
+signals that keep it above X/F:
+
+1. Real Rust code: 6 non-stub modules totalling 2 213 LOC with
+   genuine content (interests.rs 1004 LOC is the heaviest — likely
+   the interest-generation engine). No stub crates.
+2. Zero dangerous-pattern uses (`believe_me`, `assert_total`,
+   `Admitted`, `sorry`, `unsafeCoerce`, `Obj.magic`) and zero
+   `unsafe` blocks in Rust.
+3. 54 live Rust `#[test]` / `#[tokio::test]` attributes split
+   thoughtfully across inline + integration + property + e2e +
+   aspect/security suites — the test *architecture* is C-grade.
+4. Contractile 6-verb layout is the most complete seen in audits
+   this session (`intend`/`trust`/`must`/`lust`/`dust`/`k9` dirs plus
+   top-level `ADJUST.contractile`).
+
+What blocks *immediate* promotion to D (do these first):
+
+. **Rewrite the 4 Deno test files as ReScript** — `tests/unit`,
+  `tests/property`, `tests/e2e`, `tests/aspect`. The Rust side of
+  each suite is already in `rust_core/tests/`; the `.ts` halves are
+  interface-level assertions on message shape / storage schema /
+  form data / activity log / extension lifecycle / security aspects,
+  all of which ReScript handles idiomatically. 32 Deno.test cases
+  → 32 ReScript test cases, one-for-one.
+. **Rewrite `scripts/build.ts` as ReScript or Rust.** It's a build
+  orchestrator (`deno run --allow-read --allow-write`); either
+  language covers it.
+. **Drop `npx rescript build` from the Justfile.** Options: install
+  `rescript` standalone, use `deno run npm:rescript@11` (explicit
+  Deno-npm shim — acceptable under Deno runtime policy), or invoke
+  through a Deno task that avoids the `npx` prefix.
+. **Fix Justfile SPDX line** — replace
+  `# SPDX-License-Identifier: MIT OR Palimpsest-0.8` with
+  `# SPDX-License-Identifier: PMPL-1.0-or-later` per Rule 1.
+. **Add `[blockers]` section to STATE.a2ml** citing this audit.
+
+What blocks promotion to C (do after D):
+
+. Add `[dogfooding-status]` to STATE.a2ml with concrete done-entries:
+  "installed in my daily-driver browser on `<date>`, `<N>` days of
+  background activity logged, `<link-to-log>`".
+. Per-directory READMEs for at least 10 of the 12 top-level source
+  subdirectories. `rust_core/`, `src/`, and `tests/` are non-optional.
+. Build out `docs/` with `architecture/`, `decisions/`, `governance/`,
+  `practice/` subtrees. Start with an ADR explaining the
+  Rust+WASM+ReScript+Deno choice.
+. Either implement the three ecosystem integrations (Defensive
+  Multiplicity, Consent-Aware HTTP, MAA) or drop them from EXPLAINME's
+  "Dogfooded Across The Account" section. Planned integrations are
+  not dogfood evidence.
+. Cite a CI-green SHA in STATE.a2ml.
+. Expand STATE.a2ml from 44 lines to include `[crates]` /
+  `[modules]`, `[route-to-mvp]`, `[session-history]` sections (see
+  neurophone / gossamer STATE files for shape).
+
+What blocks promotion to B (after C):
+
+. Zero external targets. Need 6+ diverse — different browsers
+  (Firefox, Chromium, Brave, Safari-if-possible), different AIBDP
+  host sites, different ecosystem integration downstream users.
+. No external-contributor flow. Dependabot PRs don't count.
+. `RSR-Gold 91%` README badge should be either externally verified
+  (OpenSSF Scorecard, third-party audit) or downgraded to "self-audit
+  91% — see RSR_COMPLIANCE_AUDIT.md" with a date.
+
+== Notes on Non-Negotiables Respected by this Audit
+
+- The language-policy finding is treated as the dominant blocker
+  because both the ambient `~/.claude/CLAUDE.md` and the repo's own
+  `.claude/CLAUDE.md` state "No new TypeScript files" as an
+  **Enforcement Rule** — not a suggestion. RSR-Gold compliance at
+  91% cannot be claimed while the "Gold" rule-set itself is
+  violated.
+- The `.ts` files are *Deno-executed*, which is the one permitted
+  context for the TypeScript *language* in the estate (MCP glue,
+  Deno APIs). However, *new* TypeScript code written *for any
+  reason* is banned. These test files and this build script could
+  have been written in ReScript; they weren't. That's the policy
+  gap.
+- The repo *ships* a `ts-blocker.yml` CI workflow — a strong signal
+  that the project knows the policy. The workflow's
+  `HEAD~1`-scoped diff check lets the pre-existing `.ts` files slip
+  through. The policy intent is clear; the enforcement is
+  grandfathered.
+- The self-declared `RSR-Gold%20Level%20(91%25)` badge is *not*
+  re-scored by this audit. CRG is a different axis from RSR-Gold;
+  both axes should be self-consistent, but the audit only grades
+  CRG.
+- `completion-percentage = 60` is roughly consistent with the
+  evidence (core logic + bindings built, ecosystem integrations at
+  0%). This audit does not re-score completion.
+
+== STATE.a2ml update recommendation
+
+Recommended (do NOT execute as part of this audit) — edit
+`.machine_readable/6a2/STATE.a2ml`:
+
+[source,toml]
+----
+[metadata]
+project = "double-track-browser"
+version = "0.1.0"
+last-updated = "2026-04-18"
+status = "active"
+crg-grade = "E"                # was "C"
+crg-grade-previous = "C"       # audit trail
+crg-audit = "docs/governance/CRG-AUDIT-2026-04-18.adoc"
+crg-next-target = "D"          # honest proximate bar
+
+[project-context]
+name = "double-track-browser"
+completion-percentage = 50     # was 60 — TS-removal cost + unbuilt integrations
+phase = "Language-policy cleanup required before D"
+
+[blockers]
+language-policy = "5 .ts files (4 test suites + scripts/build.ts) in banned language; 3 `npx rescript` invocations in Justfile; Justfile SPDX is `MIT OR Palimpsest-0.8`, should be PMPL-1.0-or-later. See CRG-AUDIT-2026-04-18.adoc."
+docs-thin = "docs/ has 1 file (CITATIONS.adoc); 0 per-directory READMEs across 12 source subdirs."
+dogfooding-absent = "No [dogfooding-status] section; EXPLAINME's 'Dogfooded Across The Account' lists only planned integrations."
+
+[testing-status]
+# Rust-only count after TS-removal:
+# unit-tests       = "11 inline (rust_core/src/*.rs)"
+# property-tests   = "11 (rust_core/tests/property_test.rs, proptest)"
+# e2e-tests        = "8 (rust_core/tests/e2e_test.rs)"
+# aspect-tests     = "12 (rust_core/tests/aspect_test.rs)"
+# integration-tests = "12 (rust_core/tests/integration_tests.rs)"
+# total-tests       = "54 (Rust only; 32 TS tests pending ReScript rewrite)"
+# benchmarks       = "1 file (core_bench.rs); 11-case count unverified"
+
+[crg-achievement]
+# All fields below are stale as of this audit. Recompute after the
+# language-policy cleanup sprint lands.
+requirement = "E"
+unit-tests-met = true            # Rust only
+property-tests-met = true        # Rust only
+e2e-tests-met = true             # Rust only
+aspect-tests-met = true          # Rust only
+build-tests-met = false          # scripts/build.ts is policy-violating
+contract-tests-met = false       # no contract tests identified
+reflexive-tests-met = false
+----
+
+Demote target: *E*. Route-to-D is the "rewrite 5 TS files in
+ReScript + drop npx + fix Justfile SPDX" sprint above. Once D is
+earned, the C climb is the standard annotation + dogfood +
+ecosystem-integration-stubs block.
+
+== Related Files
+
+- `.machine_readable/6a2/STATE.a2ml` — authoritative self-declared
+  state; recommend demote C→E with `[blockers]` section added citing
+  this audit.
+- `Justfile` lines 35, 142, 174 — `npx rescript build` invocations.
+- `Justfile` line 1 — out-of-spec SPDX (`MIT OR Palimpsest-0.8`).
+- `tests/unit/types_test.ts`, `tests/property/extension_properties_test.ts`,
+  `tests/e2e/extension_lifecycle_test.ts`, `tests/aspect/security_test.ts`,
+  `scripts/build.ts` — 5 TypeScript files to rewrite in ReScript.
+- `.github/workflows/ts-blocker.yml` — exists but grandfathers
+  pre-existing `.ts`; consider extending to full-repo sweep.
+- `README.adoc` — badge `RSR-Gold%20Level%20(91%25)` needs external
+  re-verification or downgrade to self-audit label.
+- `docs/governance/CRG-LIFT-PLAN-2026-04-18.adoc` — *to be written* if
+  a D-lift sprint is scheduled.
+
+_End of audit._
