@@ -89,7 +89,7 @@
 **Estimated effort**: 3-4 hours
 
 **Priority 2 (Medium Impact)**:
-7. ✅ Add justfile (+3%)
+7. ✅ Add Justfile (+3%)
 8. ✅ Add flake.nix (+2%)
 9. ✅ Add GitHub Actions CI (+5%)
 10. ✅ Add TPCF perimeter designation (+5%)
@@ -117,7 +117,7 @@
 4. Create .well-known/ directory with RFC 9116 security.txt
 
 ### Short-term (This Week)
-5. Add justfile with common development tasks
+5. Add Justfile with common development tasks
 6. Set up GitHub Actions for CI/CD
 7. Designate TPCF perimeter (recommend: Perimeter 3 - Community Sandbox)
 8. Add ai.txt and humans.txt

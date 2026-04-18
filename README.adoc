@@ -93,7 +93,7 @@ This project adheres to the *Rhodium Standard Repository (RSR) Framework* and ac
 * ✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
 * ✅ *Type Safety*: Rust compile-time guarantees + ReScript type system
 * ✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
-* ✅ *Build System*: Deno, wasm-pack, justfile, Mustfile.epx
+* ✅ *Build System*: Deno, wasm-pack, Justfile, Mustfile.epx
 * ✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
 * ✅ *Test Coverage*: Comprehensive tests (Rust + Deno)
 * ✅ *Offline-First*: Zero network dependencies, works air-gapped

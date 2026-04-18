@@ -57,7 +57,7 @@ double-track-browser/
 ├── dist/                # Built extension (gitignored)
 ├── rescript.json        # ReScript configuration
 ├── deno.json            # Deno configuration
-├── justfile             # Task runner recipes
+├── Justfile             # Task runner recipes
 ├── Mustfile.epx         # Deployment manifest
 └── CLAUDE.md            # This file
 ```

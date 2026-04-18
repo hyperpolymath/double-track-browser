@@ -60,7 +60,7 @@ DoubleTrack Browser has successfully achieved **Gold Level RSR Framework complia
 
 #### 🟡 Build System (19/20 points = 95%)
 - ✅ npm scripts (package.json)
-- ✅ justfile (30+ recipes)
+- ✅ Justfile (30+ recipes)
 - ✅ flake.nix (Nix reproducible builds)
 - ⚠️ Minor: Could add Makefile for broader compatibility (-1 point)
 
