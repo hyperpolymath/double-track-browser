@@ -209,15 +209,23 @@ impl ProfileGenerator {
             "Martin",
         ];
 
+        // All three name pools are non-empty static literal arrays declared above;
+        // .choose() on a non-empty slice always returns Some.
         let first_name = match demographics.gender {
-            Gender::Male => first_names_male.choose(&mut self.rng).expect("TODO: handle error"),
-            Gender::Female => first_names_female.choose(&mut self.rng).expect("TODO: handle error"),
-            Gender::NonBinary | Gender::PreferNotToSay => {
-                first_names_neutral.choose(&mut self.rng).expect("TODO: handle error")
-            }
+            Gender::Male => first_names_male
+                .choose(&mut self.rng)
+                .expect("first_names_male is a non-empty static literal array"),
+            Gender::Female => first_names_female
+                .choose(&mut self.rng)
+                .expect("first_names_female is a non-empty static literal array"),
+            Gender::NonBinary | Gender::PreferNotToSay => first_names_neutral
+                .choose(&mut self.rng)
+                .expect("first_names_neutral is a non-empty static literal array"),
         };
 
-        let last_name = last_names.choose(&mut self.rng).expect("TODO: handle error");
+        let last_name = last_names
+            .choose(&mut self.rng)
+            .expect("last_names is a non-empty static literal array");
         format!("{} {}", first_name, last_name)
     }
 
@@ -290,7 +298,12 @@ impl ProfileGenerator {
             OccupationCategory::Service,
             OccupationCategory::Trades,
         ];
-        occupations.choose(&mut self.rng).expect("TODO: handle error").clone()
+        // `occupations` is a non-empty static literal array declared above;
+        // .choose() on a non-empty slice always returns Some.
+        occupations
+            .choose(&mut self.rng)
+            .expect("occupations is a non-empty static literal array")
+            .clone()
     }
 
     fn generate_interests(&mut self, demographics: &Demographics) -> Vec<InterestCategory> {

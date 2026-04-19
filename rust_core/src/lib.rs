@@ -26,16 +26,22 @@ pub fn init() {
 pub fn generate_profile(seed: Option<u64>) -> JsValue {
     let mut generator = ProfileGenerator::new(seed);
     let profile = generator.generate();
-    serde_wasm_bindgen::to_value(&profile).expect("TODO: handle error")
+    // Profile is a plain serde-derived struct of owned primitives/Vecs; serialization
+    // to a JsValue cannot fail. WASM-export signature returns JsValue, not Result.
+    serde_wasm_bindgen::to_value(&profile).expect("Profile serialization is infallible (plain owned data)")
 }
 
 /// Generate browsing activities for a profile
 #[wasm_bindgen]
 pub fn generate_activities(profile_json: JsValue, duration_hours: u32) -> JsValue {
-    let profile: Profile = serde_wasm_bindgen::from_value(profile_json).expect("TODO: handle error");
+    // Caller-supplied JsValue must deserialize as Profile; validated by JS shim.
+    // WASM-export signature returns JsValue, not Result — callers should pre-validate.
+    let profile: Profile = serde_wasm_bindgen::from_value(profile_json)
+        .expect("profile_json must be a valid serialized Profile (validate via validate_profile first)");
     let mut simulator = ActivitySimulator::new(profile);
     let activities = simulator.generate_activities(duration_hours);
-    serde_wasm_bindgen::to_value(&activities).expect("TODO: handle error")
+    // Vec<BrowsingActivity> is plain serde-derived owned data; serialization is infallible.
+    serde_wasm_bindgen::to_value(&activities).expect("BrowsingActivity serialization is infallible (plain owned data)")
 }
 
 /// Validate that a profile is internally consistent
@@ -51,18 +57,24 @@ pub fn validate_profile(profile_json: JsValue) -> bool {
 /// Get recommended activity schedule for a profile
 #[wasm_bindgen]
 pub fn get_activity_schedule(profile_json: JsValue) -> JsValue {
-    let profile: Profile = serde_wasm_bindgen::from_value(profile_json).expect("TODO: handle error");
+    // Caller-supplied JsValue must deserialize as Profile; validated by JS shim.
+    let profile: Profile = serde_wasm_bindgen::from_value(profile_json)
+        .expect("profile_json must be a valid serialized Profile (validate via validate_profile first)");
     let schedule = Schedule::from_profile(&profile);
-    serde_wasm_bindgen::to_value(&schedule).expect("TODO: handle error")
+    // Schedule is plain serde-derived owned data; serialization is infallible.
+    serde_wasm_bindgen::to_value(&schedule).expect("Schedule serialization is infallible (plain owned data)")
 }
 
 /// Generate plausible form fill data tied to a profile
 #[wasm_bindgen]
 pub fn generate_form_data(profile_json: JsValue) -> JsValue {
-    let profile: Profile = serde_wasm_bindgen::from_value(profile_json).expect("TODO: handle error");
+    // Caller-supplied JsValue must deserialize as Profile; validated by JS shim.
+    let profile: Profile = serde_wasm_bindgen::from_value(profile_json)
+        .expect("profile_json must be a valid serialized Profile (validate via validate_profile first)");
     let mut rng = rand::rngs::SmallRng::from_entropy();
     let form = FormDataGenerator::generate(&profile, &mut rng);
-    serde_wasm_bindgen::to_value(&form).expect("TODO: handle error")
+    // FormData is plain serde-derived owned data; serialization is infallible.
+    serde_wasm_bindgen::to_value(&form).expect("FormData serialization is infallible (plain owned data)")
 }
 
 #[cfg(test)]

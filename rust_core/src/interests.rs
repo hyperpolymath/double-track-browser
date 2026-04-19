@@ -42,7 +42,7 @@ impl InterestUrlGenerator {
 
         let search_engine = ["google.com", "bing.com", "duckduckgo.com"]
             .choose(rng)
-            .expect("TODO: handle error");
+            .expect(".choose() on a non-empty static literal array is always Some");
 
         let url = format!("https://{}/search?q={}", search_engine, encoded_query);
         let title = format!("{} - Search", query);
@@ -58,7 +58,7 @@ impl InterestUrlGenerator {
         let title = self.get_video_title(interest, rng);
         let video_id = self.generate_video_id(rng);
 
-        let platform = ["youtube.com", "vimeo.com"].choose(rng).expect("TODO: handle error");
+        let platform = ["youtube.com", "vimeo.com"].choose(rng).expect(".choose() on a non-empty static literal array is always Some");
         let url = if *platform == "youtube.com" {
             format!("https://www.youtube.com/watch?v={}", video_id)
         } else {
@@ -81,7 +81,17 @@ impl InterestUrlGenerator {
             domain,
             product.to_lowercase().replace(" ", "-")
         );
-        let title = format!("{} - {}", product, domain.split('.').next().expect("TODO: handle error"));
+        // domain comes from DomainDatabase::shopping (static literal e.g. "amazon.com");
+        // .split('.').next() on a non-empty &str always yields Some (returns the whole
+        // string when no separator found, the prefix otherwise).
+        let title = format!(
+            "{} - {}",
+            product,
+            domain
+                .split('.')
+                .next()
+                .expect(".split('.').next() on a non-empty &str is always Some")
+        );
 
         (url, title)
     }
@@ -97,7 +107,7 @@ impl InterestUrlGenerator {
             ("bsky.app", "Bluesky"),
         ];
 
-        let (domain, name) = platforms.choose(rng).expect("TODO: handle error");
+        let (domain, name) = platforms.choose(rng).expect(".choose() on a non-empty static literal array is always Some");
         let url = format!("https://{}", domain);
         let title = format!("Home - {}", name);
 
@@ -129,7 +139,16 @@ impl InterestUrlGenerator {
             .join("-");
 
         let url = format!("https://{}/article/{}", domain, slug);
-        let title = format!("{} - {}", headline, domain.split('.').next().expect("TODO: handle error"));
+        // domain comes from DomainDatabase::news (static literal e.g. "bbc.com");
+        // .split('.').next() on a non-empty &str always yields Some.
+        let title = format!(
+            "{} - {}",
+            headline,
+            domain
+                .split('.')
+                .next()
+                .expect(".split('.').next() on a non-empty &str is always Some")
+        );
 
         (url, title)
     }
@@ -152,7 +171,16 @@ impl InterestUrlGenerator {
             )
         };
 
-        let title = format!("{} - {}", topic, domain.split('.').next().expect("TODO: handle error"));
+        // domain comes from DomainDatabase::research (static literal e.g. "wikipedia.org");
+        // .split('.').next() on a non-empty &str always yields Some.
+        let title = format!(
+            "{} - {}",
+            topic,
+            domain
+                .split('.')
+                .next()
+                .expect(".split('.').next() on a non-empty &str is always Some")
+        );
 
         (url, title)
     }
@@ -170,7 +198,16 @@ impl InterestUrlGenerator {
             domain,
             page.to_lowercase().replace(" ", "-")
         );
-        let title = format!("{} | {}", page, domain.split('.').next().expect("TODO: handle error"));
+        // domain comes from DomainDatabase static literal pools;
+        // .split('.').next() on a non-empty &str always yields Some.
+        let title = format!(
+            "{} | {}",
+            page,
+            domain
+                .split('.')
+                .next()
+                .expect(".split('.').next() on a non-empty &str is always Some")
+        );
 
         (url, title)
     }
@@ -397,7 +434,7 @@ impl InterestUrlGenerator {
                     "recipe of the day",
                 ],
             };
-            queries.choose(rng).expect("TODO: handle error").to_string()
+            queries.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
         } else {
             [
                 "news today",
@@ -410,7 +447,7 @@ impl InterestUrlGenerator {
                 "interesting facts",
             ]
             .choose(rng)
-            .expect("TODO: handle error")
+            .expect(".choose() on a non-empty static literal array is always Some")
             .to_string()
         }
     }
@@ -480,7 +517,7 @@ impl InterestUrlGenerator {
                     "How-To Guide Step by Step",
                 ],
             };
-            titles.choose(rng).expect("TODO: handle error").to_string()
+            titles.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
         } else {
             "Trending Video".to_string()
         }
@@ -564,7 +601,7 @@ impl InterestUrlGenerator {
                     "New Arrival",
                 ],
             };
-            products.choose(rng).expect("TODO: handle error").to_string()
+            products.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
         } else {
             "Product".to_string()
         }
@@ -621,7 +658,7 @@ impl InterestUrlGenerator {
                     "Weather Pattern Shift Expected This Week",
                 ],
             };
-            headlines.choose(rng).expect("TODO: handle error").to_string()
+            headlines.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
         } else {
             "Breaking News".to_string()
         }
@@ -691,7 +728,7 @@ impl InterestUrlGenerator {
                     "Literature Review Summary",
                 ],
             };
-            topics.choose(rng).expect("TODO: handle error").to_string()
+            topics.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
         } else {
             "General Topic".to_string()
         }
@@ -729,7 +766,7 @@ impl InterestUrlGenerator {
                     "Community Recommendations",
                 ],
             };
-            pages.choose(rng).expect("TODO: handle error").to_string()
+            pages.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
         } else {
             "General Page".to_string()
         }
@@ -811,15 +848,15 @@ impl DomainDatabase {
     }
 
     fn get_shopping_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.shopping.choose(rng).expect("TODO: handle error")
+        self.shopping.choose(rng).expect(".choose() on a non-empty static literal array is always Some")
     }
 
     fn get_news_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.news.choose(rng).expect("TODO: handle error")
+        self.news.choose(rng).expect(".choose() on a non-empty static literal array is always Some")
     }
 
     fn get_research_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.research.choose(rng).expect("TODO: handle error")
+        self.research.choose(rng).expect(".choose() on a non-empty static literal array is always Some")
     }
 
     fn get_interest_domain<R: Rng>(
@@ -837,7 +874,7 @@ impl DomainDatabase {
                     "wired.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Gaming => [
                     "ign.com",
                     "gamespot.com",
@@ -846,7 +883,7 @@ impl DomainDatabase {
                     "pcgamer.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Sports => [
                     "espn.com",
                     "bleacherreport.com",
@@ -854,7 +891,7 @@ impl DomainDatabase {
                     "theathletic.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Cooking => [
                     "allrecipes.com",
                     "foodnetwork.com",
@@ -863,7 +900,7 @@ impl DomainDatabase {
                     "budgetbytes.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Travel => [
                     "lonelyplanet.com",
                     "tripadvisor.com",
@@ -871,16 +908,16 @@ impl DomainDatabase {
                     "nomadicmatt.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Music => {
                     ["pitchfork.com", "bandcamp.com", "last.fm", "stereogum.com"]
                         .choose(rng)
-                        .expect("TODO: handle error")
+                        .expect(".choose() on a non-empty static literal array is always Some")
                 }
                 InterestCategory::Photography => {
                     ["500px.com", "dpreview.com", "petapixel.com", "flickr.com"]
                         .choose(rng)
-                        .expect("TODO: handle error")
+                        .expect(".choose() on a non-empty static literal array is always Some")
                 }
                 InterestCategory::Programming => [
                     "stackoverflow.com",
@@ -890,7 +927,7 @@ impl DomainDatabase {
                     "github.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Fitness => [
                     "bodybuilding.com",
                     "runnersworld.com",
@@ -898,7 +935,7 @@ impl DomainDatabase {
                     "stronglifts.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Books => [
                     "goodreads.com",
                     "bookshop.org",
@@ -906,7 +943,7 @@ impl DomainDatabase {
                     "theparisreview.org",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Art => [
                     "artsy.net",
                     "behance.net",
@@ -914,7 +951,7 @@ impl DomainDatabase {
                     "artstation.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Finance => [
                     "investopedia.com",
                     "marketwatch.com",
@@ -922,16 +959,16 @@ impl DomainDatabase {
                     "morningstar.com",
                 ]
                 .choose(rng)
-                .expect("TODO: handle error"),
+                .expect(".choose() on a non-empty static literal array is always Some"),
                 InterestCategory::Gardening => {
                     ["gardeningknowhow.com", "almanac.com", "savvygardening.com"]
                         .choose(rng)
-                        .expect("TODO: handle error")
+                        .expect(".choose() on a non-empty static literal array is always Some")
                 }
                 InterestCategory::HomeImprovement => {
                     ["thisoldhouse.com", "familyhandyman.com", "bobvila.com"]
                         .choose(rng)
-                        .expect("TODO: handle error")
+                        .expect(".choose() on a non-empty static literal array is always Some")
                 }
                 _ => "example.com",
             }

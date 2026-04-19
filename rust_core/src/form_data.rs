@@ -51,9 +51,15 @@ impl FormDataGenerator {
             "icloud.com",
             "hotmail.com",
         ];
-        let domain = domains.choose(rng).expect("TODO: handle error");
+        // `domains` and the inline separator array are non-empty static literal arrays;
+        // .choose() on a non-empty slice always returns Some.
+        let domain = domains
+            .choose(rng)
+            .expect("domains is a non-empty static literal array");
 
-        let separator = [".", "_", ""].choose(rng).expect("TODO: handle error");
+        let separator = [".", "_", ""]
+            .choose(rng)
+            .expect("separator pool is a non-empty static literal array");
         let number_suffix = if rng.gen_bool(0.6) {
             format!("{}", rng.gen_range(1..999))
         } else {
@@ -67,7 +73,13 @@ impl FormDataGenerator {
             ),
             1 => format!(
                 "{}{}{}",
-                first_lower.chars().next().expect("TODO: handle error"),
+                // `first` is either "user" (literal fallback) or a yield from
+                // split_whitespace which never returns empty slices, so first_lower
+                // is always non-empty and .chars().next() is always Some.
+                first_lower
+                    .chars()
+                    .next()
+                    .expect("first_lower is non-empty (literal fallback or split_whitespace yield)"),
                 last_lower,
                 number_suffix
             ),
@@ -87,15 +99,19 @@ impl FormDataGenerator {
             0 => name.to_string(),                                         // Full name
             1 => parts.first().map(|s| s.to_string()).unwrap_or_default(), // First name only
             2 => {
-                // First initial + last name
-                if parts.len() >= 2 {
-                    format!(
-                        "{}. {}",
-                        parts[0].chars().next().expect("TODO: handle error"),
-                        parts.last().expect("TODO: handle error")
-                    )
-                } else {
-                    name.to_string()
+                // First initial + last name — pivot on slice pattern so the
+                // non-emptiness witness flows directly into bound names.
+                match parts.as_slice() {
+                    [first, .., last] => {
+                        // split_whitespace never yields empty slices, so first.chars()
+                        // always has a first char.
+                        if let Some(initial) = first.chars().next() {
+                            format!("{}. {}", initial, last)
+                        } else {
+                            name.to_string()
+                        }
+                    }
+                    _ => name.to_string(),
                 }
             }
             _ => {
