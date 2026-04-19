@@ -7,15 +7,19 @@
     "build:rescript": "npx rescript build",
     "build:extension": "deno run --allow-read --allow-write scripts/build.ts",
     "dev": "deno task build:rescript -- -w",
-    "test": "deno task test:rust && deno task test:rescript",
+    "test": "deno task test:rust && deno task test:rescript && deno task test:affine",
     "test:rust": "cd rust_core && cargo test --release",
     "test:rescript": "deno test",
+    "test:affine": "deno test --allow-read --allow-run --allow-env tests/affine/driver.ts",
     "lint": "deno lint && deno task lint:rust",
     "lint:rust": "cd rust_core && cargo clippy -- -D warnings && cargo fmt -- --check",
     "fmt": "deno fmt",
     "clean": "rm -rf dist/ rust_core/pkg/ rust_core/target/"
   },
-  "imports": {},
+  "imports": {
+    "@hyperpolymath/affinescript-deno-test": "../../developer-ecosystem/affinescript-ecosystem/affinescript-deno-test/mod.ts",
+    "@hyperpolymath/affine-js": "../../developer-ecosystem/nextgen-languages/affinescript/packages/affine-js/mod.js"
+  },
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": true,
