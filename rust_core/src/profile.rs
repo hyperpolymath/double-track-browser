@@ -1,5 +1,5 @@
 use rand::rngs::SmallRng;
-use rand::seq::SliceRandom;
+use rand::seq::IndexedRandom;
 use rand::{Rng, SeedableRng};
 use serde::{Deserialize, Serialize};
 
@@ -121,7 +121,7 @@ impl ProfileGenerator {
         let rng = if let Some(s) = seed {
             SmallRng::seed_from_u64(s)
         } else {
-            SmallRng::from_entropy()
+            SmallRng::from_os_rng()
         };
 
         Self { rng }
@@ -145,7 +145,7 @@ impl ProfileGenerator {
     }
 
     fn generate_id(&mut self) -> String {
-        format!("profile_{:016x}", self.rng.gen::<u64>())
+        format!("profile_{:016x}", self.rng.random::<u64>())
     }
 
     fn generate_name(&mut self, demographics: &Demographics) -> String {
@@ -230,16 +230,16 @@ impl ProfileGenerator {
     }
 
     fn generate_demographics(&mut self) -> Demographics {
-        let age = self.rng.gen_range(18..=75);
+        let age = self.rng.random_range(18..=75);
 
-        let gender = match self.rng.gen_range(0..=100) {
+        let gender = match self.rng.random_range(0..=100) {
             0..=48 => Gender::Male,
             49..=97 => Gender::Female,
             98 => Gender::NonBinary,
             _ => Gender::PreferNotToSay,
         };
 
-        let location_type = match self.rng.gen_range(0..=100) {
+        let location_type = match self.rng.random_range(0..=100) {
             0..=49 => LocationType::Urban,
             50..=84 => LocationType::Suburban,
             _ => LocationType::Rural,
@@ -248,7 +248,7 @@ impl ProfileGenerator {
         let occupation_category = match age {
             18..=22 => OccupationCategory::Student,
             65.. => {
-                if self.rng.gen_bool(0.7) {
+                if self.rng.random_bool(0.7) {
                     OccupationCategory::Retired
                 } else {
                     self.random_occupation()
@@ -259,18 +259,18 @@ impl ProfileGenerator {
 
         let education_level = match age {
             18..=21 => {
-                if self.rng.gen_bool(0.7) {
+                if self.rng.random_bool(0.7) {
                     EducationLevel::HighSchool
                 } else {
                     EducationLevel::SomeCollege
                 }
             }
-            22..=24 => match self.rng.gen_range(0..=100) {
+            22..=24 => match self.rng.random_range(0..=100) {
                 0..=30 => EducationLevel::SomeCollege,
                 31..=80 => EducationLevel::Bachelor,
                 _ => EducationLevel::Master,
             },
-            _ => match self.rng.gen_range(0..=100) {
+            _ => match self.rng.random_range(0..=100) {
                 0..=20 => EducationLevel::HighSchool,
                 21..=40 => EducationLevel::SomeCollege,
                 41..=75 => EducationLevel::Bachelor,
@@ -352,7 +352,7 @@ impl ProfileGenerator {
         };
 
         // Add 1-2 occupation-related interests
-        let num_occupation_interests = self.rng.gen_range(1..=2.min(occupation_interests.len()));
+        let num_occupation_interests = self.rng.random_range(1..=2.min(occupation_interests.len()));
         interests.extend(
             occupation_interests
                 .choose_multiple(&mut self.rng, num_occupation_interests)
@@ -383,7 +383,7 @@ impl ProfileGenerator {
             InterestCategory::DataScience,
         ];
 
-        let num_random_interests = self.rng.gen_range(2..=5);
+        let num_random_interests = self.rng.random_range(2..=5);
         for interest in all_interests.choose_multiple(&mut self.rng, num_random_interests) {
             if !interests.contains(interest) {
                 interests.push(interest.clone());
@@ -398,7 +398,7 @@ impl ProfileGenerator {
         if interests.contains(&InterestCategory::Technology)
             || interests.contains(&InterestCategory::Programming)
         {
-            if self.rng.gen_bool(0.6) {
+            if self.rng.random_bool(0.6) {
                 return BrowsingStyle::Explorer;
             } else {
                 return BrowsingStyle::Researcher;
@@ -409,7 +409,7 @@ impl ProfileGenerator {
         if interests.contains(&InterestCategory::Science)
             || interests.contains(&InterestCategory::DataScience)
         {
-            if self.rng.gen_bool(0.5) {
+            if self.rng.random_bool(0.5) {
                 return BrowsingStyle::Researcher;
             } else {
                 return BrowsingStyle::Focused;
@@ -417,7 +417,7 @@ impl ProfileGenerator {
         }
 
         // Default to weighted random
-        match self.rng.gen_range(0..=100) {
+        match self.rng.random_range(0..=100) {
             0..=25 => BrowsingStyle::Focused,
             26..=50 => BrowsingStyle::Explorer,
             51..=70 => BrowsingStyle::Researcher,
@@ -441,7 +441,7 @@ impl ProfileGenerator {
             _ => 0.0,
         };
 
-        let activity_score = self.rng.gen::<f32>() + age_factor + occupation_factor;
+        let activity_score = self.rng.random::<f32>() + age_factor + occupation_factor;
 
         match activity_score {
             x if x < 0.5 => ActivityLevel::Low,

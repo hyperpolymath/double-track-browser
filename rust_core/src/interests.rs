@@ -1,6 +1,6 @@
 use crate::activity::ActivityType;
 use crate::profile::InterestCategory;
-use rand::seq::SliceRandom;
+use rand::seq::IndexedRandom;
 use rand::Rng;
 
 /// Generates realistic URLs and titles based on interests and activity types
@@ -62,7 +62,7 @@ impl InterestUrlGenerator {
         let url = if *platform == "youtube.com" {
             format!("https://www.youtube.com/watch?v={}", video_id)
         } else {
-            format!("https://vimeo.com/{}", rng.gen_range(100000000..999999999))
+            format!("https://vimeo.com/{}", rng.random_range(100000000..999999999))
         };
 
         (url, title)
@@ -775,7 +775,7 @@ impl InterestUrlGenerator {
     fn generate_video_id<R: Rng>(&self, rng: &mut R) -> String {
         const CHARS: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
         (0..11)
-            .map(|_| CHARS[rng.gen_range(0..CHARS.len())] as char)
+            .map(|_| CHARS[rng.random_range(0..CHARS.len())] as char)
             .collect()
     }
 }

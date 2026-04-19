@@ -1,5 +1,5 @@
 use crate::profile::{InterestCategory, Profile};
-use rand::seq::SliceRandom;
+use rand::seq::IndexedRandom;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 
@@ -60,13 +60,13 @@ impl FormDataGenerator {
         let separator = [".", "_", ""]
             .choose(rng)
             .expect("separator pool is a non-empty static literal array");
-        let number_suffix = if rng.gen_bool(0.6) {
-            format!("{}", rng.gen_range(1..999))
+        let number_suffix = if rng.random_bool(0.6) {
+            format!("{}", rng.random_range(1..999))
         } else {
             String::new()
         };
 
-        let local = match rng.gen_range(0..4) {
+        let local = match rng.random_range(0..4) {
             0 => format!(
                 "{}{}{}{}",
                 first_lower, separator, last_lower, number_suffix
@@ -95,7 +95,7 @@ impl FormDataGenerator {
 
     fn generate_display_name<R: Rng>(name: &str, rng: &mut R) -> String {
         let parts: Vec<&str> = name.split_whitespace().collect();
-        match rng.gen_range(0..4) {
+        match rng.random_range(0..4) {
             0 => name.to_string(),                                         // Full name
             1 => parts.first().map(|s| s.to_string()).unwrap_or_default(), // First name only
             2 => {
@@ -117,7 +117,7 @@ impl FormDataGenerator {
             _ => {
                 // Nickname-style
                 let first = parts.first().map(|s| s.to_lowercase()).unwrap_or_default();
-                format!("{}{}", first, rng.gen_range(10..99))
+                format!("{}{}", first, rng.random_range(10..99))
             }
         }
     }
@@ -168,7 +168,7 @@ impl FormDataGenerator {
         let mut topics = Vec::new();
 
         // Pick 1-3 topics aligned with interests
-        let num_topics = rng.gen_range(1..=3.min(interests.len()));
+        let num_topics = rng.random_range(1..=3.min(interests.len()));
         for interest in interests.choose_multiple(rng, num_topics) {
             let topic = match interest {
                 InterestCategory::Technology => "Technology & Innovation",

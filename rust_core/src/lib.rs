@@ -71,7 +71,7 @@ pub fn generate_form_data(profile_json: JsValue) -> JsValue {
     // Caller-supplied JsValue must deserialize as Profile; validated by JS shim.
     let profile: Profile = serde_wasm_bindgen::from_value(profile_json)
         .expect("profile_json must be a valid serialized Profile (validate via validate_profile first)");
-    let mut rng = rand::rngs::SmallRng::from_entropy();
+    let mut rng = rand::rngs::SmallRng::from_os_rng();
     let form = FormDataGenerator::generate(&profile, &mut rng);
     // FormData is plain serde-derived owned data; serialization is infallible.
     serde_wasm_bindgen::to_value(&form).expect("FormData serialization is infallible (plain owned data)")

@@ -1,7 +1,7 @@
 use crate::interests::InterestUrlGenerator;
 use crate::profile::{ActivityLevel, BrowsingStyle, InterestCategory, Profile};
 use rand::rngs::SmallRng;
-use rand::seq::SliceRandom;
+use rand::seq::IndexedRandom;
 use rand::{Rng, SeedableRng};
 use serde::{Deserialize, Serialize};
 
@@ -36,7 +36,7 @@ impl ActivitySimulator {
     pub fn new(profile: Profile) -> Self {
         Self {
             profile: profile.clone(),
-            rng: SmallRng::from_entropy(),
+            rng: SmallRng::from_os_rng(),
             url_generator: InterestUrlGenerator::new(),
         }
     }
@@ -54,7 +54,7 @@ impl ActivitySimulator {
         for i in 0..total_activities {
             // Distribute activities across the time period with realistic clustering
             let hour_offset = (i as f64 / activities_per_hour) as i64 * 3600;
-            let minute_jitter = self.rng.gen_range(0..3600);
+            let minute_jitter = self.rng.random_range(0..3600);
             let timestamp = base_time + hour_offset + minute_jitter;
 
             let activity = self.generate_single_activity(timestamp);
@@ -105,7 +105,7 @@ impl ActivitySimulator {
         match &self.profile.browsing_style {
             BrowsingStyle::Researcher => {
                 // Researchers do more searches and research
-                match self.rng.gen_range(0..=100) {
+                match self.rng.random_range(0..=100) {
                     0..=40 => ActivityType::Search,
                     41..=75 => ActivityType::Research,
                     76..=85 => ActivityType::PageVisit,
@@ -115,7 +115,7 @@ impl ActivitySimulator {
             }
             BrowsingStyle::Focused => {
                 // Focused users spend more time on fewer pages
-                match self.rng.gen_range(0..=100) {
+                match self.rng.random_range(0..=100) {
                     0..=60 => ActivityType::PageVisit,
                     61..=75 => ActivityType::Research,
                     76..=85 => ActivityType::Search,
@@ -124,7 +124,7 @@ impl ActivitySimulator {
             }
             BrowsingStyle::Explorer => {
                 // Explorers hit many different types
-                match self.rng.gen_range(0..=100) {
+                match self.rng.random_range(0..=100) {
                     0..=30 => ActivityType::PageVisit,
                     31..=45 => ActivityType::Search,
                     46..=60 => ActivityType::VideoWatch,
@@ -135,7 +135,7 @@ impl ActivitySimulator {
             }
             BrowsingStyle::Casual => {
                 // Casual browsers have balanced activity
-                match self.rng.gen_range(0..=100) {
+                match self.rng.random_range(0..=100) {
                     0..=25 => ActivityType::SocialMedia,
                     26..=45 => ActivityType::VideoWatch,
                     46..=60 => ActivityType::PageVisit,
@@ -160,7 +160,7 @@ impl ActivitySimulator {
         };
 
         // Add some randomness
-        let duration = mean * (0.5 + self.rng.gen::<f64>() * 1.5);
+        let duration = mean * (0.5 + self.rng.random::<f64>() * 1.5);
         duration as u32
     }
 }
