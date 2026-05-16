@@ -98,7 +98,7 @@ validation:
       - "**/*.d.ts"    # Allow type declaration files
       - "scripts/*.ts" # Allow Deno scripts (these are Deno TypeScript, not Node)
     action: block
-    message: "TypeScript files are not allowed. Use ReScript instead."
+    message: "TypeScript files are not allowed. Use AffineScript instead."
 
   # Block npm/bun artifacts
   no-npm:
