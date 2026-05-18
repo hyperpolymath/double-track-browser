@@ -1,18 +1,48 @@
-# SPDX-License-Identifier: MPL-2.0-or-later
+# SPDX-License-Identifier: PMPL-1.0
+name: Makefile Blocker
+
+on:
+  push:
+    paths:
+      - '**/Makefile'
+      - '**/Makefile.*'
+      - '**/*.mk'
+  pull_request:
+    paths:
+      - '**/Makefile'
+      - '**/Makefile.*'
+      - '**/*.mk'
+
+# Estate guardrail: cancel superseded runs so re-pushes / rebased PR
+# updates do not pile up queued runs against the shared account-wide
+# Actions concurrency pool. Applied only to read-only check workflows
+# (no publish/mutation), so cancelling a superseded run is always safe.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
-name: Makefile Blocker
-on: [push, pull_request]
 jobs:
-  check:
+  block-makefiles:
+    name: Block Makefile Changes
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-      - name: Block Makefiles
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+
+      - name: Fail on Makefile presence
         run: |
-          if [ -f "Makefile" ] || [ -f "makefile" ] || [ -f "GNUmakefile" ]; then
-            echo "❌ Makefile detected. Use justfile instead."
-            exit 1
-          fi
-          echo "✅ No Makefile violations"
+          echo "::error::Makefiles are not permitted in Hyperpolymath repositories."
+          echo ""
+          echo "Use the Mustfile/justfile system instead:"
+          echo "  - Mustfile: Mandatory checks (see hyperpolymath/mustfile)"
+          echo "  - justfile: Build recipes (https://just.systems)"
+          echo "  - mustfile.toml: Configuration"
+          echo ""
+          echo "Found Makefiles:"
+          find . -name "Makefile" -o -name "Makefile.*" -o -name "*.mk" | grep -v ".github"
+          echo ""
+          echo "To migrate, see: https://github.com/hyperpolymath/mustfile"
+          exit 1
