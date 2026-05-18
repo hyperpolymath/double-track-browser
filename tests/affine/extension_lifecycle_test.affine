@@ -39,16 +39,16 @@ struct State {
 }
 
 fn mk_uninit() -> State {
-  { tag: 0, profile_id: 0, activity_count: 0 }
+  #{ tag: 0, profile_id: 0, activity_count: 0 }
 }
 
 fn mk_terminated() -> State {
-  { tag: 4, profile_id: 0, activity_count: 0 }
+  #{ tag: 4, profile_id: 0, activity_count: 0 }
 }
 
 fn initialise(s: State) -> State {
   if s.tag == 0 {
-    { tag: 1, profile_id: 0, activity_count: 0 }
+    #{ tag: 1, profile_id: 0, activity_count: 0 }
   } else {
     s
   }
@@ -56,7 +56,7 @@ fn initialise(s: State) -> State {
 
 fn attach_profile(s: State, pid: Int) -> State {
   if s.tag == 1 {
-    { tag: 2, profile_id: pid, activity_count: 0 }
+    #{ tag: 2, profile_id: pid, activity_count: 0 }
   } else {
     s
   }
@@ -64,7 +64,7 @@ fn attach_profile(s: State, pid: Int) -> State {
 
 fn start_running(s: State) -> State {
   if s.tag == 2 {
-    { tag: 3, profile_id: s.profile_id, activity_count: 0 }
+    #{ tag: 3, profile_id: s.profile_id, activity_count: 0 }
   } else {
     s
   }
@@ -72,7 +72,7 @@ fn start_running(s: State) -> State {
 
 fn record_activity(s: State) -> State {
   if s.tag == 3 {
-    { tag: 3, profile_id: s.profile_id, activity_count: s.activity_count + 1 }
+    #{ tag: 3, profile_id: s.profile_id, activity_count: s.activity_count + 1 }
   } else {
     s
   }
