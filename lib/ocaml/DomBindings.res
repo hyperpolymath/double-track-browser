@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // DOM bindings for ReScript
 
 @val external document: Dom.document = "document"

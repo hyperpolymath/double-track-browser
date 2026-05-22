@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MPL-2.0
 # wokelangiser manifest for double-track-browser
-# (PMPL-1.0-or-later preferred; MPL-2.0 required for browser extension store)
+# (MPL-2.0 preferred; MPL-2.0 required for browser extension store)
 
 [project]
 name = "double-track-browser"

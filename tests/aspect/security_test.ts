@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Security aspect tests for DoubleTrack browser extension
 
 import { assertEquals, assertStringIncludes } from "jsr:@std/assert";

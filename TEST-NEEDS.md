@@ -180,7 +180,7 @@ The following benchmark suites have been configured and are ready to run:
 - ✅ Rust for core (WASM-compiled)
 - ✅ ReScript for browser (type-safe, compiles to JS)
 - ✅ Deno for testing (no npm)
-- ✅ PMPL-1.0-or-later license headers on all files
+- ✅ MPL-2.0 license headers on all files
 - ✅ No TypeScript (uses ReScript)
 - ✅ No Node.js (uses Deno)
 

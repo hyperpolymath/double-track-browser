@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Security and aspect tests for DoubleTrack core
 // Tests for handling of oversized inputs, special characters, and injection patterns
 

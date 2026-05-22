@@ -153,7 +153,7 @@ See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our
 
 == License
 
-*PMPL-1.0-or-later* (Palimpsest License) — see `license/PMPL-1.0.txt`
+*MPL-2.0* (Palimpsest License) — see `license/PMPL-1.0.txt`
 
 MPL-2.0 declared for platform compatibility where PMPL is not recognized.
 

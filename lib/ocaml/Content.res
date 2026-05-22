@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // Content script for DoubleTrack Browser
 // Runs in the context of web pages — simulates realistic user behavior
 

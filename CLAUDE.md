@@ -262,7 +262,7 @@ When making changes:
 
 ## License
 
-PMPL-1.0-or-later (Palimpsest License) - See LICENSE files
+MPL-2.0 (Palimpsest License) - See LICENSE files
 
 ## Getting Help
 

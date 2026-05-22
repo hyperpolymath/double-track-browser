@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: PMPL-1.0-or-later
+// SPDX-License-Identifier: MPL-2.0
 // WASM module wrapper for Rust core
 // Loads compiled wasm-pack output with mock fallback
 

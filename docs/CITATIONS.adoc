@@ -10,7 +10,7 @@
   title = {double-track-browser},
   year = {2026},
   url = {https://github.com/hyperpolymath/double-track-browser},
-  license = {PMPL-1.0-or-later}
+  license = {MPL-2.0}
 }
 ----
 
