@@ -73,7 +73,7 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642195f2b846b8bbe245a93 # v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ matrix.node }}
           cache: 'npm'
@@ -115,7 +115,7 @@ jobs:
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642195f2b846b8bbe245a93 # v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: 'npm'
@@ -138,7 +138,7 @@ jobs:
           test -f dist/popup.html
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@ea165f8d65b6db9a8b71b5c2d1a090c0daf9c8bb # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: extension-build-${{ github.sha }}
           path: dist/
@@ -161,7 +161,7 @@ jobs:
           cargo audit
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642195f2b846b8bbe245a93 # v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: 'npm'
@@ -224,7 +224,7 @@ jobs:
           echo "✅ All RSR requirements met" >> compliance-report.md
 
       - name: Upload Compliance Report
-        uses: actions/upload-artifact@ea165f8d65b6db9a8b71b5c2d1a090c0daf9c8bb # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: rsr-compliance-report
           path: compliance-report.md
@@ -247,7 +247,7 @@ jobs:
         run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642195f2b846b8bbe245a93 # v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: 'npm'
@@ -297,7 +297,7 @@ jobs:
         run: cargo tarpaulin --out Xml --output-dir ../coverage
 
       - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642195f2b846b8bbe245a93 # v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 20
           cache: 'npm'
