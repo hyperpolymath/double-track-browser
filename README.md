@@ -1,0 +1,235 @@
+[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=github)](https://github.com/sponsors/hyperpolymath)
+
+= DoubleTrack Browser
+
+image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0-or-later,link="https://opensource.org/licenses/MPL-2.0"]
+image:https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-license"]
+
+:toc: macro
+:toclevels: 2
+
+The pendulum has swung way too far on the privacy front.
+DoubleTrack Browser puts a hard stop to attempts to limit the reckless sharing of even your most intimate data.
+
+image:https://img.shields.io/badge/status-experimental-red.svg[Status]
+image:https://img.shields.io/badge/privacy-enhanced-green.svg[Privacy]
+image:https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg[RSR Compliance]
+image:https://img.shields.io/badge/TPCF-Perimeter%203-green.svg[TPCF]
+image:https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-orange.svg[Tech Stack]
+
+== License & Philosophy
+
+This project must declare **MPL-2.0-or-later** for platform/tooling compatibility.
+
+Philosophy: **Palimpsest**. The Palimpsest-MPL (PMPL) text is provided in `license/PMPL-1.0.txt`, and the canonical source is the palimpsest-license repository.
+
+== The Pendulum Swings Back
+
+*DoubleTrack Browser* is a radical experiment in digital identity management. While most privacy tools focus on hiding your data, DoubleTrack takes the opposite approach—it deliberately creates a rich, consistent, but entirely fictional digital presence alongside your real one.
+
+[quote]
+____
+"The best place to hide a leaf is in a forest."
+____
+
+== Core Architecture
+
+This project is built on a hybrid architecture that prioritizes both performance and memory safety:
+
+- *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
+- *ReScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
+- *Deno*: Modern runtime for build scripts and development tooling
+- *WebExtensions API*: Provides the hooks needed for background operation
+
+== Key Features
+
+- *Parallel Identity Generation*: Creates believable, consistent alternative browsing patterns
+- *Background Activity Engine*: Simulates browsing behavior even when you're not actively using your computer
+- *Memory-Safe Design*: Uses Rust's ownership model to ensure your real data remains protected
+- *Configurable Noise Levels*: Adjust how active your alternative identity should be
+
+== Why DoubleTrack Exists
+
+In a world where your data is constantly harvested, the traditional approach of trying to hide becomes increasingly futile. Data brokers have become too sophisticated, tracking technologies too pervasive.
+
+DoubleTrack explores a different hypothesis: What if, instead of trying to be invisible, you become deliberately, strategically visible—but in ways that obscure rather than reveal?
+
+== Getting Started
+
+=== Prerequisites
+
+- https://deno.land/[Deno] (v2.0+)
+- https://rustup.rs/[Rust] toolchain
+- https://rustwasm.github.io/wasm-pack/[wasm-pack]
+- https://github.com/casey/just[just] task runner (optional)
+
+=== Installation
+
+[source,bash]
+----
+# Clone the repository
+git clone https://github.com/hyperpolymath/double-track-browser.git
+cd double-track-browser
+
+# Check dependencies
+just install
+
+# Build everything (Rust + ReScript + Extension)
+just build
+
+# Or without just:
+deno task build
+----
+
+Then load the extension from the `dist/` directory into your browser's developer mode.
+
+== Warning
+
+This is experimental software. While designed with security in mind, it may have unintended consequences for your online experience. Use at your own risk and only on personal devices.
+
+== RSR Framework Compliance
+
+This project adheres to the *Rhodium Standard Repository (RSR) Framework* and achieves *Gold Level* compliance (91%):
+
+* ✅ *Documentation*: README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, MAINTAINERS, CHANGELOG
+* ✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
+* ✅ *Type Safety*: Rust compile-time guarantees + ReScript type system
+* ✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
+* ✅ *Build System*: Deno, wasm-pack, Justfile, Mustfile.epx
+* ✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
+* ✅ *Test Coverage*: Comprehensive tests (Rust + Deno)
+* ✅ *Offline-First*: Zero network dependencies, works air-gapped
+
+See link:RSR_COMPLIANCE_AUDIT.md[RSR_COMPLIANCE_AUDIT.md] for detailed audit.
+
+== Language Policy
+
+This project follows the *Hyperpolymath Standard* language policy:
+
+- *ReScript* instead of TypeScript
+- *Deno* instead of npm/Node.js
+- *Rust* for performance-critical code
+- *justfile* instead of Makefile
+
+See link:.claude/CLAUDE.md[.claude/CLAUDE.md] for the complete policy.
+
+== Tri-Perimeter Contribution Framework (TPCF)
+
+This project uses the *TPCF* to manage trust and contributions:
+
+=== Perimeter 3: Community Sandbox (Current)
+- *Access*: Open to all
+- *Scope*: All public contributions
+- *Requirements*: Follow Code of Conduct, sign commits (optional)
+- *Review*: All PRs reviewed before merge
+
+=== Perimeter 2: Trusted Contributors (Future)
+- Access granted after sustained contributions (3+ months, 10+ merged PRs)
+- Code review privileges, issue triage, mentoring
+
+=== Perimeter 1: Core Stewards (Future)
+- Invitation-only for long-term maintainers
+- Strategic decisions, governance, security response
+
+*Current Status*: Only Perimeter 3 is active. See link:MAINTAINERS.md[MAINTAINERS.md] for details.
+
+== Contributing
+
+Contributions are welcome! This project values:
+
+- *Reversibility*: Experiments should be safe to try and easy to undo
+- *Emotional Safety*: No blame culture, mistakes are learning opportunities
+- *Diverse Expertise*: All skill levels welcome
+- *Sustainable Pace*: No crunch time, life comes first
+
+See link:CONTRIBUTING.md[CONTRIBUTING.md] for guidelines and link:CODE_OF_CONDUCT.md[CODE_OF_CONDUCT.md] for community standards.
+
+== Security
+
+See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our security model. We follow responsible disclosure with a 90-day coordinated release window.
+
+*Quick contacts*:
+
+- *Security issues*: security@example.com (see .well-known/security.txt)
+- *Code of Conduct*: conduct@example.com
+
+== License
+
+*MPL-2.0* (Palimpsest License) — see `license/PMPL-1.0.txt`
+
+MPL-2.0 declared for platform compatibility where PMPL is not recognized.
+
+---
+
+[quote]
+____
+"In the age of surveillance capitalism, visibility can be a form of camouflage."
+____
+
+
+== Ecosystem Integration Roadmap
+
+DoubleTrack Browser is designed to integrate with three sibling hyperpolymath projects:
+
+=== Defensive Multiplicity
+
+*Location:* `misinformation-defence-platform/defensive-multiplicity/`
+
+The theoretical foundation for DoubleTrack's approach. Rather than hiding data, Defensive Multiplicity achieves privacy through controlled identity proliferation.
+
+*What DoubleTrack takes from it:*
+
+- **Persona lifecycle rules**: Max 180-day lifespan per persona without renewal
+- **Cryptographic accountability**: All synthetic identities contain proof of human authorship
+- **Non-interference principle**: Fake browsing must not suppress authentic voices
+- **Ethical guardrails**: Automatic persona deactivation upon boundary breach
+- **Purpose-bound identities**: No persona operates beyond its declared purpose
+
+*Implementation targets:*
+
+- [ ] Multi-persona rotation (generate and cycle between 2-5 personas)
+- [ ] Cryptographic identity chaining (link personas to human controller)
+- [ ] Behavioral anomaly detection (ensure personas remain believable)
+- [ ] Persona expiry and renewal workflow
+
+=== Consent-Aware HTTP (AIBDP)
+
+*Location:* `standards/consent-aware-http/`
+
+Internet-Draft protocols for declaring and enforcing AI usage boundaries on the web.
+
+*What DoubleTrack takes from it:*
+
+- **AIBDP manifests**: Check `/.well-known/aibdp.json` before visiting sites
+- **HTTP 430 respect**: Honor "Consent Required" responses from servers
+- **Intent declaration**: Signal browsing purpose via `X-AI-Intent` headers
+- **Consent as refusal**: Without explicit permission, default to not visiting
+
+*Implementation targets:*
+
+- [ ] Background engine checks AIBDP manifest before opening fake tabs
+- [ ] Respect `training: refused` policy (skip sites that refuse)
+- [ ] Cache AIBDP results (30-90 day TTL per spec)
+- [ ] Log consent decisions in activity history
+
+=== MAA Framework
+
+*Location:* `maa-framework/`
+
+Full-stack paradigm for building verifiably-compliant, secure systems.
+
+*What DoubleTrack takes from it:*
+
+- **Idris2 ABI proofs**: Formally verify that real identity never leaks into fake sessions
+- **Zig FFI bridge**: Cross-platform ABI for identity isolation layer
+- **Microkernel philosophy**: Minimal trusted computing base for persona management
+
+*Implementation targets:*
+
+- [ ] Idris2 ABI definitions for identity boundary types
+- [ ] Formal proof that real browsing data cannot flow into fake persona storage
+- [ ] Zig FFI implementation of identity isolation primitives
+
+== Architecture
+
+See link:TOPOLOGY.md[TOPOLOGY.md] for a visual architecture map and completion dashboard.
