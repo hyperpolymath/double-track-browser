@@ -1,3 +1,7 @@
+<!--
+SPDX-License-Identifier: MPL-2.0
+Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
 # Licensing Information
 
 ## Dual License
@@ -5,7 +9,7 @@
 DoubleTrack Browser is dual-licensed under:
 
 1. **MIT License** (primary, for maximum compatibility)
-2. **Palimpsest License v0.8** (alternative, for RSR compliance)
+2. **MPL-2.0 v0.8** (alternative, for RSR compliance)
 
 You may choose either license when using, modifying, or distributing this software.
 
@@ -17,7 +21,7 @@ You may choose either license when using, modifying, or distributing this softwa
 ## License Texts
 
 - MIT License: See [LICENSE-MIT](LICENSE-MIT)
-- Palimpsest License v0.8: See [LICENSE-PALIMPSEST](LICENSE-PALIMPSEST)
+- MPL-2.0 v0.8: See [LICENSE-PALIMPSEST](LICENSE-PALIMPSEST)
 - Historical GPL-3.0: See [LICENSE](LICENSE) (retained for historical purposes)
 
 ## How to Choose

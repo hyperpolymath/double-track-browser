@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
+// Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 // Property-based tests for DoubleTrack core types
 // Tests invariants that must hold across all generated values
 

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
+// Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 // Security and aspect tests for DoubleTrack core
 // Tests for handling of oversized inputs, special characters, and injection patterns
 

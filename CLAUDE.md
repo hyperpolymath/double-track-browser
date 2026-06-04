@@ -1,3 +1,7 @@
+<!--
+SPDX-License-Identifier: MPL-2.0
+Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
 # CLAUDE.md - Development Guide for DoubleTrack Browser
 
 This document provides context for AI assistants working on the DoubleTrack Browser project.
@@ -262,7 +266,7 @@ When making changes:
 
 ## License
 
-MPL-2.0 (Palimpsest License) - See LICENSE files
+MPL-2.0 (MPL-2.0) - See LICENSE files
 
 ## Getting Help
 

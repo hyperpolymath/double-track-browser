@@ -1,3 +1,7 @@
+<!--
+SPDX-License-Identifier: MPL-2.0
+Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
 # 🏆 RSR Gold Level Achievement
 
 **Date**: 2025-11-22
@@ -97,7 +101,7 @@ To reach Rhodium Level (95%+):
 4. **RSR_COMPLIANCE_AUDIT.md** - 200 lines, detailed audit
 5. **LICENSING.md** - 100 lines, dual-license explanation
 6. **LICENSE-MIT** - 21 lines, MIT License text
-7. **LICENSE-PALIMPSEST** - 180 lines, Palimpsest License v0.8
+7. **LICENSE-PALIMPSEST** - 180 lines, MPL-2.0 v0.8
 
 ### .well-known/ (3)
 8. **security.txt** - 25 lines, RFC 9116 compliant

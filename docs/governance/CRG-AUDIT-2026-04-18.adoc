@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
-// Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
-
+// Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 = double-track-browser — CRG Audit (2026-04-18)
 Jonathan D.A. Jewell
 2026-04-18
@@ -79,7 +78,7 @@ soft guideline.
 | `docs/`
 
 | `LICENSE` + `LICENSES/` directory
-| PRESENT (`LICENSE`, `LICENSES/MPL-2.0.txt`, `LICENSES/MPL-2.0.txt`, plus extras: `LICENSE-MIT`, `LICENSE-PALIMPSEST`, legacy `license/PMPL-1.0.txt`)
+| PRESENT (`LICENSE`, `LICENSES/MPL-2.0.txt`, `LICENSES/MPL-2.0.txt`, plus extras: `LICENSE-MIT`, `LICENSE-PALIMPSEST`, legacy `license/MPL-2.0.txt`)
 | Licence hygiene cluttered (6 licence-ish files at root/subdirs) but Rule-1+Rule-2 pair is present
 
 | `guix.scm` + `flake.nix`

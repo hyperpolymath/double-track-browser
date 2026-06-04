@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
+// Copyright (c) Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 // End-to-end tests for DoubleTrack extension lifecycle
 
 import { assertEquals, assertExists } from "jsr:@std/assert";
