@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: MIT OR Palimpsest-0.8
+# SPDX-License-Identifier: MPL-2.0 OR Palimpsest-0.8
 # justfile - Modern task runner for DoubleTrack Browser
 # https://github.com/casey/just
 #

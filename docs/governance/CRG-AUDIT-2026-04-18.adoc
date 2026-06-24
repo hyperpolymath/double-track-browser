@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MPL-2.0
+// SPDX-License-Identifier: CC-BY-SA-4.0
 // Copyright (c) 2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
 
 = double-track-browser — CRG Audit (2026-04-18)
@@ -91,7 +91,7 @@ soft guideline.
 | `.well-known/`
 
 | SPDX headers on source
-| PRESENT on sampled Rust + ReScript + TS files (SPDX-License-Identifier: MPL-2.0 on tests and `Justfile` uses `MIT OR Palimpsest-0.8` — the Justfile SPDX *drifts* from Rule 1)
+| PRESENT on sampled Rust + ReScript + TS files (SPDX-License-Identifier: CC-BY-SA-4.0 on tests and `Justfile` uses `MIT OR Palimpsest-0.8` — the Justfile SPDX *drifts* from Rule 1)
 | Grep confirmed — the Justfile SPDX line `MIT OR Palimpsest-0.8` is out of spec; should be `MPL-2.0`.
 
 | `Containerfile` (not `Dockerfile`)
@@ -456,8 +456,8 @@ What blocks *immediate* promotion to D (do these first):
   Deno-npm shim — acceptable under Deno runtime policy), or invoke
   through a Deno task that avoids the `npx` prefix.
 . **Fix Justfile SPDX line** — replace
-  `# SPDX-License-Identifier: MIT OR Palimpsest-0.8` with
-  `# SPDX-License-Identifier: MPL-2.0` per Rule 1.
+  `# SPDX-License-Identifier: CC-BY-SA-4.0 OR Palimpsest-0.8` with
+  `# SPDX-License-Identifier: CC-BY-SA-4.0` per Rule 1.
 . **Add `[blockers]` section to STATE.a2ml** citing this audit.
 
 What blocks promotion to C (do after D):
