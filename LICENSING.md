@@ -63,13 +63,13 @@ A: That was the original license. As of v0.1.1, the project has transitioned to 
 When adding headers to source files, use:
 
 ```
-// SPDX-License-Identifier: MPL-2.0-or-later
+// SPDX-License-Identifier: CC-BY-SA-4.0
 ```
 
 Or for individual file choice:
 
 ```
-// SPDX-License-Identifier: MPL-2.0-or-later
+// SPDX-License-Identifier: CC-BY-SA-4.0
 ```
 
 ## Questions?
