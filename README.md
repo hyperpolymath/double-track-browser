@@ -1,72 +1,97 @@
-[![Sponsor](https://img.shields.io/badge/Sponsor-%E2%9D%A4-pink?logo=github)](https://github.com/sponsors/hyperpolymath)
+<!--
+SPDX-License-Identifier: CC-BY-SA-4.0
+SPDX-FileCopyrightText: 2025-2026 Jonathan D.A. Jewell <j.d.a.jewell@open.ac.uk>
+-->
 
-= DoubleTrack Browser
+[![MPL-2](https://img.shields.io/badge/License-MPL_2.0-blue.svg)](https://opensource.org/licenses/MPL-2.0)
+[![Palimpsest](https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg)](https://github.com/hyperpolymath/palimpsest-license)
 
-image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0-or-later,link="https://opensource.org/licenses/MPL-2.0"]
-image:https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-license"]
+The pendulum has swung way too far on the privacy front. DoubleTrack
+Browser puts a hard stop to attempts to limit the reckless sharing of
+even your most intimate data.
 
-:toc: macro
-:toclevels: 2
+![Status](https://img.shields.io/badge/status-experimental-red.svg)
+![Privacy](https://img.shields.io/badge/privacy-enhanced-green.svg)
+![RSR
+Compliance](https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg)
+![TPCF](https://img.shields.io/badge/TPCF-Perimeter%203-green.svg)
+![Tech
+Stack](https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-orange.svg)
 
-The pendulum has swung way too far on the privacy front.
-DoubleTrack Browser puts a hard stop to attempts to limit the reckless sharing of even your most intimate data.
+# License & Philosophy
 
-image:https://img.shields.io/badge/status-experimental-red.svg[Status]
-image:https://img.shields.io/badge/privacy-enhanced-green.svg[Privacy]
-image:https://img.shields.io/badge/RSR-Gold%20Level%20(91%25)-gold.svg[RSR Compliance]
-image:https://img.shields.io/badge/TPCF-Perimeter%203-green.svg[TPCF]
-image:https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-orange.svg[Tech Stack]
+This project must declare **MPL-2.0-or-later** for platform/tooling
+compatibility.
 
-== License & Philosophy
+Philosophy: **Palimpsest**. The Palimpsest-MPL (PMPL) text is provided
+in `license/PMPL-1.0.txt`, and the canonical source is the
+palimpsest-license repository.
 
-This project must declare **MPL-2.0-or-later** for platform/tooling compatibility.
+# The Pendulum Swings Back
 
-Philosophy: **Palimpsest**. The Palimpsest-MPL (PMPL) text is provided in `license/PMPL-1.0.txt`, and the canonical source is the palimpsest-license repository.
+**DoubleTrack Browser** is a radical experiment in digital identity
+management. While most privacy tools focus on hiding your data,
+DoubleTrack takes the opposite approach—it deliberately creates a rich,
+consistent, but entirely fictional digital presence alongside your real
+one.
 
-== The Pendulum Swings Back
+> "The best place to hide a leaf is in a forest."
 
-*DoubleTrack Browser* is a radical experiment in digital identity management. While most privacy tools focus on hiding your data, DoubleTrack takes the opposite approach—it deliberately creates a rich, consistent, but entirely fictional digital presence alongside your real one.
+# Core Architecture
 
-[quote]
-____
-"The best place to hide a leaf is in a forest."
-____
+This project is built on a hybrid architecture that prioritizes both
+performance and memory safety:
 
-== Core Architecture
+- **Rust Core**: Powers the profile generation and activity simulation
+  engine, compiled to WebAssembly for browser integration
 
-This project is built on a hybrid architecture that prioritizes both performance and memory safety:
+- **ReScript**: Type-safe browser API integration and UI components
+  (compiles to JavaScript)
 
-- *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
-- *ReScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
-- *Deno*: Modern runtime for build scripts and development tooling
-- *WebExtensions API*: Provides the hooks needed for background operation
+- **Deno**: Modern runtime for build scripts and development tooling
 
-== Key Features
+- **WebExtensions API**: Provides the hooks needed for background
+  operation
 
-- *Parallel Identity Generation*: Creates believable, consistent alternative browsing patterns
-- *Background Activity Engine*: Simulates browsing behavior even when you're not actively using your computer
-- *Memory-Safe Design*: Uses Rust's ownership model to ensure your real data remains protected
-- *Configurable Noise Levels*: Adjust how active your alternative identity should be
+# Key Features
 
-== Why DoubleTrack Exists
+- **Parallel Identity Generation**: Creates believable, consistent
+  alternative browsing patterns
 
-In a world where your data is constantly harvested, the traditional approach of trying to hide becomes increasingly futile. Data brokers have become too sophisticated, tracking technologies too pervasive.
+- **Background Activity Engine**: Simulates browsing behavior even when
+  you’re not actively using your computer
 
-DoubleTrack explores a different hypothesis: What if, instead of trying to be invisible, you become deliberately, strategically visible—but in ways that obscure rather than reveal?
+- **Memory-Safe Design**: Uses Rust’s ownership model to ensure your
+  real data remains protected
 
-== Getting Started
+- **Configurable Noise Levels**: Adjust how active your alternative
+  identity should be
 
-=== Prerequisites
+# Why DoubleTrack Exists
 
-- https://deno.land/[Deno] (v2.0+)
-- https://rustup.rs/[Rust] toolchain
-- https://rustwasm.github.io/wasm-pack/[wasm-pack]
-- https://github.com/casey/just[just] task runner (optional)
+In a world where your data is constantly harvested, the traditional
+approach of trying to hide becomes increasingly futile. Data brokers
+have become too sophisticated, tracking technologies too pervasive.
 
-=== Installation
+DoubleTrack explores a different hypothesis: What if, instead of trying
+to be invisible, you become deliberately, strategically visible—but in
+ways that obscure rather than reveal?
 
-[source,bash]
-----
+# Getting Started
+
+## Prerequisites
+
+- [Deno](https://deno.land/) (v2.0+)
+
+- [Rust](https://rustup.rs/) toolchain
+
+- [wasm-pack](https://rustwasm.github.io/wasm-pack/)
+
+- [just](https://github.com/casey/just) task runner (optional)
+
+## Installation
+
+```bash
 # Clone the repository
 git clone https://github.com/hyperpolymath/double-track-browser.git
 cd double-track-browser
@@ -79,157 +104,230 @@ just build
 
 # Or without just:
 deno task build
-----
+```
 
-Then load the extension from the `dist/` directory into your browser's developer mode.
+Then load the extension from the `dist/` directory into your browser’s
+developer mode.
 
-== Warning
+# Warning
 
-This is experimental software. While designed with security in mind, it may have unintended consequences for your online experience. Use at your own risk and only on personal devices.
+This is experimental software. While designed with security in mind, it
+may have unintended consequences for your online experience. Use at your
+own risk and only on personal devices.
 
-== RSR Framework Compliance
+# RSR Framework Compliance
 
-This project adheres to the *Rhodium Standard Repository (RSR) Framework* and achieves *Gold Level* compliance (91%):
+This project adheres to the **Rhodium Standard Repository (RSR)
+Framework** and achieves **Gold Level** compliance (91%):
 
-* ✅ *Documentation*: README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, MAINTAINERS, CHANGELOG
-* ✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
-* ✅ *Type Safety*: Rust compile-time guarantees + ReScript type system
-* ✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
-* ✅ *Build System*: Deno, wasm-pack, Justfile, Mustfile.epx
-* ✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
-* ✅ *Test Coverage*: Comprehensive tests (Rust + Deno)
-* ✅ *Offline-First*: Zero network dependencies, works air-gapped
+- ✅ **Documentation**: README, LICENSE, SECURITY, CODE_OF_CONDUCT,
+  CONTRIBUTING, MAINTAINERS, CHANGELOG
 
-See link:RSR_COMPLIANCE_AUDIT.md[RSR_COMPLIANCE_AUDIT.md] for detailed audit.
+- ✅ **.well-known/**: RFC 9116 security.txt, ai.txt (AI training
+  policy), humans.txt (attribution)
 
-== Language Policy
+- ✅ **Type Safety**: Rust compile-time guarantees + ReScript type
+  system
 
-This project follows the *Hyperpolymath Standard* language policy:
+- ✅ **Memory Safety**: Rust ownership model, zero unsafe blocks
 
-- *ReScript* instead of TypeScript
-- *Deno* instead of npm/Node.js
-- *Rust* for performance-critical code
-- *justfile* instead of Makefile
+- ✅ **Build System**: Deno, wasm-pack, Justfile, Mustfile.epx
 
-See link:.claude/CLAUDE.md[.claude/CLAUDE.md] for the complete policy.
+- ✅ **CI/CD**: GitHub Actions with security audits, linting, and
+  testing
 
-== Tri-Perimeter Contribution Framework (TPCF)
+- ✅ **Test Coverage**: Comprehensive tests (Rust + Deno)
 
-This project uses the *TPCF* to manage trust and contributions:
+- ✅ **Offline-First**: Zero network dependencies, works air-gapped
 
-=== Perimeter 3: Community Sandbox (Current)
-- *Access*: Open to all
-- *Scope*: All public contributions
-- *Requirements*: Follow Code of Conduct, sign commits (optional)
-- *Review*: All PRs reviewed before merge
+See
+<a href="RSR_COMPLIANCE_AUDIT.md" class="md">RSR_COMPLIANCE_AUDIT</a>
+for detailed audit.
 
-=== Perimeter 2: Trusted Contributors (Future)
-- Access granted after sustained contributions (3+ months, 10+ merged PRs)
+# Language Policy
+
+This project follows the **Hyperpolymath Standard** language policy:
+
+- **ReScript** instead of TypeScript
+
+- **Deno** instead of npm/Node.js
+
+- **Rust** for performance-critical code
+
+- **justfile** instead of Makefile
+
+See <a href=".claude/CLAUDE.md"
+class="claude/CLAUDE md">.claude/CLAUDE.md</a> for the complete policy.
+
+# Tri-Perimeter Contribution Framework (TPCF)
+
+This project uses the **TPCF** to manage trust and contributions:
+
+## Perimeter 3: Community Sandbox (Current)
+
+- **Access**: Open to all
+
+- **Scope**: All public contributions
+
+- **Requirements**: Follow Code of Conduct, sign commits (optional)
+
+- **Review**: All PRs reviewed before merge
+
+## Perimeter 2: Trusted Contributors (Future)
+
+- Access granted after sustained contributions (3+ months, 10+ merged
+  PRs)
+
 - Code review privileges, issue triage, mentoring
 
-=== Perimeter 1: Core Stewards (Future)
+## Perimeter 1: Core Stewards (Future)
+
 - Invitation-only for long-term maintainers
+
 - Strategic decisions, governance, security response
 
-*Current Status*: Only Perimeter 3 is active. See link:MAINTAINERS.md[MAINTAINERS.md] for details.
+**Current Status**: Only Perimeter 3 is active. See
+<a href="MAINTAINERS.md" class="md">MAINTAINERS</a> for details.
 
-== Contributing
+# Contributing
 
 Contributions are welcome! This project values:
 
-- *Reversibility*: Experiments should be safe to try and easy to undo
-- *Emotional Safety*: No blame culture, mistakes are learning opportunities
-- *Diverse Expertise*: All skill levels welcome
-- *Sustainable Pace*: No crunch time, life comes first
+- **Reversibility**: Experiments should be safe to try and easy to undo
 
-See link:CONTRIBUTING.md[CONTRIBUTING.md] for guidelines and link:CODE_OF_CONDUCT.md[CODE_OF_CONDUCT.md] for community standards.
+- **Emotional Safety**: No blame culture, mistakes are learning
+  opportunities
 
-== Security
+- **Diverse Expertise**: All skill levels welcome
 
-See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our security model. We follow responsible disclosure with a 90-day coordinated release window.
+- **Sustainable Pace**: No crunch time, life comes first
 
-*Quick contacts*:
+See <a href="CONTRIBUTING.md" class="md">CONTRIBUTING</a> for guidelines
+and <a href="CODE_OF_CONDUCT.md" class="md">CODE_OF_CONDUCT</a> for
+community standards.
 
-- *Security issues*: security@example.com (see .well-known/security.txt)
-- *Code of Conduct*: conduct@example.com
+# Security
 
-== License
+See <a href="SECURITY.md" class="md">SECURITY</a> for vulnerability
+reporting procedures and our security model. We follow responsible
+disclosure with a 90-day coordinated release window.
 
-*MPL-2.0* (Palimpsest License) — see `license/PMPL-1.0.txt`
+**Quick contacts**:
 
-MPL-2.0 declared for platform compatibility where PMPL is not recognized.
+- **Security issues**: [security@example.com](security@example.com) (see
+  .well-known/security.txt)
 
----
+- **Code of Conduct**: [conduct@example.com](conduct@example.com)
 
-[quote]
-____
-"In the age of surveillance capitalism, visibility can be a form of camouflage."
-____
+# License
 
+**MPL-2.0** (Palimpsest License) — see `license/PMPL-1.0.txt`
 
-== Ecosystem Integration Roadmap
+MPL-2.0 declared for platform compatibility where PMPL is not
+recognized.
 
-DoubleTrack Browser is designed to integrate with three sibling hyperpolymath projects:
+------------------------------------------------------------------------
 
-=== Defensive Multiplicity
+> "In the age of surveillance capitalism, visibility can be a form of
+> camouflage."
 
-*Location:* `misinformation-defence-platform/defensive-multiplicity/`
+# Ecosystem Integration Roadmap
 
-The theoretical foundation for DoubleTrack's approach. Rather than hiding data, Defensive Multiplicity achieves privacy through controlled identity proliferation.
+DoubleTrack Browser is designed to integrate with three sibling
+hyperpolymath projects:
 
-*What DoubleTrack takes from it:*
+## Defensive Multiplicity
 
-- **Persona lifecycle rules**: Max 180-day lifespan per persona without renewal
-- **Cryptographic accountability**: All synthetic identities contain proof of human authorship
-- **Non-interference principle**: Fake browsing must not suppress authentic voices
-- **Ethical guardrails**: Automatic persona deactivation upon boundary breach
-- **Purpose-bound identities**: No persona operates beyond its declared purpose
+**Location:** `misinformation-defence-platform/defensive-multiplicity/`
 
-*Implementation targets:*
+The theoretical foundation for DoubleTrack’s approach. Rather than
+hiding data, Defensive Multiplicity achieves privacy through controlled
+identity proliferation.
+
+**What DoubleTrack takes from it:**
+
+- **Persona lifecycle rules**: Max 180-day lifespan per persona without
+  renewal
+
+- **Cryptographic accountability**: All synthetic identities contain
+  proof of human authorship
+
+- **Non-interference principle**: Fake browsing must not suppress
+  authentic voices
+
+- **Ethical guardrails**: Automatic persona deactivation upon boundary
+  breach
+
+- **Purpose-bound identities**: No persona operates beyond its declared
+  purpose
+
+**Implementation targets:**
 
 - [ ] Multi-persona rotation (generate and cycle between 2-5 personas)
-- [ ] Cryptographic identity chaining (link personas to human controller)
+
+- [ ] Cryptographic identity chaining (link personas to human
+  controller)
+
 - [ ] Behavioral anomaly detection (ensure personas remain believable)
+
 - [ ] Persona expiry and renewal workflow
 
-=== Consent-Aware HTTP (AIBDP)
+## Consent-Aware HTTP (AIBDP)
 
-*Location:* `standards/consent-aware-http/`
+**Location:** `standards/consent-aware-http/`
 
-Internet-Draft protocols for declaring and enforcing AI usage boundaries on the web.
+Internet-Draft protocols for declaring and enforcing AI usage boundaries
+on the web.
 
-*What DoubleTrack takes from it:*
+**What DoubleTrack takes from it:**
 
-- **AIBDP manifests**: Check `/.well-known/aibdp.json` before visiting sites
+- **AIBDP manifests**: Check `/.well-known/aibdp.json` before visiting
+  sites
+
 - **HTTP 430 respect**: Honor "Consent Required" responses from servers
-- **Intent declaration**: Signal browsing purpose via `X-AI-Intent` headers
-- **Consent as refusal**: Without explicit permission, default to not visiting
 
-*Implementation targets:*
+- **Intent declaration**: Signal browsing purpose via `X-AI-Intent`
+  headers
+
+- **Consent as refusal**: Without explicit permission, default to not
+  visiting
+
+**Implementation targets:**
 
 - [ ] Background engine checks AIBDP manifest before opening fake tabs
-- [ ] Respect `training: refused` policy (skip sites that refuse)
+
+- [ ] Respect `training:` `refused` policy (skip sites that refuse)
+
 - [ ] Cache AIBDP results (30-90 day TTL per spec)
+
 - [ ] Log consent decisions in activity history
 
-=== MAA Framework
+## MAA Framework
 
-*Location:* `maa-framework/`
+**Location:** `maa-framework/`
 
 Full-stack paradigm for building verifiably-compliant, secure systems.
 
-*What DoubleTrack takes from it:*
+**What DoubleTrack takes from it:**
 
-- **Idris2 ABI proofs**: Formally verify that real identity never leaks into fake sessions
+- **Idris2 ABI proofs**: Formally verify that real identity never leaks
+  into fake sessions
+
 - **Zig FFI bridge**: Cross-platform ABI for identity isolation layer
-- **Microkernel philosophy**: Minimal trusted computing base for persona management
 
-*Implementation targets:*
+- **Microkernel philosophy**: Minimal trusted computing base for persona
+  management
+
+**Implementation targets:**
 
 - [ ] Idris2 ABI definitions for identity boundary types
-- [ ] Formal proof that real browsing data cannot flow into fake persona storage
+
+- [ ] Formal proof that real browsing data cannot flow into fake persona
+  storage
+
 - [ ] Zig FFI implementation of identity isolation primitives
 
-== Architecture
+# Architecture
 
-See link:TOPOLOGY.md[TOPOLOGY.md] for a visual architecture map and completion dashboard.
+See <a href="TOPOLOGY.md" class="md">TOPOLOGY</a> for a visual
+architecture map and completion dashboard.
