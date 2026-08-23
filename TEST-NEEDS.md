@@ -178,10 +178,10 @@ The following benchmark suites have been configured and are ready to run:
 
 ### Language Policy Compliance
 - ✅ Rust for core (WASM-compiled)
-- ✅ ReScript for browser (type-safe, compiles to JS)
+- ✅ AffineScript for browser (type-safe, compiles to JS)
 - ✅ Deno for testing (no npm)
 - ✅ MPL-2.0 license headers on all files
-- ✅ No TypeScript (uses ReScript)
+- ✅ No TypeScript (uses AffineScript)
 - ✅ No Node.js (uses Deno)
 
 ### Test Characteristics

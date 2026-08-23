@@ -22,7 +22,7 @@ cd double-track-browser
 # Check dependencies
 just install
 
-# Build everything (Rust + ReScript + Extension)
+# Build everything (Rust + AffineScript + Extension)
 just build
 
 # Or without just:

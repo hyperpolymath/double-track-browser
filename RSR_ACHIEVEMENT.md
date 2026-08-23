@@ -61,7 +61,7 @@ DoubleTrack Browser has successfully achieved **Gold Level RSR Framework complia
 #### 🟡 Build System (19/20 points = 95%)
 - ✅ npm scripts (package.json)
 - ✅ Justfile (30+ recipes)
-- ✅ flake.nix (Nix reproducible builds)
+- ✅ flake.guix (Guix reproducible builds)
 - ⚠️ Minor: Could add Makefile for broader compatibility (-1 point)
 
 ### Areas for Future Improvement (Path to Rhodium)
@@ -106,7 +106,7 @@ To reach Rhodium Level (95%+):
 
 ### Build System (2)
 11. **justfile** - 320 lines, 30+ task recipes
-12. **flake.nix** - 200 lines, Nix reproducible builds
+12. **flake.guix** - 200 lines, Guix reproducible builds
 
 ### CI/CD (1)
 13. **.github/workflows/ci.yml** - 280 lines, comprehensive CI pipeline
@@ -171,7 +171,7 @@ To reach Rhodium Level (95%+):
 
 ### 🔧 Build System
 - Just task runner (30+ recipes)
-- Nix reproducible builds
+- Guix reproducible builds
 - Cross-platform support
 - Automated validation
 - One-command builds

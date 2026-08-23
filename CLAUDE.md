@@ -17,7 +17,7 @@ DoubleTrack Browser is an experimental browser extension that creates a fictiona
   - Provides memory-safe handling of sensitive data
   - Implements the core logic for identity generation and behavior simulation
 
-- **ReScript** (`src/`): Browser API integration and UI
+- **AffineScript** (`src/`): Browser API integration and UI
   - Type-safe functional language that compiles to JavaScript
   - Handles WebExtensions API interactions
   - Manages background processes and user interface
@@ -27,7 +27,7 @@ DoubleTrack Browser is an experimental browser extension that creates a fictiona
   - Used for build scripts and development tooling
   - No npm/node_modules required
 
-- **WebAssembly**: Bridge between Rust and ReScript
+- **WebAssembly**: Bridge between Rust and AffineScript
   - Compiled using `wasm-pack`
   - Enables high-performance Rust code to run in the browser
 
@@ -44,7 +44,7 @@ DoubleTrack Browser is an experimental browser extension that creates a fictiona
 double-track-browser/
 ├── rust_core/           # Rust/WASM core logic
 │   └── (build with wasm-pack)
-├── src/                 # ReScript source
+├── src/                 # AffineScript source
 │   ├── background/      # Background service worker
 │   ├── bindings/        # Chrome/DOM bindings
 │   ├── content/         # Content script
@@ -55,7 +55,7 @@ double-track-browser/
 │   └── utils/           # Storage and WASM utilities
 ├── scripts/             # Deno build scripts
 ├── dist/                # Built extension (gitignored)
-├── rescript.json        # ReScript configuration
+├── affinescript.json        # AffineScript configuration
 ├── deno.json            # Deno configuration
 ├── Justfile             # Task runner recipes
 ├── Mustfile.epx         # Deployment manifest
@@ -95,7 +95,7 @@ Load from the `dist/` directory into your browser's extension developer mode.
 This project follows the Hyperpolymath language policy. See `.claude/CLAUDE.md` for the complete policy.
 
 **Key rules:**
-- Use **ReScript** instead of TypeScript
+- Use **AffineScript** instead of TypeScript
 - Use **Deno** instead of npm/node
 - Use **Rust** for performance-critical code
 - Use **justfile** instead of Makefile
@@ -132,7 +132,7 @@ just dev
 
 # Build components individually
 just build-rust
-just build-rescript
+just build-affinescript
 just build-extension
 ```
 
@@ -162,7 +162,7 @@ just fix
 ### Adding Features
 
 1. **Profile Generation**: Modify Rust core in `rust_core/`
-2. **UI Components**: Update ReScript in `src/`
+2. **UI Components**: Update AffineScript in `src/`
 3. **Browser Integration**: Work with Chrome bindings in `src/bindings/`
 4. **Configuration**: Update both UI and core logic for new parameters
 
@@ -174,7 +174,7 @@ just fix
 - Document public APIs
 - Write tests for core logic
 
-### ReScript Code
+### AffineScript Code
 - Use proper type annotations
 - Leverage pattern matching
 - Handle async operations with proper error handling

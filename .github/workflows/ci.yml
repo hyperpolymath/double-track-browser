@@ -204,7 +204,7 @@ jobs:
           echo "Checking build system..."
           test -f package.json || (echo "❌ package.json missing" && exit 1)
           test -f justfile || (echo "❌ justfile missing" && exit 1)
-          test -f flake.nix || (echo "❌ flake.nix missing" && exit 1)
+          test -f flake.guix || (echo "❌ flake.guix missing" && exit 1)
           echo "✅ Build system files present"
 
       - name: Validate security.txt (RFC 9116)

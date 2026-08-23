@@ -14,8 +14,8 @@ default:
 
 # === BUILD RECIPES ===
 
-# Build everything (Rust + ReScript + Extension)
-build: build-rust build-rescript build-extension
+# Build everything (Rust + AffineScript + Extension)
+build: build-rust build-affinescript build-extension
     @echo "✅ Build complete! Load dist/ folder in chrome://extensions/"
 
 # Build only Rust/WASM core
@@ -27,13 +27,13 @@ build-rust:
     wasm-pack build --target web --release
     echo "✅ Rust core built"
 
-# Build ReScript code
-build-rescript:
+# Build AffineScript code
+build-affinescript:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Building ReScript..."
-    npx rescript build
-    echo "✅ ReScript built"
+    echo "📦 Building AffineScript..."
+    npx affinescript build
+    echo "✅ AffineScript built"
 
 # Build the extension bundle
 build-extension:
@@ -113,7 +113,7 @@ test-deno:
 # === LINT & FORMAT RECIPES ===
 
 # Run all linters
-lint: lint-rust lint-deno lint-rescript
+lint: lint-rust lint-deno lint-affinescript
     @echo "✅ Linting complete"
 
 # Lint Rust code
@@ -134,13 +134,13 @@ lint-deno:
     deno lint
     echo "✅ Deno linting passed"
 
-# Check ReScript
-lint-rescript:
+# Check AffineScript
+lint-affinescript:
     #!/usr/bin/env bash
     set -euo pipefail
-    echo "📦 Checking ReScript..."
-    npx rescript build 2>&1 | head -50
-    echo "✅ ReScript check passed"
+    echo "📦 Checking AffineScript..."
+    npx affinescript build 2>&1 | head -50
+    echo "✅ AffineScript check passed"
 
 # Auto-fix formatting
 fix: fix-rust fix-deno
@@ -171,7 +171,7 @@ dev:
     set -euo pipefail
     echo "🔄 Starting development mode..."
     echo "Press Ctrl+C to stop"
-    npx rescript build -w
+    npx affinescript build -w
 
 # Rebuild and reload (for quick iteration)
 reload: build
@@ -196,13 +196,13 @@ validate-rsr:
     echo ""
     echo "Build System:"
     [[ -f deno.json ]] && echo "  ✅ deno.json" || echo "  ❌ deno.json"
-    [[ -f rescript.json ]] && echo "  ✅ rescript.json" || echo "  ❌ rescript.json"
+    [[ -f affinescript.json ]] && echo "  ✅ affinescript.json" || echo "  ❌ affinescript.json"
     [[ -f justfile ]] && echo "  ✅ justfile" || echo "  ❌ justfile"
     [[ -f Mustfile.epx ]] && echo "  ✅ Mustfile.epx" || echo "  ❌ Mustfile.epx"
     echo ""
     echo "Policy Enforcement:"
     [[ ! -f package.json ]] && echo "  ✅ No package.json (Deno enforced)" || echo "  ❌ package.json exists"
-    [[ ! -f tsconfig.json ]] && echo "  ✅ No tsconfig.json (ReScript enforced)" || echo "  ❌ tsconfig.json exists"
+    [[ ! -f tsconfig.json ]] && echo "  ✅ No tsconfig.json (AffineScript enforced)" || echo "  ❌ tsconfig.json exists"
     echo ""
     echo "See RSR_COMPLIANCE_AUDIT.md for full audit"
 
@@ -227,7 +227,7 @@ build-release:
     echo "🚀 Building production release..."
     just clean
     just build-rust
-    just build-rescript
+    just build-affinescript
     just build-extension
     echo "✅ Production build complete"
 
@@ -261,12 +261,12 @@ stats:
     echo ""
     echo "Lines of Code:"
     echo "  Rust:      $(find rust_core/src -name '*.rs' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo '0')"
-    echo "  ReScript:  $(find src -name '*.res' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo '0')"
+    echo "  AffineScript:  $(find src -name '*.res' | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo '0')"
     echo ""
     echo "Files:"
     echo "  Total:     $(find . -type f ! -path './.git/*' ! -path './node_modules/*' ! -path './target/*' ! -path './dist/*' | wc -l)"
     echo "  Rust:      $(find rust_core/src -name '*.rs' 2>/dev/null | wc -l || echo '0')"
-    echo "  ReScript:  $(find src -name '*.res' 2>/dev/null | wc -l || echo '0')"
+    echo "  AffineScript:  $(find src -name '*.res' 2>/dev/null | wc -l || echo '0')"
     echo ""
     echo "Git:"
     echo "  Commits:   $(git rev-list --count HEAD 2>/dev/null || echo 'N/A')"

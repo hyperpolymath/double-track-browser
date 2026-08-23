@@ -33,7 +33,7 @@
 #### ⚠️ Build System Enhancement (Partial)
 - **package.json scripts** - ✅ Present
 - **justfile** - ❌ Missing (task runner)
-- **flake.nix** - ❌ Missing (Nix reproducible builds)
+- **flake.guix** - ❌ Missing (Guix reproducible builds)
 
 #### ❌ CI/CD (0/1)
 - **GitHub Actions / GitLab CI** - ❌ Missing
@@ -90,7 +90,7 @@
 
 **Priority 2 (Medium Impact)**:
 7. ✅ Add Justfile (+3%)
-8. ✅ Add flake.nix (+2%)
+8. ✅ Add flake.guix (+2%)
 9. ✅ Add GitHub Actions CI (+5%)
 10. ✅ Add TPCF perimeter designation (+5%)
 11. ✅ Dual-license with Palimpsest v0.8 (+5%)
@@ -124,7 +124,7 @@
 
 ### Medium-term (This Month)
 9. Dual-license with Palimpsest v0.8
-10. Add flake.nix for reproducible builds
+10. Add flake.guix for reproducible builds
 11. Complete WASM integration
 12. Security audit and penetration testing
 

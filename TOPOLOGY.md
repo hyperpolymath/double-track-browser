@@ -16,7 +16,7 @@
                         ┌─────────────────────────────────────────┐
                         │           WEBEXTENSIONS LAYER           │
                         │  ┌───────────┐  ┌───────────────────┐  │
-                        │  │ ReScript  │  │  Background       │  │
+                        │  │ AffineScript  │  │  Background       │  │
                         │  │ UI / PWA  │  │  Orchestrator     │  │
                         │  └─────┬─────┘  └────────┬──────────┘  │
                         └────────│─────────────────│──────────────┘
@@ -55,7 +55,7 @@ IDENTITY ENGINE (RUST)
   Memory-safe core                  ██████████ 100%    Rust ownership verified
 
 EXTENSION LAYERS
-  ReScript UI Components            ██████████ 100%    Type-safe interface stable
+  AffineScript UI Components            ██████████ 100%    Type-safe interface stable
   Background Orchestrator           ██████████ 100%    Task scheduling active
   WebExtensions Integration         ██████████ 100%    Firefox/Chrome hooks stable
 
@@ -74,7 +74,7 @@ OVERALL:                            █████████░  ~90%   v0.1.
 Profile Gen ──────► Simulator ──────► Background Script ──────► Browser API
      │                 │                   │                      │
      ▼                 ▼                   ▼                      ▼
-Rust Core ──────► WASM Bridge ──────► ReScript UI ─────────► User Dashboard
+Rust Core ──────► WASM Bridge ──────► AffineScript UI ─────────► User Dashboard
 ```
 
 ## Update Protocol
