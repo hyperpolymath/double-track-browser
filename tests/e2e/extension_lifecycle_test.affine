@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine mechanical processor
+
+module extension_lifecycle_test;
+
+// TODO: Complete semantic implementation
+
+/* === ORIGINAL TYPESCRIPT CONTEXT ===
+// SPDX-License-Identifier: MPL-2.0
 // End-to-end tests for DoubleTrack extension lifecycle
 
 import { assertEquals, assertExists } from "jsr:@std/assert";
@@ -186,3 +194,5 @@ Deno.test("Extension lifecycle: profile switching", () => {
   assertEquals(state.profile.id, "profile_2");
   assertEquals(state.activities.length, 0);
 });
+
+==================================== */

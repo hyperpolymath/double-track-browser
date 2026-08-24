@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine mechanical processor
+
+module driver;
+
+// TODO: Complete semantic implementation
+
+/* === ORIGINAL TYPESCRIPT CONTEXT ===
+// SPDX-License-Identifier: MPL-2.0
 // Copyright (c) 2026 Jonathan D.A. Jewell (hyperpolymath) <j.d.a.jewell@open.ac.uk>
 //
 // Deno test driver for the AffineScript tests in tests/affine/.
@@ -15,3 +23,5 @@
 import { runAll } from "@hyperpolymath/affinescript-deno-test";
 
 await runAll(new URL("./", import.meta.url).pathname);
+
+==================================== */

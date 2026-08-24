@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine mechanical processor
+
+module types_test;
+
+// TODO: Complete semantic implementation
+
+/* === ORIGINAL TYPESCRIPT CONTEXT ===
+// SPDX-License-Identifier: MPL-2.0
 // Unit tests for DoubleTrack TypeScript type contracts
 
 import { assertEquals, assertExists, assertStringIncludes } from "jsr:@std/assert";
@@ -77,3 +85,5 @@ Deno.test("Activity log schema", () => {
   assertStringIncludes(activity.url, "https://");
   assertEquals(activity.duration_seconds > 0, true);
 });
+
+==================================== */
