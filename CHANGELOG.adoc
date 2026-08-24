@@ -1,90 +1,78 @@
-// SPDX-License-Identifier: CC-BY-SA-4.0
-= Changelog
+== Changelog
 
-All notable changes to DoubleTrack Browser will be documented in this file.
+All notable changes to `+double-track-browser+` will be documented in
+this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+This file is generated from conventional commits by the
+https://github.com/hyperpolymath/standards/blob/main/.github/workflows/changelog-reusable.yml[`+changelog-reusable.yml+`]
+workflow (`+hyperpolymath/standards#206+`). Adopt the workflow in this
+repo’s CI to keep this file in sync automatically — see
+https://github.com/hyperpolymath/standards/blob/main/templates/cliff.toml[`+templates/cliff.toml+`]
+for the canonical config.
 
-== [Unreleased]
+The format follows https://keepachangelog.com/en/1.1.0/[Keep a
+Changelog]; this project aims to follow
+https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
-=== Added
-- Initial project structure with Rust/WASM core and TypeScript shell
-- Profile generation system with demographics, interests, and browsing styles
-- Activity simulation engine with realistic URL and timing generation
-- Browser extension with popup UI and options page
-- Background service worker for automated activity simulation
-- Storage management for profiles, activities, and statistics
-- Configurable noise levels and privacy modes
-- Schedule-aware activity generation based on profile occupation
-- Activity history tracking and viewing
-- Statistics dashboard showing activity metrics
-- Content script for future page-level integration
-- Comprehensive documentation (README, CLAUDE, DEVELOPMENT, CONTRIBUTING)
-- Full test infrastructure for Rust and TypeScript
-- Build pipeline with webpack and wasm-pack
+=== [Unreleased]
 
-=== Features
-- **Profile Generation**: Creates consistent, believable fictional personas
-  - Demographics: age, gender, location, occupation, education
-  - 20+ interest categories from technology to hobbies
-  - 4 browsing styles: Focused, Explorer, Researcher, Casual
-  - 4 activity levels: Low, Medium, High, VeryHigh
+==== Added
 
-- **Activity Simulation**: Generates realistic browsing patterns
-  - 7 activity types: Search, PageVisit, VideoWatch, Shopping, SocialMedia, News, Research
-  - Interest-correlated URL generation for major sites
-  - Realistic duration distributions based on activity type
-  - Schedule-based timing aligned with profile occupation
+* feat(crg): add crg-grade and crg-badge justfile recipes
+* feat: add wokelangiser accessibility+consent manifest
+* feat: add stapeln.toml container definition
+* feat: deploy UX Manifesto infrastructure
+* feat: add CLADE.a2ml — clade taxonomy declaration
+* feat: implement data poisoning engine with real tab orchestration
+* feat(ci): enable Hypatia scanning
 
-- **Privacy Controls**:
-  - 4 privacy modes: Full, Moderate, Minimal, Disabled
-  - Adjustable noise level (0-100%)
-  - Optional schedule adherence
-  - Separate storage for real vs. simulated data
+==== Fixed
 
-- **User Interface**:
-  - Modern, gradient-based design
-  - Popup for quick status and controls
-  - Full options page for detailed configuration
-  - Activity history viewer with filtering
-  - Real-time statistics display
-  - Profile export functionality
+* fix(affine): migrate record literals to #\{ } (affinescript#218) (#28)
+* fix(ci): bump a2ml/k9-validate-action pins to canonical (#25)
+* fix(ci): sync hypatia-scan.yml to canonical (#24)
+* fix(ci): adopt canonical hypatia-scan.yml (#22)
+* fix(ci): hypatia-scan workdir ($\{\{ env.HOME }} resolves empty) (#21)
+* fix(ci): rsr-antipattern duplicate heredoc + setup-beam ubuntu24 (#17)
+* fix(ci): repair YAML block-scalar in workflow-linter Check Permissions
+step (#18)
+* fix(ci): move secret-scanner Cargo.toml gate from job-level if: to
+step-level (#19)
+* fix(scorecard): enforce granular permissions and add fuzzing
+placeholder
+* fix(ci): Resolve workflow-linter self-matching and metadata issues
 
-=== Technical
-- Rust core compiled to WebAssembly for performance
-- TypeScript with strict mode for type safety
-- Manifest V3 for modern browser compatibility
-- Alarm-based scheduling for efficient background operation
-- IndexedDB via chrome.storage for data persistence
-- Modular architecture for easy extension
+==== Changed
 
-== [0.1.0] - 2025-11-22
+* refactor(rust_core): migrate rand 0.8 -> 0.9 API (44 build errors ->
+0)
+* refactor(rust_core): close .expect("`TODO: handle error`")
+anti-pattern
+* refactor: migrate 6SCM → 6A2 (.scm → .a2ml format)
 
-=== Initial Release
-- First working version of DoubleTrack Browser
-- Experimental software for privacy exploration
-- Full documentation and contribution guidelines
+==== Documentation
 
----
+* docs(governance): CRG v2.0 STRICT audit — C (declared) -> E (honest)
+* docs: substantive CRG C annotation (EXPLAINME.adoc)
+* docs: add EXPLAINME.adoc — prove-it file backing README claims
+* docs: add checkpoint files for state tracking
 
-== Version History
+==== CI
 
-- **0.1.0** - Initial release with core functionality
-- **Unreleased** - Active development
+* ci: redistribute concurrency-cancel guard to read-only check workflows
+(#27)
+* ci: bump actions/upload-artifact SHA to current v4 (#16)
+* ci(dependabot): restore cargo PR limit so security PRs flow (#15)
+* ci(secret-scanner): drop duplicate –fail from trufflehog extra_args
+(#14)
+* ci: SHA-pin hyperpolymath validate-actions in dogfood-gate
 
-== Migration Guide
+=== Pre-history
 
-No migrations needed yet. This is the initial release.
+Prior commits to this file’s introduction are recorded in git history
+but not formally classified into Keep-a-Changelog sections. To backfill,
+run `+git cliff -o CHANGELOG.md+` locally using the canonical
+https://github.com/hyperpolymath/standards/blob/main/templates/cliff.toml[`+cliff.toml+`]
+— this is one-shot mechanical work.
 
-== Deprecation Warnings
-
-None yet.
-
-== Security
-
-If you discover a security vulnerability, please email [security@example.com] rather than using the issue tracker.
-
----
-
-*For detailed changes, see the [commit history](https://github.com/yourusername/double-track-browser/commits).*
+'''''
