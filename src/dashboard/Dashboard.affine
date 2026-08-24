@@ -1,7 +1,260 @@
 // SPDX-License-Identifier: MPL-2.0
-// SPDX-FileCopyrightText: 2026 Jonathan D.A. Jewell
-// Ported via Harvard Engine bulk-processor
+// Ported via Harvard Engine (Semantic pass)
 
 module Dashboard;
 
-// TODO: Complete semantic implementation
+// SPDX-License-Identifier: MPL-2.0
+// Dashboard page for activity analytics and visualization
+
+open Types
+open DomBindings
+
+// State
+fn activitiesRef: ref<array<browsingActivity>> = ref([])
+fn profileRef: ref<option<profile>> = ref(None)
+fn statsRef: ref<option<statistics>> = ref(None)
+
+fn loadData = async (): unit => {
+  fn keys = [StorageKey.activityHistory, StorageKey.profile, StorageKey.statistics]
+  fn result = await Chrome.Storage.Local.getMultiple(keys)
+
+  activitiesRef.contents =
+    Dict.get(result, StorageKey.activityHistory)
+    ->Option.map(Obj.magic)
+    ->Option.getOr([])
+
+  profileRef.contents = Dict.get(result, StorageKey.profile)->Option.map(Obj.magic)
+
+  statsRef.contents = Dict.get(result, StorageKey.statistics)->Option.map(Obj.magic)
+}
+
+fn calculateStreak = (): int => {
+  fn activities = activitiesRef.contents
+  if Array.length(activities) == 0 {
+    0
+  } else {
+    fn today = Date.make()
+    fn _: unit = %raw(`today.setHours(0, 0, 0, 0)`)
+
+    fn activityDates =
+      activities->Array.map(a => {
+        fn date = Date.fromTime(a.timestamp *. 1000.0)
+        fn _: unit = %raw(`date.setHours(0, 0, 0, 0)`)
+        Date.getTime(date)
+      })
+
+    // Build a lookup dict from activity dates for O(1) membership testing
+    fn dateDict = Dict.make()
+    activityDates->Array.forEach(d => Dict.set(dateDict, Float.toString(d), true))
+    fn hasDate = (d: float) => Dict.get(dateDict, Float.toString(d))->Option.isSome
+    fn rec countStreak = (currentDate, streak) => {
+      if hasDate(currentDate) {
+        countStreak(currentDate -. 86400000.0, streak + 1)
+      } else {
+        streak
+      }
+    }
+    countStreak(Date.getTime(today), 0)
+  }
+}
+
+fn showEmptyState = () => {
+  Document.querySelector(document, ".content")
+  ->Nullable.toOption
+  ->Option.forEach(content =>
+    Element.setInnerHTML(
+      content,
+      `
+        <div class="empty-state">
+          <div class="empty-state-icon">📊</div>
+          <div class="empty-state-title">No Activity Data Yet</div>
+          <div class="empty-state-text">
+            Enable DoubleTrack and generate a profile to start seeing analytics
+          </div>
+        </div>
+      `,
+    )
+  )
+}
+
+fn renderOverviewCards = () => {
+  fn activities = activitiesRef.contents
+  fn stats = statsRef.contents->Option.getOr({
+    totalActivities: 0,
+    activitiesToday: 0,
+    profileAgeDays: 0,
+    lastActivity: None,
+    activityByType: Dict.make(),
+  })
+
+  fn setField = (id, value) =>
+    Document.getElementById(document, id)
+    ->Nullable.toOption
+    ->Option.forEach(el => Element.setTextContent(el, value))
+
+  setField("total-activities", Int.toString(stats.totalActivities))
+
+  fn avgPerDay = switch profileRef.contents {
+  | Some(_) =>
+    fn days = Pervasives.max(1, stats.profileAgeDays)
+    stats.totalActivities / days
+  | None => 0
+  }
+  setField("daily-average", Int.toString(avgPerDay))
+
+  fn totalSeconds =
+    activities->Array.reduce(0, (sum, a) => sum + a.durationSeconds)
+  fn hours = totalSeconds / 3600
+  setField("total-duration", `${Int.toString(hours)}h`)
+
+  fn streak = calculateStreak()
+  setField("streak-days", Int.toString(streak))
+}
+
+fn getDailyCounts = (days: int): array<int> => {
+  fn counts = Array.make(~length=days, 0)
+  fn today = Date.make()
+  fn _: unit = %raw(`today.setHours(0, 0, 0, 0)`)
+  fn todayTime = Date.getTime(today)
+
+  activitiesRef.contents->Array.forEach(activity => {
+    fn activityDate = Date.fromTime(activity.timestamp *. 1000.0)
+    fn _: unit = %raw(`activityDate.setHours(0, 0, 0, 0)`)
+
+    fn daysDiff = Float.toInt((todayTime -. Date.getTime(activityDate)) /. 86400000.0)
+
+    if daysDiff >= 0 && daysDiff < days {
+      fn idx = days - 1 - daysDiff
+      counts[idx] = counts[idx]->Option.getOr(0) + 1
+    }
+  })
+
+  counts
+}
+
+fn renderRecentActivities = () => {
+  Document.getElementById(document, "recent-activities")
+  ->Nullable.toOption
+  ->Option.forEach(container => {
+    fn recent =
+      activitiesRef.contents
+      ->Array.slice(~start=-20, ~end=Array.length(activitiesRef.contents))
+      ->Array.toReversed
+
+    fn icons = Dict.fromArray([
+      ("Search", `🔍`),
+      ("PageVisit", `📄`),
+      ("VideoWatch", `🎥`),
+      ("Shopping", `🛒`),
+      ("SocialMedia", `💬`),
+      ("News", `📰`),
+      ("Research", `📚`),
+    ])
+
+    fn html =
+      recent
+      ->Array.map(activity => {
+        fn structStr = activityTypeToString(activity.activityType)
+        fn icon = Dict.get(icons, structStr)->Option.getOr(`📄`)
+        fn date = Date.fromTime(activity.timestamp *. 1000.0)
+        fn timeStr = Date.toLocaleTimeString(date)
+
+        `
+          <div class="activity-item">
+            <div class="activity-icon">${icon}</div>
+            <div class="activity-content">
+              <div class="activity-title">${activity.title}</div>
+              <div class="activity-url">${activity.url}</div>
+            </div>
+            <div class="activity-meta">${timeStr}</div>
+          </div>
+        `
+      })
+      ->Array.join("")
+
+    Element.setInnerHTML(container, html)
+  })
+}
+
+fn renderInsights = () => {
+  switch profileRef.contents {
+  | Some(profile) =>
+    fn activities = activitiesRef.contents
+    fn stats = statsRef.contents->Option.getOr({
+      totalActivities: 0,
+      activitiesToday: 0,
+      profileAgeDays: 0,
+      lastActivity: None,
+      activityByType: Dict.make(),
+    })
+
+    fn setField = (id, value) =>
+      Document.getElementById(document, id)
+      ->Nullable.toOption
+      ->Option.forEach(el => Element.setTextContent(el, value))
+
+    fn age = Int.toString(profile.demographics.age)
+    fn occupation = Obj.magic(profile.demographics.occupationCategory)->String.toLowerCase
+    fn interestCount = Int.toString(Array.length(profile.interests))
+    setField(
+      "insight-profile",
+      `Your profile "${profile.name}" is a ${age}-year-old ${occupation} with ${interestCount} main interests.`,
+    )
+
+    fn activityCount = Int.toString(Array.length(activities))
+    fn days = Int.toString(stats.profileAgeDays)
+    fn avgPerDay = Int.toString(
+      Array.length(activities) / Pervasives.max(1, stats.profileAgeDays),
+    )
+    setField(
+      "insight-activity",
+      `Generated ${activityCount} activities over ${days} days, averaging ${avgPerDay} per day.`,
+    )
+
+    fn style = browsingStyleToString(profile.browsingStyle)->String.toLowerCase
+    setField(
+      "insight-pattern",
+      `Your ${style} browsing style creates a natural, believable activity pattern.`,
+    )
+
+    fn level = activityLevelToString(profile.activityLevel)->String.toLowerCase
+    setField(
+      "insight-performance",
+      `Activity level is ${level}, which provides good privacy coverage without excessive resource usage.`,
+    )
+  | None => ()
+  }
+}
+
+fn renderDashboard = () => {
+  if Array.length(activitiesRef.contents) == 0 {
+    showEmptyState()
+  } else {
+    renderOverviewCards()
+    renderRecentActivities()
+    renderInsights()
+    // Charts would be rendered here with canvas API
+  }
+}
+
+fn setupEventListeners = () => {
+  Document.getElementById(document, "back-btn")
+  ->Nullable.toOption
+  ->Option.forEach(btn =>
+    Element.addEventListener(btn, "click", _ => {
+      Chrome.Runtime.openOptionsPage()
+      Window.close(window)
+    })
+  )
+}
+
+fn initialize = async (): unit => {
+  await loadData()
+  setupEventListeners()
+  renderDashboard()
+}
+
+fn _ = Document.addEventListener(document, "DOMContentLoaded", () => {
+  fn _ = initialize()
+})
+
