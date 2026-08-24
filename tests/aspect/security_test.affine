@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: MPL-2.0
-// Ported via Harvard Engine mechanical processor
+// Ported via Harvard Engine (Semantic pass)
 
 module security_test;
 
-// TODO: Complete semantic implementation
-
-/* === ORIGINAL TYPESCRIPT CONTEXT ===
 // SPDX-License-Identifier: MPL-2.0
 // Security aspect tests for DoubleTrack browser extension
 
 import { assertEquals, assertStringIncludes } from "jsr:@std/assert";
 
 Deno.test("Security: XSS prevention in URL display", () => {
-  const sanitizeUrl = (url: string): string => {
+  let sanitizeUrl = (url: string): string => {
     // In real implementation, this would escape HTML special chars
     return url.replace(/[<>"]/g, (char) => {
       const escapeMap: Record<string, string> = {
@@ -24,15 +21,15 @@ Deno.test("Security: XSS prevention in URL display", () => {
     });
   };
 
-  const maliciousUrl = '<script>alert("xss")</script>';
-  const sanitized = sanitizeUrl(maliciousUrl);
+  let maliciousUrl = '<script>alert("xss")</script>';
+  let sanitized = sanitizeUrl(maliciousUrl);
 
   assertEquals(sanitized.includes("<script>"), false);
   assertEquals(sanitized.includes("&lt;script&gt;"), true);
 });
 
 Deno.test("Security: content isolation", () => {
-  interface IsolatedContent {
+  struct IsolatedContent {
     isSandboxed: boolean;
     allowedOrigins: string[];
   }
@@ -50,7 +47,7 @@ Deno.test("Security: content isolation", () => {
 });
 
 Deno.test("Security: HTTPS enforcement", () => {
-  const isHttpsUrl = (url: string): boolean => {
+  let isHttpsUrl = (url: string): boolean => {
     return url.startsWith("https://");
   };
 
@@ -60,15 +57,15 @@ Deno.test("Security: HTTPS enforcement", () => {
 });
 
 Deno.test("Security: message validation", () => {
-  interface ValidatedMessage {
+  struct ValidatedMessage {
     type: string;
     source: string;
     timestamp: number;
   }
 
-  const validateMessage = (msg: unknown): msg is ValidatedMessage => {
+  let validateMessage = (msg: unknown): msg is ValidatedMessage => {
     if (typeof msg !== "object" || msg === null) return false;
-    const m = msg as Record<string, unknown>;
+    let m = msg as Record<string, unknown>;
     return (
       typeof m.type === "string" &&
       typeof m.source === "string" &&
@@ -76,13 +73,13 @@ Deno.test("Security: message validation", () => {
     );
   };
 
-  const validMsg = {
+  let validMsg = {
     type: "PROFILE_UPDATE",
     source: "background",
     timestamp: Date.now(),
   };
 
-  const invalidMsg = {
+  let invalidMsg = {
     type: "PROFILE_UPDATE",
     source: "background",
     // Missing timestamp
@@ -93,19 +90,19 @@ Deno.test("Security: message validation", () => {
 });
 
 Deno.test("Security: origin verification", () => {
-  const verifyOrigin = (
+  let verifyOrigin = (
     origin: string,
     allowedOrigins: string[]
   ): boolean => {
     try {
-      const url = new URL(origin);
+      let url = new URL(origin);
       return allowedOrigins.includes(url.origin);
     } catch {
       return false;
     }
   };
 
-  const allowed = ["https://example.com", "https://test.com"];
+  let allowed = ["https://example.com", "https://test.com"];
 
   assertEquals(
     verifyOrigin("https://example.com/page", allowed),
@@ -118,7 +115,7 @@ Deno.test("Security: origin verification", () => {
 });
 
 Deno.test("Security: no plain HTTP for sensitive operations", () => {
-  const isSensitiveOperation = (operation: string): boolean => {
+  let isSensitiveOperation = (operation: string): boolean => {
     return [
       "PROFILE_SAVE",
       "PROFILE_LOAD",
@@ -126,7 +123,7 @@ Deno.test("Security: no plain HTTP for sensitive operations", () => {
     ].includes(operation);
   };
 
-  const performSecureRequest = (
+  let performSecureRequest = (
     operation: string,
     protocol: string
   ): boolean => {
@@ -142,8 +139,8 @@ Deno.test("Security: no plain HTTP for sensitive operations", () => {
 });
 
 Deno.test("Security: no sensitive data in logs", () => {
-  const containsSensitiveData = (logMessage: string): boolean => {
-    const sensitivePatterns = [
+  let containsSensitiveData = (logMessage: string): boolean => {
+    let sensitivePatterns = [
       /password/i,
       /token/i,
       /secret/i,
@@ -163,7 +160,7 @@ Deno.test("Security: no sensitive data in logs", () => {
 });
 
 Deno.test("Security: CSP headers enforcement", () => {
-  interface ContentSecurityPolicy {
+  struct ContentSecurityPolicy {
     scriptSrc: string[];
     styleSrc: string[];
     imgSrc: string[];
@@ -180,18 +177,18 @@ Deno.test("Security: CSP headers enforcement", () => {
 });
 
 Deno.test("Security: timestamp validation", () => {
-  const isValidTimestamp = (ts: number): boolean => {
+  let isValidTimestamp = (ts: number): boolean => {
     // Timestamp should be within last/next 5 years
-    const now = Date.now();
-    const fiveYears = 5 * 365 * 24 * 60 * 60 * 1000;
+    let now = Date.now();
+    let fiveYears = 5 * 365 * 24 * 60 * 60 * 1000;
 
     return Math.abs(now - ts) < fiveYears;
   };
 
-  const recentTs = Date.now();
-  const futureTs = Date.now() + 365 * 24 * 60 * 60 * 1000; // 1 year in future
-  const pastTs = Date.now() - 365 * 24 * 60 * 60 * 1000; // 1 year in past
-  const wayOldTs = 1000; // Year 1970
+  let recentTs = Date.now();
+  let futureTs = Date.now() + 365 * 24 * 60 * 60 * 1000; // 1 year in future
+  let pastTs = Date.now() - 365 * 24 * 60 * 60 * 1000; // 1 year in past
+  let wayOldTs = 1000; // Year 1970
 
   assertEquals(isValidTimestamp(recentTs), true);
   assertEquals(isValidTimestamp(futureTs), true);
@@ -200,7 +197,7 @@ Deno.test("Security: timestamp validation", () => {
 });
 
 Deno.test("Security: permission boundaries", () => {
-  interface Permissions {
+  struct Permissions {
     storage: boolean;
     tabs: boolean;
     webRequest: boolean;
@@ -220,4 +217,3 @@ Deno.test("Security: permission boundaries", () => {
   assertEquals(extensionPerms.webRequest, false);
 });
 
-==================================== */
