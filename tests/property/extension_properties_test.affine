@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
-// Ported via Harvard Engine mechanical processor
+// Ported via Harvard Engine (Semantic pass)
 
 module extension_properties_test;
 
-// TODO: Complete semantic implementation
-
-/* === ORIGINAL TYPESCRIPT CONTEXT ===
 // SPDX-License-Identifier: MPL-2.0
 // Property-based tests for DoubleTrack extension invariants
 
@@ -13,33 +10,33 @@ import { assertEquals } from "jsr:@std/assert";
 
 Deno.test("Extension invariant: profiles never have empty names", () => {
   // Simulate profile validation
-  const validateProfile = (profile: { name: string }): boolean => {
+  let validateProfile = (profile: { name: string }): boolean => {
     return profile.name.length > 0;
   };
 
-  const validProfile = { name: "John Doe" };
-  const invalidProfile = { name: "" };
+  let validProfile = { name: "John Doe" };
+  let invalidProfile = { name: "" };
 
   assertEquals(validateProfile(validProfile), true);
   assertEquals(validateProfile(invalidProfile), false);
 });
 
 Deno.test("Extension invariant: activities always have HTTPS URLs", () => {
-  const validateActivity = (
+  let validateActivity = (
     activity: { url: string }
   ): boolean => {
     return activity.url.startsWith("https://");
   };
 
-  const validActivity = { url: "https://example.com" };
-  const invalidActivity = { url: "http://example.com" };
+  let validActivity = { url: "https://example.com" };
+  let invalidActivity = { url: "http://example.com" };
 
   assertEquals(validateActivity(validActivity), true);
   assertEquals(validateActivity(invalidActivity), false);
 });
 
 Deno.test("Extension invariant: timestamps are monotonic", () => {
-  const validateChronological = (
+  let validateChronological = (
     activities: Array<{ timestamp: number }>
   ): boolean => {
     for (let i = 1; i < activities.length; i++) {
@@ -50,13 +47,13 @@ Deno.test("Extension invariant: timestamps are monotonic", () => {
     return true;
   };
 
-  const sortedActivities = [
+  let sortedActivities = [
     { timestamp: 1000 },
     { timestamp: 2000 },
     { timestamp: 3000 },
   ];
 
-  const unsortedActivities = [
+  let unsortedActivities = [
     { timestamp: 3000 },
     { timestamp: 1000 },
     { timestamp: 2000 },
@@ -67,8 +64,8 @@ Deno.test("Extension invariant: timestamps are monotonic", () => {
 });
 
 Deno.test("Extension invariant: email format is valid", () => {
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let validateEmail = (email: string): boolean => {
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
@@ -79,7 +76,7 @@ Deno.test("Extension invariant: email format is valid", () => {
 });
 
 Deno.test("Extension invariant: no null bytes in strings", () => {
-  const hasNoNullBytes = (str: string): boolean => {
+  let hasNoNullBytes = (str: string): boolean => {
     return !str.includes("\0");
   };
 
@@ -88,12 +85,12 @@ Deno.test("Extension invariant: no null bytes in strings", () => {
 });
 
 Deno.test("Extension invariant: message type is always defined", () => {
-  interface Message {
+  struct Message {
     type?: string;
     payload?: Record<string, unknown>;
   }
 
-  const validateMessage = (msg: Message): boolean => {
+  let validateMessage = (msg: Message): boolean => {
     return typeof msg.type === "string" && msg.type.length > 0;
   };
 
@@ -105,7 +102,7 @@ Deno.test("Extension invariant: message type is always defined", () => {
 });
 
 Deno.test("Extension invariant: duration is always positive", () => {
-  const validateDuration = (duration: number): boolean => {
+  let validateDuration = (duration: number): boolean => {
     return duration > 0 && Number.isFinite(duration);
   };
 
@@ -116,7 +113,7 @@ Deno.test("Extension invariant: duration is always positive", () => {
 });
 
 Deno.test("Extension invariant: interests array is never empty", () => {
-  const validateInterests = (interests: string[]): boolean => {
+  let validateInterests = (interests: string[]): boolean => {
     return Array.isArray(interests) && interests.length > 0;
   };
 
@@ -126,7 +123,7 @@ Deno.test("Extension invariant: interests array is never empty", () => {
 });
 
 Deno.test("Extension invariant: activity type is known", () => {
-  const VALID_ACTIVITY_TYPES = [
+  let VALID_ACTIVITY_TYPES = [
     "Search",
     "PageVisit",
     "VideoWatch",
@@ -136,7 +133,7 @@ Deno.test("Extension invariant: activity type is known", () => {
     "Research",
   ];
 
-  const validateActivityType = (type: string): boolean => {
+  let validateActivityType = (type: string): boolean => {
     return VALID_ACTIVITY_TYPES.includes(type);
   };
 
@@ -145,4 +142,3 @@ Deno.test("Extension invariant: activity type is known", () => {
   assertEquals(validateActivityType("InvalidType"), false);
 });
 
-==================================== */

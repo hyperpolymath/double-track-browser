@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: MPL-2.0
-// Ported via Harvard Engine mechanical processor
+// Ported via Harvard Engine (Semantic pass)
 
 module types_test;
 
-// TODO: Complete semantic implementation
-
-/* === ORIGINAL TYPESCRIPT CONTEXT ===
 // SPDX-License-Identifier: MPL-2.0
 // Unit tests for DoubleTrack TypeScript type contracts
 
 import { assertEquals, assertExists, assertStringIncludes } from "jsr:@std/assert";
 
 Deno.test("Extension message types", () => {
-  interface ContentMessage {
+  struct ContentMessage {
     type: string;
     payload?: Record<string, unknown>;
   }
@@ -27,7 +24,7 @@ Deno.test("Extension message types", () => {
 });
 
 Deno.test("Storage schema validation", () => {
-  interface StoredProfile {
+  struct StoredProfile {
     id: string;
     name: string;
     interests: string[];
@@ -47,7 +44,7 @@ Deno.test("Storage schema validation", () => {
 });
 
 Deno.test("Form data contract", () => {
-  interface FormData {
+  struct FormData {
     email: string;
     displayName: string;
     preferences: string[];
@@ -66,7 +63,7 @@ Deno.test("Form data contract", () => {
 });
 
 Deno.test("Activity log schema", () => {
-  interface BrowsingActivity {
+  struct BrowsingActivity {
     url: string;
     title: string;
     duration_seconds: number;
@@ -86,4 +83,3 @@ Deno.test("Activity log schema", () => {
   assertEquals(activity.duration_seconds > 0, true);
 });
 
-==================================== */

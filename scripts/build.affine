@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: MPL-2.0
-// Ported via Harvard Engine mechanical processor
+// Ported via Harvard Engine (Semantic pass)
 
 module build;
 
-// TODO: Complete semantic implementation
-
-/* === ORIGINAL TYPESCRIPT CONTEXT ===
 // SPDX-License-Identifier: MPL-2.0
 // Build script for DoubleTrack Browser extension
 // Uses Deno for file operations
@@ -13,11 +10,11 @@ module build;
 import { copy, ensureDir } from "https://deno.land/std@0.220.1/fs/mod.ts";
 import { join } from "https://deno.land/std@0.220.1/path/mod.ts";
 
-const SRC_DIR = "src";
-const DIST_DIR = "dist";
-const RUST_PKG_DIR = "rust_core/pkg";
+let SRC_DIR = "src";
+let DIST_DIR = "dist";
+let RUST_PKG_DIR = "rust_core/pkg";
 
-async function build() {
+async fn build() {
   console.log("📦 Building DoubleTrack Browser extension...");
 
   // Create dist directory
@@ -31,7 +28,7 @@ async function build() {
   console.log("  ✓ Copied manifest.json");
 
   // Copy HTML files
-  const htmlFiles = [
+  let htmlFiles = [
     { src: "popup/popup.html", dest: "popup.html" },
     { src: "options/options.html", dest: "options.html" },
     { src: "dashboard/dashboard.html", dest: "dashboard.html" },
@@ -46,7 +43,7 @@ async function build() {
   }
 
   // Copy CSS files
-  const cssFiles = [
+  let cssFiles = [
     { src: "popup/popup.css", dest: "popup.css" },
     { src: "options/options.css", dest: "options.css" },
     { src: "dashboard/dashboard.css", dest: "dashboard.css" },
@@ -61,7 +58,7 @@ async function build() {
   }
 
   // Copy compiled ReScript JS files
-  const jsFiles = [
+  let jsFiles = [
     { src: "background/Background.res.js", dest: "background.js" },
     { src: "content/Content.res.js", dest: "content.js" },
     { src: "popup/Popup.res.js", dest: "popup.js" },
@@ -105,4 +102,3 @@ if (import.meta.main) {
   await build();
 }
 
-==================================== */

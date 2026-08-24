@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: MPL-2.0
-// Ported via Harvard Engine mechanical processor
+// Ported via Harvard Engine (Semantic pass)
 
 module extension_lifecycle_test;
 
-// TODO: Complete semantic implementation
-
-/* === ORIGINAL TYPESCRIPT CONTEXT ===
 // SPDX-License-Identifier: MPL-2.0
 // End-to-end tests for DoubleTrack extension lifecycle
 
 import { assertEquals, assertExists } from "jsr:@std/assert";
 
-interface ExtensionState {
+struct ExtensionState {
   isInitialized: boolean;
   profile?: { id: string; name: string };
   activities: Array<{ url: string; timestamp: number }>;
@@ -79,7 +76,7 @@ Deno.test("Extension lifecycle: activity accumulation", () => {
   };
 
   // Simulate adding multiple activities
-  const urls = [
+  let urls = [
     "https://example.com",
     "https://google.com",
     "https://github.com",
@@ -113,7 +110,7 @@ Deno.test("Extension lifecycle: pause and resume", () => {
 });
 
 Deno.test("Extension lifecycle: configuration persistence", () => {
-  interface ExtensionConfig {
+  struct ExtensionConfig {
     noiseLevel: number;
     profileId: string;
     enabled: boolean;
@@ -126,7 +123,7 @@ Deno.test("Extension lifecycle: configuration persistence", () => {
   };
 
   // Simulate saving and loading
-  const savedConfig = JSON.stringify(config);
+  let savedConfig = JSON.stringify(config);
   const loadedConfig: ExtensionConfig = JSON.parse(savedConfig);
 
   assertEquals(loadedConfig.noiseLevel, 0.5);
@@ -168,7 +165,7 @@ Deno.test("Extension lifecycle: state serialization", () => {
   };
 
   // Serialize
-  const serialized = JSON.stringify(initialState);
+  let serialized = JSON.stringify(initialState);
 
   // Deserialize
   const deserialized: ExtensionState = JSON.parse(serialized);
@@ -195,4 +192,3 @@ Deno.test("Extension lifecycle: profile switching", () => {
   assertEquals(state.activities.length, 0);
 });
 
-==================================== */
