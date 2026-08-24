@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine mechanical processor
+
+module security_test;
+
+// TODO: Complete semantic implementation
+
+/* === ORIGINAL TYPESCRIPT CONTEXT ===
+// SPDX-License-Identifier: MPL-2.0
 // Security aspect tests for DoubleTrack browser extension
 
 import { assertEquals, assertStringIncludes } from "jsr:@std/assert";
@@ -211,3 +219,5 @@ Deno.test("Security: permission boundaries", () => {
   assertEquals(extensionPerms.tabs, true);
   assertEquals(extensionPerms.webRequest, false);
 });
+
+==================================== */

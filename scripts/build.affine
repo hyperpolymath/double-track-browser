@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine mechanical processor
+
+module build;
+
+// TODO: Complete semantic implementation
+
+/* === ORIGINAL TYPESCRIPT CONTEXT ===
+// SPDX-License-Identifier: MPL-2.0
 // Build script for DoubleTrack Browser extension
 // Uses Deno for file operations
 
@@ -96,3 +104,5 @@ async function build() {
 if (import.meta.main) {
   await build();
 }
+
+==================================== */

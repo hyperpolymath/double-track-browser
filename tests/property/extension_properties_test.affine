@@ -1,4 +1,12 @@
 // SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine mechanical processor
+
+module extension_properties_test;
+
+// TODO: Complete semantic implementation
+
+/* === ORIGINAL TYPESCRIPT CONTEXT ===
+// SPDX-License-Identifier: MPL-2.0
 // Property-based tests for DoubleTrack extension invariants
 
 import { assertEquals } from "jsr:@std/assert";
@@ -136,3 +144,5 @@ Deno.test("Extension invariant: activity type is known", () => {
   assertEquals(validateActivityType("PageVisit"), true);
   assertEquals(validateActivityType("InvalidType"), false);
 });
+
+==================================== */
