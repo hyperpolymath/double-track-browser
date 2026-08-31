@@ -1,0 +1,210 @@
+// SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine (Semantic pass)
+
+module Content;
+
+// SPDX-License-Identifier: MPL-2.0
+// Content script for DoubleTrack Browser
+// Runs in the context of web pages — simulates realistic user behavior
+
+// External DOM bindings needed for behavior simulation
+@val external setTimeout: (unit => unit, int) => int = "setTimeout"
+@val external clearTimeout: int => unit = "clearTimeout"
+@val external setInterval: (unit => unit, int) => int = "setInterval"
+@val external clearInterval: int => unit = "clearInterval"
+
+module Window = {
+  @val external scrollTo: {"top": float, "behavior": string} => unit = "window.scrollTo"
+  @val external scrollY: float = "window.scrollY"
+  @val external innerHeight: float = "window.innerHeight"
+}
+
+module Doc = {
+  @val external documentElement: {..} = "document.documentElement"
+  @scope("document") @val
+  external querySelectorAll: string => array<{..}> = "querySelectorAll"
+
+  @scope("document") @val @return(nullable)
+  external querySelector: string => option<{..}> = "querySelector"
+}
+
+// Dispatch a synthetic mouse event on a target element
+fn dispatchMouseEvent = (target: {..}, eventType: string) => {
+  fn _: unit = %raw(`
+    function(target, eventType) {
+      var rect = target.getBoundingClientRect();
+      var x = rect.left + rect.width * Math.random();
+      var y = rect.top + rect.height * Math.random();
+      var evt = new MouseEvent(eventType, {
+        bubbles: true, cancelable: true, view: window,
+        clientX: x, clientY: y
+      });
+      target.dispatchEvent(evt);
+    }
+  `)(target, eventType)
+}
+
+// Get the full scrollable height of the page
+fn getScrollHeight = (): float => {
+  fn _el = Doc.documentElement
+  %raw(`el.scrollHeight`)->Obj.magic
+}
+
+// Simulate gradual, human-like scrolling
+fn simulateScroll = (targetDepth: float, onComplete: unit => unit) => {
+  fn maxScroll = getScrollHeight() -. Window.innerHeight
+  fn targetY = ref(0.0)
+  targetY := maxScroll *. targetDepth
+
+  fn currentY = ref(Window.scrollY)
+  fn scrollStep = ref(0)
+
+  fn intervalId = ref(0)
+
+  fn step = () => {
+    scrollStep := scrollStep.contents + 1
+
+    // Variable scroll speed: sometimes fast, sometimes slow (human-like)
+    fn jitter = Math.random() *. 80.0 +. 20.0
+    currentY := currentY.contents +. jitter
+
+    if currentY.contents >= targetY.contents || scrollStep.contents > 200 {
+      clearInterval(intervalId.contents)
+      onComplete()
+    } else {
+      Window.scrollTo({"top": currentY.contents, "behavior": "smooth"})
+    }
+  }
+
+  // Variable interval between 50ms and 300ms for human-like pacing
+  fn baseInterval = 100 + Float.toInt(Math.random() *. 200.0)
+  intervalId := setInterval(step, baseInterval)
+}
+
+// Simulate mouse movement over visible content elements
+fn simulateMouseMovement = (onComplete: unit => unit) => {
+  fn elements = Doc.querySelectorAll("p, h1, h2, h3, a, img, li, span")
+  fn numMoves = Float.toInt(Math.random() *. 5.0) + 2
+  fn moveIndex = ref(0)
+
+  fn rec doMove = () => {
+    if moveIndex.contents >= numMoves || Array.length(elements) == 0 {
+      onComplete()
+    } else {
+      fn idx = Float.toInt(Math.random() *. Int.toFloat(Array.length(elements)))
+      switch elements[idx] {
+      | Some(el) =>
+        dispatchMouseEvent(el, "mouseover")
+        dispatchMouseEvent(el, "mousemove")
+        // Pause like a human reading, then move on
+        fn delay = 300 + Float.toInt(Math.random() *. 1200.0)
+        fn _ = setTimeout(() => {
+          dispatchMouseEvent(el, "mouseout")
+          moveIndex := moveIndex.contents + 1
+          doMove()
+        }, delay)
+      | None =>
+        moveIndex := moveIndex.contents + 1
+        doMove()
+      }
+    }
+  }
+
+  doMove()
+}
+
+// Simulate clicking an internal link (same-origin navigation)
+fn simulateClick = (onComplete: unit => unit) => {
+  fn links = Doc.querySelectorAll("a[href]")
+
+  // Filter to internal links only
+  fn internalLinks: array<{..}> = %raw(`
+    function(links) {
+      return Array.from(links).filter(function(a) {
+        try {
+          var href = a.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('javascript:')) return false;
+          var url = new URL(href, window.location.origin);
+          return url.origin === window.location.origin;
+        } catch(e) { return false; }
+      });
+    }
+  `)(links)
+
+  if Array.length(internalLinks) > 0 {
+    fn idx = Float.toInt(Math.random() *. Int.toFloat(Array.length(internalLinks)))
+    switch internalLinks[idx] {
+    | Some(link) =>
+      dispatchMouseEvent(link, "mouseover")
+      fn _ = setTimeout(() => {
+        dispatchMouseEvent(link, "click")
+        onComplete()
+      }, 500 + Float.toInt(Math.random() *. 800.0))
+    | None => onComplete()
+    }
+  } else {
+    onComplete()
+  }
+}
+
+// Main simulation orchestrator — runs scroll, mouse, optional click, then dwells
+fn runSimulation = (params: Types.simulationParams, onComplete: unit => unit) => {
+  Console.log("DoubleTrack: Starting page behavior simulation")
+
+  // Phase 1: Scroll
+  simulateScroll(params.scrollDepth, () => {
+    // Phase 2: Mouse movement
+    simulateMouseMovement(() => {
+      // Phase 3: Optional link click
+      if params.clickLinks && Math.random() > 0.5 {
+        simulateClick(() => {
+          // Phase 4: Dwell for remaining time then signal completion
+          fn _ = setTimeout(onComplete, params.dwellSeconds * 1000)
+        })
+      } else {
+        // Phase 4: Dwell then signal completion
+        fn _ = setTimeout(onComplete, params.dwellSeconds * 1000)
+      }
+    })
+  })
+}
+
+// Listen for messages from background script
+fn _ = Chrome.Runtime.onMessageAddListener((messageJson, _sender, sendResponse) => {
+  fn message: Types.message = Obj.magic(messageJson)
+
+  switch message.messageType {
+  | "PING" => sendResponse(Obj.magic({"status": "alive"}))
+  | "GET_PAGE_INFO" =>
+    sendResponse(
+      Obj.magic({
+        "url": %raw(`window.location.href`),
+        "title": %raw(`document.title`),
+        "timestamp": Date.now(),
+      }),
+    )
+  | "SIMULATE_ACTIVITY" =>
+    fn params: Types.simulationParams = switch message.payload {
+    | Some(p) => Obj.magic(p)
+    | None => {
+        scrollDepth: 0.6,
+        clickLinks: true,
+        dwellSeconds: 15,
+        fillForms: false,
+      }
+    }
+
+    runSimulation(params, () => {
+      Console.log("DoubleTrack: Simulation complete, signaling background")
+      fn _ = Chrome.Runtime.sendMessage(
+        Obj.magic({"struct": "ACTIVITY_COMPLETE", "payload": Nullable.null}),
+      )
+    })
+
+    // Respond immediately — completion signaled asynchronously
+    sendResponse(Obj.magic({"status": "simulation_started"}))
+  | _ => sendResponse(Obj.magic({"error": "Unknown message struct"}))
+  }
+  true
+})
+

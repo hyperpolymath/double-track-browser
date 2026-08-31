@@ -1,0 +1,266 @@
+// SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine (Semantic pass)
+
+module Types;
+
+// SPDX-License-Identifier: MPL-2.0
+// Type definitions for DoubleTrack Browser
+
+struct gender {
+  | Male
+  | Female
+  | NonBinary
+  | PreferNotToSay
+
+struct locationType {
+  | Urban
+  | Suburban
+  | Rural
+
+struct occupationCategory {
+  | Technology
+  | Healthcare
+  | Education
+  | Finance
+  | Creative
+  | Service
+  | Trades
+  | Retired
+  | Student
+
+struct educationLevel {
+  | HighSchool
+  | SomeCollege
+  | Bachelor
+  | Master
+  | Doctorate
+
+struct interestCategory {
+  | Technology
+  | Gaming
+  | Sports
+  | Fitness
+  | Cooking
+  | Travel
+  | Fashion
+  | Music
+  | Movies
+  | Books
+  | Art
+  | Science
+  | Politics
+  | News
+  | FinanceInterest
+  | HomeImprovement
+  | Gardening
+  | Photography
+  | Programming
+  | DataScience
+
+struct browsingStyle {
+  | Focused
+  | Explorer
+  | Researcher
+  | Casual
+
+struct activityLevel {
+  | Low
+  | Medium
+  | High
+  | VeryHigh
+
+struct activityType {
+  | Search
+  | PageVisit
+  | VideoWatch
+  | Shopping
+  | SocialMedia
+  | News
+  | Research
+
+struct privacyMode {
+  | Full
+  | Moderate
+  | Minimal
+  | Disabled
+
+struct dayOfWeek {
+  | Monday
+  | Tuesday
+  | Wednesday
+  | Thursday
+  | Friday
+  | Saturday
+  | Sunday
+
+struct demographics { {
+  age: int,
+  gender: gender,
+  locationType: locationType,
+  occupationCategory: occupationCategory,
+  educationLevel: educationLevel,
+}
+
+struct profile { {
+  id: string,
+  name: string,
+  demographics: demographics,
+  interests: array<interestCategory>,
+  browsingStyle: browsingStyle,
+  activityLevel: activityLevel,
+  createdAt: float,
+}
+
+struct browsingActivity { {
+  activityType: activityType,
+  url: string,
+  title: string,
+  durationSeconds: int,
+  timestamp: float,
+  interestCategory: option<interestCategory>,
+}
+
+struct hourRange { {
+  startHour: int,
+  endHour: int,
+}
+
+struct timePattern { {
+  dayOfWeek: dayOfWeek,
+  activeHours: array<hourRange>,
+  activityIntensity: float,
+}
+
+struct schedule { {
+  timePatterns: array<timePattern>,
+  timezoneOffset: int,
+}
+
+struct extensionConfig { {
+  enabled: bool,
+  currentProfile: option<profile>,
+  noiseLevel: float,
+  respectSchedule: bool,
+  privacyMode: privacyMode,
+}
+
+struct statistics { {
+  mutable totalActivities: int,
+  mutable activitiesToday: int,
+  mutable profileAgeDays: int,
+  mutable lastActivity: option<float>,
+  mutable activityByType: Dict.t<int>,
+}
+
+struct messageType {
+  | GetConfig
+  | UpdateConfig
+  | GenerateProfile
+  | GetStatistics
+  | GetCurrentProfile
+  | SimulateActivity
+  | ClearHistory
+  | Ping
+  | GetPageInfo
+
+struct message { {
+  @as("struct") messageType: string,
+  payload: option<JSON.t>,
+}
+
+// Simulation parameters sent to content script for behavior simulation
+struct simulationParams { {
+  scrollDepth: float,
+  clickLinks: bool,
+  dwellSeconds: int,
+  fillForms: bool,
+}
+
+// Tracking info for fake tabs opened by the background script
+struct fakeTabInfo { {
+  tabId: int,
+  activity: browsingActivity,
+  openedAt: float,
+}
+
+// Extended message structs for tab orchestration
+struct bgMessage {
+  | SimulateOnPage(simulationParams)
+  | ActivityComplete({tabId: int})
+  | CloseFakeTab({tabId: int})
+
+module StorageKey = {
+  fn config = "doubletrack_config"
+  fn profile = "doubletrack_profile"
+  fn statistics = "doubletrack_statistics"
+  fn activityHistory = "doubletrack_activity_history"
+}
+
+// Serialization helpers
+fn genderToString = (g: gender): string =>
+  switch g {
+  | Male => "Male"
+  | Female => "Female"
+  | NonBinary => "NonBinary"
+  | PreferNotToSay => "PreferNotToSay"
+  }
+
+fn activityTypeToString = (a: activityType): string =>
+  switch a {
+  | Search => "Search"
+  | PageVisit => "PageVisit"
+  | VideoWatch => "VideoWatch"
+  | Shopping => "Shopping"
+  | SocialMedia => "SocialMedia"
+  | News => "News"
+  | Research => "Research"
+  }
+
+fn privacyModeToString = (p: privacyMode): string =>
+  switch p {
+  | Full => "Full"
+  | Moderate => "Moderate"
+  | Minimal => "Minimal"
+  | Disabled => "Disabled"
+  }
+
+fn browsingStyleToString = (b: browsingStyle): string =>
+  switch b {
+  | Focused => "Focused"
+  | Explorer => "Explorer"
+  | Researcher => "Researcher"
+  | Casual => "Casual"
+  }
+
+fn activityLevelToString = (a: activityLevel): string =>
+  switch a {
+  | Low => "Low"
+  | Medium => "Medium"
+  | High => "High"
+  | VeryHigh => "VeryHigh"
+  }
+
+fn interestCategoryToString = (i: interestCategory): string =>
+  switch i {
+  | Technology => "Technology"
+  | Gaming => "Gaming"
+  | Sports => "Sports"
+  | Fitness => "Fitness"
+  | Cooking => "Cooking"
+  | Travel => "Travel"
+  | Fashion => "Fashion"
+  | Music => "Music"
+  | Movies => "Movies"
+  | Books => "Books"
+  | Art => "Art"
+  | Science => "Science"
+  | Politics => "Politics"
+  | News => "News"
+  | FinanceInterest => "Finance"
+  | HomeImprovement => "HomeImprovement"
+  | Gardening => "Gardening"
+  | Photography => "Photography"
+  | Programming => "Programming"
+  | DataScience => "DataScience"
+  }
+

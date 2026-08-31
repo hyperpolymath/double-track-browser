@@ -12,16 +12,16 @@ ____
 This project is built on a hybrid architecture that prioritizes both performance and memory safety:
 
 - *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
-- *ReScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
+- *AffineScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
 - *Deno*: Modern runtime for build scripts and development tooling
 - *WebExtensions API*: Provides the hooks needed for background operation
 ____
 
 *Evidence:* The project structure (README line 36-50) shows functional implementation:
 - `rust_core/` — WASM-compiled Rust profile generator and activity simulator
-- `src/` — ReScript source with background service worker, bindings, content script, dashboard, options page, popup, types, utils
+- `src/` — AffineScript source with background service worker, bindings, content script, dashboard, options page, popup, types, utils
 - `scripts/` — Deno build scripts
-- `rescript.json` + `deno.json` — Build configuration
+- `affinescript.json` + `deno.json` — Build configuration
 - `justfile` — Task runner for build, test, lint
 
 The RSR compliance audit (lines 88-100) confirms zero unsafe blocks and comprehensive testing coverage.
@@ -49,7 +49,7 @@ This is more than experimental code — it's grounded in formal ethics (Defensiv
 | Technology | Learn More
 
 | **Rust** | https://www.rust-lang.org (profile generation, activity simulation compiled to WASM)
-| **ReScript** | https://rescript-lang.org (type-safe browser API integration, UI)
+| **AffineScript** | https://affinescript-lang.org (type-safe browser API integration, UI)
 | **Deno 2.0+** | https://deno.land (build scripts, development tooling)
 | **WebExtensions API** | Cross-browser extension compatibility
 | **wasm-pack** | Rust → WebAssembly compilation
@@ -79,7 +79,7 @@ DoubleTrack-specific:
 | `src/dashboard/` | Analytics and configuration dashboard
 | `src/options/` | Extension options/settings page
 | `src/popup/` | Extension popup UI
-| `src/types/` | ReScript type definitions
+| `src/types/` | AffineScript type definitions
 | `src/utils/` | Storage and WASM utilities (identity isolation)
 | `scripts/` | Deno build scripts (compilation, bundling)
 | `dist/` | Built extension (ready to load in browser)

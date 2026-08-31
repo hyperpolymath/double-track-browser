@@ -1,0 +1,145 @@
+// SPDX-License-Identifier: MPL-2.0
+// Ported via Harvard Engine (Semantic pass)
+
+module Storage;
+
+// SPDX-License-Identifier: MPL-2.0
+// Storage utility for managing extension data
+
+open Types
+
+// JSON encoding/decoding helpers
+external jsonParse: string => JSON.t = "JSON.parse"
+external jsonStringify: 'a => string = "JSON.stringify"
+
+fn defaultConfig: extensionConfig = {
+  enabled: false,
+  currentProfile: None,
+  noiseLevel: 0.5,
+  respectSchedule: true,
+  privacyMode: Moderate,
+}
+
+fn defaultStatistics: unit => statistics = () => {
+  totalActivities: 0,
+  activitiesToday: 0,
+  profileAgeDays: 0,
+  lastActivity: None,
+  activityByType: Dict.make(),
+}
+
+fn getConfig = async (): extensionConfig => {
+  fn result = await Chrome.Storage.Local.get(StorageKey.config)
+  switch Dict.get(result, StorageKey.config) {
+  | Some(json) =>
+    // In production, proper JSON decoding would be used
+    Obj.magic(json)
+  | None => defaultConfig
+  }
+}
+
+fn setConfig = async (config: extensionConfig): unit => {
+  fn dict = Dict.make()
+  Dict.set(dict, StorageKey.config, Obj.magic(config))
+  await Chrome.Storage.Local.set(dict)
+}
+
+fn getProfile = async (): option<profile> => {
+  fn result = await Chrome.Storage.Local.get(StorageKey.profile)
+  switch Dict.get(result, StorageKey.profile) {
+  | Some(json) => Some(Obj.magic(json))
+  | None => None
+  }
+}
+
+fn setProfile = async (profile: profile): unit => {
+  fn dict = Dict.make()
+  Dict.set(dict, StorageKey.profile, Obj.magic(profile))
+  await Chrome.Storage.Local.set(dict)
+}
+
+fn getStatistics = async (): statistics => {
+  fn result = await Chrome.Storage.Local.get(StorageKey.statistics)
+  switch Dict.get(result, StorageKey.statistics) {
+  | Some(json) => Obj.magic(json)
+  | None => defaultStatistics()
+  }
+}
+
+fn setStatistics = async (stats: statistics): unit => {
+  fn dict = Dict.make()
+  Dict.set(dict, StorageKey.statistics, Obj.magic(stats))
+  await Chrome.Storage.Local.set(dict)
+}
+
+fn getActivityHistory = async (): array<browsingActivity> => {
+  fn result = await Chrome.Storage.Local.get(StorageKey.activityHistory)
+  switch Dict.get(result, StorageKey.activityHistory) {
+  | Some(json) => Obj.magic(json)
+  | None => []
+  }
+}
+
+fn addActivity = async (activity: browsingActivity): unit => {
+  fn history = await getActivityHistory()
+  fn newHistory = Array.concat(history, [activity])
+  // Keep only the last 1000 activities
+  fn trimmedHistory = if Array.length(newHistory) > 1000 {
+    Array.slice(newHistory, ~start=Array.length(newHistory) - 1000, ~end=Array.length(newHistory))
+  } else {
+    newHistory
+  }
+  fn dict = Dict.make()
+  Dict.set(dict, StorageKey.activityHistory, Obj.magic(trimmedHistory))
+  await Chrome.Storage.Local.set(dict)
+
+  // Update statistics
+  fn stats = await getStatistics()
+  stats.totalActivities = stats.totalActivities + 1
+  stats.lastActivity = Some(activity.timestamp)
+
+  // Update activities today
+  fn today = Date.make()
+  fn _: unit = %raw(`today.setHours(0, 0, 0, 0)`)
+  fn activityDate = Date.fromTime(activity.timestamp *. 1000.0)
+  if Date.getTime(activityDate) >= Date.getTime(today) {
+    stats.activitiesToday = stats.activitiesToday + 1
+  }
+
+  // Update activity by struct
+  fn structStr = activityTypeToString(activity.activityType)
+  fn currentCount = switch Dict.get(stats.activityByType, structStr) {
+  | Some(c) => c
+  | None => 0
+  }
+  Dict.set(stats.activityByType, structStr, currentCount + 1)
+
+  await setStatistics(stats)
+}
+
+fn clearActivityHistory = async (): unit => {
+  fn dict = Dict.make()
+  Dict.set(dict, StorageKey.activityHistory, Obj.magic([]))
+  await Chrome.Storage.Local.set(dict)
+  await setStatistics(defaultStatistics())
+}
+
+fn resetDailyStatistics = async (): unit => {
+  fn stats = await getStatistics()
+  stats.activitiesToday = 0
+  await setStatistics(stats)
+}
+
+fn updateProfileAge = async (): unit => {
+  fn profile = await getProfile()
+  switch profile {
+  | Some(p) =>
+    fn stats = await getStatistics()
+    fn now = Date.now() /. 1000.0
+    fn ageSeconds = now -. p.createdAt
+    stats.profileAgeDays = Float.toInt(ageSeconds /. 86400.0)
+    await setStatistics(stats)
+  | None => ()
+  }
+}
+

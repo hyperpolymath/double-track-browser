@@ -38,7 +38,7 @@ ____
 This project is built on a hybrid architecture that prioritizes both performance and memory safety:
 
 - *Rust Core*: Powers the profile generation and activity simulation engine, compiled to WebAssembly for browser integration
-- *ReScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
+- *AffineScript*: Type-safe browser API integration and UI components (compiles to JavaScript)
 - *Deno*: Modern runtime for build scripts and development tooling
 - *WebExtensions API*: Provides the hooks needed for background operation
 
@@ -75,7 +75,7 @@ cd double-track-browser
 # Check dependencies
 just install
 
-# Build everything (Rust + ReScript + Extension)
+# Build everything (Rust + AffineScript + Extension)
 just build
 
 # Or without just:
@@ -94,7 +94,7 @@ This project adheres to the *Rhodium Standard Repository (RSR) Framework* and ac
 
 * ✅ *Documentation*: README, LICENSE, SECURITY, CODE_OF_CONDUCT, CONTRIBUTING, MAINTAINERS, CHANGELOG
 * ✅ *.well-known/*: RFC 9116 security.txt, ai.txt (AI training policy), humans.txt (attribution)
-* ✅ *Type Safety*: Rust compile-time guarantees + ReScript type system
+* ✅ *Type Safety*: Rust compile-time guarantees + AffineScript type system
 * ✅ *Memory Safety*: Rust ownership model, zero unsafe blocks
 * ✅ *Build System*: Deno, wasm-pack, Justfile, Mustfile.epx
 * ✅ *CI/CD*: GitHub Actions with security audits, linting, and testing
@@ -107,7 +107,7 @@ See link:RSR_COMPLIANCE_AUDIT.md[RSR_COMPLIANCE_AUDIT.md] for detailed audit.
 
 This project follows the *Hyperpolymath Standard* language policy:
 
-- *ReScript* instead of TypeScript
+- *AffineScript* instead of TypeScript
 - *Deno* instead of npm/Node.js
 - *Rust* for performance-critical code
 - *justfile* instead of Makefile
