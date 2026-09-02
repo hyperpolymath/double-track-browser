@@ -9,8 +9,7 @@ use rand::SeedableRng;
 // Define strategies for property-based testing
 
 fn name_strategy() -> impl Strategy<Value = String> {
-    r"[A-Z][a-z]{1,10} [A-Z][a-z]{1,10}"
-        .prop_map(|s| s.to_string())
+    r"[A-Z][a-z]{1,10} [A-Z][a-z]{1,10}".prop_map(|s| s.to_string())
 }
 
 fn age_strategy() -> impl Strategy<Value = u8> {

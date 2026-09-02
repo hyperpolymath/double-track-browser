@@ -20,8 +20,7 @@ fn test_full_profile_lifecycle() {
     assert!(!json_str.is_empty(), "Serialized JSON must not be empty");
 
     // Deserialize back
-    let deserialized: Profile =
-        serde_json::from_str(&json_str).expect("Deserialization failed");
+    let deserialized: Profile = serde_json::from_str(&json_str).expect("Deserialization failed");
 
     // Verify data integrity
     assert_eq!(
@@ -182,8 +181,7 @@ fn test_formdata_serialization_roundtrip() {
     let form_original = FormDataGenerator::generate(&profile, &mut rng);
 
     // Serialize
-    let json_str =
-        serde_json::to_string(&form_original).expect("FormData serialization failed");
+    let json_str = serde_json::to_string(&form_original).expect("FormData serialization failed");
 
     // Deserialize
     let form_deserialized: FormData =

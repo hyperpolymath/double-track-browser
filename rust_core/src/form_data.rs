@@ -76,10 +76,9 @@ impl FormDataGenerator {
                 // `first` is either "user" (literal fallback) or a yield from
                 // split_whitespace which never returns empty slices, so first_lower
                 // is always non-empty and .chars().next() is always Some.
-                first_lower
-                    .chars()
-                    .next()
-                    .expect("first_lower is non-empty (literal fallback or split_whitespace yield)"),
+                first_lower.chars().next().expect(
+                    "first_lower is non-empty (literal fallback or split_whitespace yield)"
+                ),
                 last_lower,
                 number_suffix
             ),
