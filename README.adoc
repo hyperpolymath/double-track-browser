@@ -20,9 +20,7 @@ image:https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-oran
 
 == License & Philosophy
 
-This project must declare **MPL-2.0-or-later** for platform/tooling compatibility.
-
-Philosophy: **Palimpsest**. The Palimpsest-MPL (PMPL) text is provided in `license/PMPL-1.0.txt`, and the canonical source is the palimpsest-license repository.
+This project declares **MPL-2.0-or-later** — see `LICENSE` for the full text.
 
 == The Pendulum Swings Back
 
@@ -156,9 +154,7 @@ See link:SECURITY.md[SECURITY.md] for vulnerability reporting procedures and our
 
 == License
 
-*MPL-2.0* (Palimpsest License) — see `license/PMPL-1.0.txt`
-
-MPL-2.0 declared for platform compatibility where PMPL is not recognized.
+*MPL-2.0* — see `LICENSE`.
 
 ---
 
