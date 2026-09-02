@@ -3,13 +3,6 @@
 # Docs: https://gh.io/actions-lockfile
 version: 'v0.0.2'
 workflows:
-    '.github/workflows/governance.yml': []
-    '.github/workflows/hypatia-scan.yml': []
-    '.github/workflows/label-triage.yml': []
-    '.github/workflows/labels.yml': []
-    '.github/workflows/mirror.yml': []
-    '.github/workflows/scorecard.yml': []
-    '.github/workflows/secret-scanner.yml': []
     '.github/workflows/boj-build.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/casket-pages.yml':
@@ -30,22 +23,27 @@ workflows:
         - 'softprops/action-gh-release@v3.0.2'
     '.github/workflows/codeql.yml':
         - 'actions/checkout@v7.0.1'
-        - 'github/codeql-action@v4.37.8'
+        - 'github/codeql-action@v4.37.9'
     '.github/workflows/dependabot-automerge.yml':
         - 'dependabot/fetch-metadata@v3.1.0'
     '.github/workflows/dogfood-gate.yml':
         - 'actions/checkout@v7.0.1'
         - 'hyperpolymath/a2ml-ecosystem@main'
         - 'hyperpolymath/k9-ecosystem@main'
+    '.github/workflows/governance.yml': []
+    '.github/workflows/hypatia-scan.yml': []
     '.github/workflows/instant-sync.yml':
         - 'peter-evans/repository-dispatch@v4.0.1'
+    '.github/workflows/label-triage.yml': []
+    '.github/workflows/labels.yml': []
     '.github/workflows/makefile-blocker.yml':
         - 'actions/checkout@v7.0.1'
-    '.github/workflows/push-email-notify.yml':
-        - 'dawidd6/action-send-mail@v3.12.0'
+    '.github/workflows/mirror.yml': []
     '.github/workflows/rescript-deno-ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'denoland/setup-deno@v2.0.5'
+    '.github/workflows/scorecard.yml': []
+    '.github/workflows/secret-scanner.yml': []
     '.github/workflows/workflow-linter.yml':
         - 'actions/checkout@v7.0.1'
 dependencies:
@@ -115,11 +113,6 @@ dependencies:
         repo_id: 200299178
         uses:
             - 'actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd'
-    'dawidd6/action-send-mail@v3.12.0':
-        ref: 'v3.12.0'
-        commit: 'sha1-94de994a9f6fffee200243214e17002e2920bb59'
-        owner_id: 9713907
-        repo_id: 222439721
     'denoland/setup-deno@v2.0.5':
         ref: 'v2.0.5'
         commit: 'sha1-22d081ff2d3a40755e97629de92e3bcbfa7cf2ed'
@@ -135,9 +128,9 @@ dependencies:
         commit: 'sha1-6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772'
         owner_id: 1940490
         repo_id: 260749683
-    'github/codeql-action@v4.37.8':
-        ref: 'v4.37.8'
-        commit: 'sha1-db488ddef3bf6cb639b32c2e9a7c0a7ea8271d28'
+    'github/codeql-action@v4.37.9':
+        ref: 'v4.37.9'
+        commit: 'sha1-cdf488f595d80d6e07e03d4674febd5ab45fa938'
         owner_id: 9919
         repo_id: 259445878
     'haskell-actions/setup@v2.12.0':

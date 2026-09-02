@@ -18,19 +18,14 @@ updates:
         update-types:
           - "minor"
           - "patch"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    groups:
-      actions:
-        patterns:
-          - "*"
-  - package-ecosystem: "guix"
-    directory: "/"
-    schedule:
-      interval: "weekly"
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+# `github-actions` is deliberately absent: Dependabot bumps `uses:` pins
+# without regenerating .github/workflows/actions.lock, which put every
+# workflow using the bumped action into startup_failure ("Invalid
+# lockfile") — #92 did exactly that to CodeQL on 2026-09-02. Action pin
+# bumps come from the standards lock-refresh workflow, which regenerates
+# the lock in the same PR (standards spec 2026-09-02-cicd-regularisation
+# §6.4). `guix` was removed because it is not a Dependabot ecosystem.
