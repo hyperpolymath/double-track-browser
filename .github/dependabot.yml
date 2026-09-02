@@ -1,8 +1,11 @@
 # SPDX-License-Identifier: MPL-2.0
 version: 2
 updates:
+  # The Rust crate lives under rust_core/, not the repo root. With
+  # directory: "/" Dependabot aborted every run with "/Cargo.toml not
+  # found" (runs 33629413711 on 2026-09-02 and 33389729963 on 08-31).
   - package-ecosystem: "cargo"
-    directory: "/"
+    directory: "/rust_core"
     schedule:
       interval: "weekly"
     # `open-pull-requests-limit: 0` suppresses routine version-update PRs
@@ -18,10 +21,9 @@ updates:
         update-types:
           - "minor"
           - "patch"
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
+# `npm` is deliberately absent: the repository has no package.json at any
+# path (checked 2026-09-02), so the entry only produced
+# "/package.json not found" failures on every Dependabot run.
 # `github-actions` is deliberately absent: Dependabot bumps `uses:` pins
 # without regenerating .github/workflows/actions.lock, which put every
 # workflow using the bumped action into startup_failure ("Invalid
