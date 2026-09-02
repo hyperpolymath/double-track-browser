@@ -128,9 +128,22 @@ jobs:
         run: |
           # Inline invisible character detection (from empty-linter's core patterns).
           # Checks for: zero-width spaces, zero-width joiners, BOM, soft hyphens,
-          # non-breaking spaces, null bytes, and other invisible Unicode in source files.
-          set +e
+          # non-breaking spaces, null bytes, C0 controls and other invisible
+          # Unicode in source files.
+          #
+          # `(*UTF)` makes PCRE match code points, not bytes, whatever the
+          # runner locale is; `-a` stops grep treating a NUL-bearing file as
+          # binary and silently matching nothing. Both were missing before
+          # #90 and the gate had matched nothing in its life.
           PATTERNS='(*UTF)[\x00-\x08\x0B\x0C\x0E-\x1F\x{a0}\x{ad}\x{200b}-\x{200f}\x{202a}-\x{202f}\x{2060}\x{2066}-\x{2069}\x{feff}]'
+
+          # Planted positive: the pattern must fire on a known NBSP, or this
+          # gate cannot fire at all and must fail closed rather than pass.
+          if ! printf 'x\xc2\xa0y' | grep -aqP "$PATTERNS"; then
+            echo "::error::invisible-character pattern did not match a planted NBSP; the gate cannot fire, failing closed"
+            exit 1
+          fi
+
           find "$GITHUB_WORKSPACE" \
             -not -path '*/.git/*' -not -path '*/node_modules/*' \
             -not -path '*/.deno/*' -not -path '*/target/*' \
@@ -141,23 +154,27 @@ jobs:
               -o -name '*.yml' -o -name '*.yaml' -o -name '*.md' -o -name '*.adoc' \
               -o -name '*.idr' -o -name '*.zig' -o -name '*.v' -o -name '*.jl' \
               -o -name '*.gleam' -o -name '*.hs' -o -name '*.ml' -o -name '*.sh' \) \
-            -exec grep -aPrl "$PATTERNS" {} \; > /tmp/empty-lint-results.txt 2>/dev/null
-          EL_EXIT=$?
-          set -e
+            -exec grep -aPrl "$PATTERNS" {} \; > /tmp/empty-lint-results.txt
 
-          FINDINGS=$(wc -l < /tmp/empty-lint-results.txt 2>/dev/null || echo 0)
+          FINDINGS=$(grep -c . /tmp/empty-lint-results.txt || true)
           echo "findings=$FINDINGS" >> "$GITHUB_OUTPUT"
-          echo "exit_code=$EL_EXIT" >> "$GITHUB_OUTPUT"
           echo "ready=true" >> "$GITHUB_OUTPUT"
 
-          # Emit annotations for each file with invisible chars
+          # One annotation per offending file, then FAIL: a gate that only
+          # warns is not a gate.
           while IFS= read -r filepath; do
             [ -z "$filepath" ] && continue
             REL_PATH="${filepath#$GITHUB_WORKSPACE/}"
-            echo "::warning file=${REL_PATH}::Invisible Unicode characters detected (zero-width space, BOM, NBSP, etc.)"
+            echo "::error file=${REL_PATH}::Invisible Unicode characters detected (zero-width space, BOM, NBSP, soft hyphen, C0 control, NUL)"
           done < /tmp/empty-lint-results.txt
 
+          if [ "$FINDINGS" -gt 0 ]; then
+            echo "::error::${FINDINGS} file(s) contain invisible Unicode characters (listed above). This gate fails the job."
+            exit 1
+          fi
+
       - name: Write summary
+        if: always()
         run: |
           if [ "${{ steps.lint.outputs.ready }}" = "true" ]; then
             FINDINGS="${{ steps.lint.outputs.findings }}"

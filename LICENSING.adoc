@@ -52,7 +52,7 @@ distribution 3. Provide attribution as specified in your chosen license
 
 === Clarifications
 
-*Q: Can I mix and match terms from both licenses?* A: No. Choose one
+*Q: Can I mix and match terms from both licenses?* A: No. Choose one
 license and follow its terms entirely.
 
 *Q: What if I’m unsure which to use?* A: MIT is the simpler, more widely
