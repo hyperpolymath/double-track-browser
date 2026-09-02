@@ -20,7 +20,7 @@ security considerations:
 simulated) - Storage injection attacks (malicious data in
 chrome.storage) - WASM sandbox escapes - Content script injection
 vulnerabilities - Extension permission abuse - Timing side-channels
-revealing real vs. simulated activity
+revealing real vs. simulated activity
 
 *Out of Scope*: - Physical access attacks - Browser zero-days (rely on
 browser vendor patches) - Social engineering of users - Cryptographic

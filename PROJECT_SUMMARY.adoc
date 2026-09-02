@@ -160,7 +160,7 @@ timing patterns
 
 ==== Scheduling
 
-✅ Occupation-based activity schedules ✅ Weekday vs. weekend patterns
+✅ Occupation-based activity schedules ✅ Weekday vs. weekend patterns
 ✅ Hour-based active periods ✅ Activity intensity modulation ✅
 Schedule-aware simulation
 
@@ -179,7 +179,7 @@ calculation ✅ Data export functionality
 ==== Privacy & Security
 
 ✅ All data stored locally ✅ No external API calls ✅ Separate storage
-for real vs. simulated data ✅ Configurable privacy modes ✅ Activity
+for real vs. simulated data ✅ Configurable privacy modes ✅ Activity
 can be disabled instantly
 
 ==== Analytics Dashboard
@@ -309,7 +309,7 @@ for future development
 . *Complete WASM Integration*
 * Load actual compiled module
 * Test performance
-* Benchmark vs. mock implementation
+* Benchmark vs. mock implementation
 . *Design Assets*
 * Create professional icons
 * Add branding
