@@ -94,10 +94,7 @@ fn test_sql_injection_patterns_in_formdata() {
     let form = FormDataGenerator::generate(&profile, &mut rng);
 
     // Email should always be valid format, not SQL injection
-    assert!(
-        form.email.contains('@'),
-        "Email must contain @ symbol"
-    );
+    assert!(form.email.contains('@'), "Email must contain @ symbol");
     let parts: Vec<&str> = form.email.split('@').collect();
     assert_eq!(parts.len(), 2, "Email must have valid structure");
 
@@ -151,7 +148,7 @@ fn test_activity_timestamp_validity() {
         // Activity timestamps should be recent (within 24 hours)
         let time_diff = (now - activity.timestamp).abs();
         assert!(
-            time_diff < 86400 * 2,  // 2 days tolerance
+            time_diff < 86400 * 2, // 2 days tolerance
             "Activity timestamp should be recent"
         );
     }
@@ -178,10 +175,7 @@ fn test_activity_list_consistency() {
     // All activities should have consistent structure
     for activity in &activities {
         // Duration should be positive
-        assert!(
-            activity.duration_seconds > 0,
-            "Duration must be positive"
-        );
+        assert!(activity.duration_seconds > 0, "Duration must be positive");
 
         // URL should be valid
         assert!(
@@ -239,8 +233,14 @@ fn test_no_unsafe_pattern_in_data_structures() {
     let form = FormDataGenerator::generate(&profile, &mut rng);
 
     // Check for null bytes (would cause C string issues)
-    assert!(!form.email.contains('\0'), "Email must not contain null bytes");
-    assert!(!form.display_name.contains('\0'), "Display name must not contain null bytes");
+    assert!(
+        !form.email.contains('\0'),
+        "Email must not contain null bytes"
+    );
+    assert!(
+        !form.display_name.contains('\0'),
+        "Display name must not contain null bytes"
+    );
 
     // Check for control characters (except newline/tab which might be ok)
     for c in form.email.chars() {
@@ -264,7 +264,7 @@ fn test_boundary_values_for_activity_duration() {
         let max_duration = match activity.activity_type {
             ActivityType::VideoWatch => 3600 * 4, // Videos might be longer
             ActivityType::Research => 3600 * 2,   // Research could be extended
-            _ => 3600,                              // Most activities < 1 hour
+            _ => 3600,                            // Most activities < 1 hour
         };
 
         assert!(
