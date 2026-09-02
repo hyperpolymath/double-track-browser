@@ -3,7 +3,7 @@
 
 = DoubleTrack Browser
 
-image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0-or-later,link="https://opensource.org/licenses/MPL-2.0"]
+image:https://img.shields.io/badge/License-MPL_2.0-blue.svg[MPL-2.0,link="https://opensource.org/licenses/MPL-2.0"]
 image:https://img.shields.io/badge/Philosophy-Palimpsest-indigo.svg[Palimpsest,link="https://github.com/hyperpolymath/palimpsest-license"]
 
 :toc: macro
@@ -20,7 +20,7 @@ image:https://img.shields.io/badge/stack-Rust%20%2B%20ReScript%20%2B%20Deno-oran
 
 == License & Philosophy
 
-This project declares **MPL-2.0-or-later** — see `LICENSE` for the full text.
+This project declares **MPL-2.0** — see `LICENSE` for the full text.
 
 == The Pendulum Swings Back
 
