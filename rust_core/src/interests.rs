@@ -58,11 +58,16 @@ impl InterestUrlGenerator {
         let title = self.get_video_title(interest, rng);
         let video_id = self.generate_video_id(rng);
 
-        let platform = ["youtube.com", "vimeo.com"].choose(rng).expect(".choose() on a non-empty static literal array is always Some");
+        let platform = ["youtube.com", "vimeo.com"]
+            .choose(rng)
+            .expect(".choose() on a non-empty static literal array is always Some");
         let url = if *platform == "youtube.com" {
             format!("https://www.youtube.com/watch?v={}", video_id)
         } else {
-            format!("https://vimeo.com/{}", rng.random_range(100000000..999999999))
+            format!(
+                "https://vimeo.com/{}",
+                rng.random_range(100000000..999999999)
+            )
         };
 
         (url, title)
@@ -107,7 +112,9 @@ impl InterestUrlGenerator {
             ("bsky.app", "Bluesky"),
         ];
 
-        let (domain, name) = platforms.choose(rng).expect(".choose() on a non-empty static literal array is always Some");
+        let (domain, name) = platforms
+            .choose(rng)
+            .expect(".choose() on a non-empty static literal array is always Some");
         let url = format!("https://{}", domain);
         let title = format!("Home - {}", name);
 
@@ -434,7 +441,10 @@ impl InterestUrlGenerator {
                     "recipe of the day",
                 ],
             };
-            queries.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
+            queries
+                .choose(rng)
+                .expect(".choose() on a non-empty static literal array is always Some")
+                .to_string()
         } else {
             [
                 "news today",
@@ -517,7 +527,10 @@ impl InterestUrlGenerator {
                     "How-To Guide Step by Step",
                 ],
             };
-            titles.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
+            titles
+                .choose(rng)
+                .expect(".choose() on a non-empty static literal array is always Some")
+                .to_string()
         } else {
             "Trending Video".to_string()
         }
@@ -601,7 +614,10 @@ impl InterestUrlGenerator {
                     "New Arrival",
                 ],
             };
-            products.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
+            products
+                .choose(rng)
+                .expect(".choose() on a non-empty static literal array is always Some")
+                .to_string()
         } else {
             "Product".to_string()
         }
@@ -658,7 +674,10 @@ impl InterestUrlGenerator {
                     "Weather Pattern Shift Expected This Week",
                 ],
             };
-            headlines.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
+            headlines
+                .choose(rng)
+                .expect(".choose() on a non-empty static literal array is always Some")
+                .to_string()
         } else {
             "Breaking News".to_string()
         }
@@ -728,7 +747,10 @@ impl InterestUrlGenerator {
                     "Literature Review Summary",
                 ],
             };
-            topics.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
+            topics
+                .choose(rng)
+                .expect(".choose() on a non-empty static literal array is always Some")
+                .to_string()
         } else {
             "General Topic".to_string()
         }
@@ -766,7 +788,10 @@ impl InterestUrlGenerator {
                     "Community Recommendations",
                 ],
             };
-            pages.choose(rng).expect(".choose() on a non-empty static literal array is always Some").to_string()
+            pages
+                .choose(rng)
+                .expect(".choose() on a non-empty static literal array is always Some")
+                .to_string()
         } else {
             "General Page".to_string()
         }
@@ -848,15 +873,21 @@ impl DomainDatabase {
     }
 
     fn get_shopping_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.shopping.choose(rng).expect(".choose() on a non-empty static literal array is always Some")
+        self.shopping
+            .choose(rng)
+            .expect(".choose() on a non-empty static literal array is always Some")
     }
 
     fn get_news_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.news.choose(rng).expect(".choose() on a non-empty static literal array is always Some")
+        self.news
+            .choose(rng)
+            .expect(".choose() on a non-empty static literal array is always Some")
     }
 
     fn get_research_domain<R: Rng>(&self, rng: &mut R) -> &str {
-        self.research.choose(rng).expect(".choose() on a non-empty static literal array is always Some")
+        self.research
+            .choose(rng)
+            .expect(".choose() on a non-empty static literal array is always Some")
     }
 
     fn get_interest_domain<R: Rng>(
