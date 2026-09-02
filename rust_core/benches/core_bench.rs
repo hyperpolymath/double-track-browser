@@ -2,7 +2,7 @@
 // Performance benchmarks for DoubleTrack core operations
 // Measures throughput of critical paths
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
+use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 use doubletrack_core::*;
 use rand::SeedableRng;
 
@@ -27,17 +27,13 @@ fn benchmark_profile_serialization(c: &mut Criterion) {
     let profile = gen.generate();
 
     c.bench_function("profile_to_json", |b| {
-        b.iter(|| {
-            serde_json::to_string(black_box(&profile))
-        });
+        b.iter(|| serde_json::to_string(black_box(&profile)));
     });
 
     let json_str = serde_json::to_string(&profile).unwrap();
 
     c.bench_function("json_to_profile", |b| {
-        b.iter(|| {
-            serde_json::from_str::<Profile>(black_box(&json_str))
-        });
+        b.iter(|| serde_json::from_str::<Profile>(black_box(&json_str)));
     });
 }
 
@@ -77,8 +73,7 @@ fn benchmark_activity_count_scaling(c: &mut Criterion) {
                     let mut total_duration = std::time::Duration::ZERO;
                     for _ in 0..iters {
                         let start = std::time::Instant::now();
-                        let mut simulator =
-                            ActivitySimulator::new(black_box(profile.clone()));
+                        let mut simulator = ActivitySimulator::new(black_box(profile.clone()));
                         // Estimate hours needed for target activity count
                         let hours = ((activity_count as f64 / 4.0) as u32).max(1);
                         let _ = simulator.generate_activities(black_box(hours));
@@ -109,9 +104,7 @@ fn benchmark_schedule_generation(c: &mut Criterion) {
     let profile = gen.generate();
 
     c.bench_function("schedule_generation", |b| {
-        b.iter(|| {
-            Schedule::from_profile(black_box(&profile))
-        });
+        b.iter(|| Schedule::from_profile(black_box(&profile)));
     });
 }
 
@@ -120,9 +113,7 @@ fn benchmark_validation(c: &mut Criterion) {
     let profile = gen.generate();
 
     c.bench_function("profile_validation", |b| {
-        b.iter(|| {
-            profile.is_valid()
-        });
+        b.iter(|| profile.is_valid());
     });
 }
 
