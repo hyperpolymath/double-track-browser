@@ -22,7 +22,7 @@ chrono = { version = "0.4", features = ["wasmbind"] }
 [dev-dependencies]
 wasm-bindgen-test = "0.3"
 proptest = "1.4"
-criterion = "0.5"
+criterion = "0.8"
 
 [profile.release]
 opt-level = "z"     # Optimize for size
