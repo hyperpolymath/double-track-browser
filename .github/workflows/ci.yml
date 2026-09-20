@@ -96,14 +96,6 @@ jobs:
       - name: Run Tests
         run: npm test
 
-      - name: Upload Coverage
-        if: matrix.os == 'ubuntu-latest' && matrix.node == 20
-        uses: codecov/codecov-action@v7.0.0
-        with:
-          files: ./coverage/lcov.info
-          flags: typescript
-          name: typescript-coverage
-
   # Build Extension
   build:
     name: Build Extension
@@ -324,9 +316,3 @@ jobs:
       - name: Generate TypeScript Coverage
         run: npm test -- --coverage
 
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v7.0.0
-        with:
-          files: ./coverage/cobertura-coverage.xml,./coverage/lcov.info
-          flags: unittests
-          name: doubletrack-coverage
