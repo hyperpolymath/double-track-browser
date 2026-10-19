@@ -105,6 +105,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@v1
         with:
+          toolchain: stable
           targets: wasm32-unknown-unknown
 
       - name: Install wasm-pack
@@ -149,6 +150,8 @@ jobs:
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@v1
+        with:
+          toolchain: stable
 
       - name: Cargo Audit
         working-directory: rust_core
@@ -241,6 +244,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@v1
         with:
+          toolchain: stable
           targets: wasm32-unknown-unknown
 
       - name: Install wasm-pack
@@ -293,6 +297,7 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@v1
         with:
+          toolchain: stable
           components: llvm-tools-preview
 
       - name: Install cargo-tarpaulin
