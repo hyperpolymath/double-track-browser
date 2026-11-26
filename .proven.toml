@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: MPL-2.0
+# Manifest for this repository (schema proven/manifest/v1); see
+# hyperpolymath/proven-cicd-and-workflows docs/PROVEN-ADOPTION.adoc.
+schema = "proven/manifest/v1"
+
+# The only tested code is the Rust core in rust_core/ (no root Cargo.toml).
+# Commands are unverified in the umbrella; they mirror Justfile test-rust (release mode) and build-rust (wasm-pack).
+[categories.unit.rust]
+command = "cd rust_core && cargo test --release"
+
+[categories.smoke.rust]
+command = "cd rust_core && cargo test --test e2e_test"   # core workflow end to end; no separate smoke suite
+
+[categories.build.rust]
+command = "cd rust_core && wasm-pack build --target web --release"   # the extension's real build path (Justfile build-rust, ci.yml); needs wasm-pack and the wasm32-unknown-unknown target
+
+# The extension (AffineScript/JS) talks to the Rust core over WASM, but no test
+# exercises that seam, so this is a waiver, not N/A.
+[categories.p2p.waiver]
+reason = "no test exercises the WASM seam between the extension and rust_core; tests/e2e/*.affine need an AffineScript runner the umbrella lacks"
+until = "2027-01-15"
+
+# OWNER ATTENTION: ReScript is banned estate-wide. This repository still holds
+# ReScript output (src/**/*.res.js, lib/ocaml/*.cmj and *.ast, lib/rescript.lock)
+# next to the AffineScript sources. It is NOT migrated here; this entry only
+# says honestly why the gate does not run it.
+[languages.ignore.rescript]
+reason = "banned ReScript remnants (compiled src/**/*.res.js, lib/ocaml/*.cmj|*.ast, lib/rescript.lock); no tests of their own; migration to AffineScript is a separate owner decision"
+
+[languages.ignore.affinescript]
+reason = "AffineScript has no runner in release 0.1; tests/{unit,e2e,property,aspect}/*.affine are therefore not executed by this gate"
+
+[languages.ignore.zig]
+reason = "ffi/zig/build.zig is an unfilled template ({{project}} placeholders) and cannot build or test"
+
+[languages.ignore.deno]
+reason = "deno.lock only; there are no Deno tests, and Deno has no runner in release 0.1"
+
+[bench.core]
+command = "cd rust_core && cargo bench --bench core_bench"   # criterion; scored by wall-clock seconds
+baselining = true
