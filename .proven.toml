@@ -4,15 +4,15 @@
 schema = "proven/manifest/v1"
 
 # The only tested code is the Rust core in rust_core/ (no root Cargo.toml).
-# Commands are unverified in the umbrella; they mirror Justfile test-rust.
+# Commands are unverified in the umbrella; they mirror Justfile test-rust (release mode) and build-rust (wasm-pack).
 [categories.unit.rust]
-command = "cd rust_core && cargo test"
+command = "cd rust_core && cargo test --release"
 
 [categories.smoke.rust]
 command = "cd rust_core && cargo test --test e2e_test"   # core workflow end to end; no separate smoke suite
 
 [categories.build.rust]
-command = "cd rust_core && cargo build --release"
+command = "cd rust_core && wasm-pack build --target web --release"   # the extension's real build path (Justfile build-rust, ci.yml); needs wasm-pack and the wasm32-unknown-unknown target
 
 # The extension (AffineScript/JS) talks to the Rust core over WASM, but no test
 # exercises that seam, so this is a waiver, not N/A.
