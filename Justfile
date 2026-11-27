@@ -201,7 +201,8 @@ validate-rsr:
     [[ -f Mustfile.epx ]] && echo "  ✅ Mustfile.epx" || echo "  ❌ Mustfile.epx"
     echo ""
     echo "Policy Enforcement:"
-    [[ ! -f package.json ]] && echo "  ✅ No package.json (Deno enforced)" || echo "  ❌ package.json exists"
+    # package.json is allowed only as a tooling manifest (devDependencies, e.g. Prettier); runtime dependencies still fail.
+    if [[ ! -f package.json ]]; then echo "  ✅ No package.json"; elif bun -e 'const p=JSON.parse(require("fs").readFileSync("package.json","utf8")); process.exit(p.dependencies||p.peerDependencies||p.optionalDependencies ? 1 : 0)'; then echo "  ✅ package.json is tooling-only (devDependencies)"; else echo "  ❌ package.json declares runtime dependencies"; fi
     [[ ! -f tsconfig.json ]] && echo "  ✅ No tsconfig.json (AffineScript enforced)" || echo "  ❌ tsconfig.json exists"
     echo ""
     echo "See RSR_COMPLIANCE_AUDIT.md for full audit"
