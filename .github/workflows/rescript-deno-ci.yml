@@ -21,6 +21,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The tooling-only package.json (Prettier for mise lint) must not make Deno 1.x read
+    # package.json and then the v5 deno.lock, which it cannot parse. Skip auto-discovery.
+    env:
+      DENO_NO_PACKAGE_JSON: "1"
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: denoland/setup-deno@v2.0.5
@@ -34,7 +38,7 @@ jobs:
         run: deno fmt --check
       
       - name: Deno test
-        run: deno test --allow-all --coverage=coverage
+        run: deno test --allow-read --allow-env --coverage=coverage
       
       - name: AffineScript build
         run: |

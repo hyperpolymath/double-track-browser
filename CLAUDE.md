@@ -96,7 +96,7 @@ This project follows the Hyperpolymath language policy. See `.claude/CLAUDE.md` 
 
 **Key rules:**
 - Use **AffineScript** instead of TypeScript
-- Use **Deno** instead of npm/node
+- Use **Bun** first instead of npm/node
 - Use **Rust** for performance-critical code
 - Use **justfile** instead of Makefile
 
